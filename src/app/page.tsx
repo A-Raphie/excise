@@ -57,17 +57,18 @@ export default function Home() {
         ) : (
           <>
             {/* Navigation back breadcrumb */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pb-1">
               <button
                 onClick={() => setViewMode("landing")}
                 className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-md hover:bg-white/[0.04] cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Return to Bill Intake &amp; Case Studies</span>
+                <span>← Return to Bill Intake &amp; Case Studies</span>
               </button>
 
-              <div className="text-[11px] font-mono text-slate-500">
-                Viewing Case: <span className="text-slate-300 font-semibold">{activeCase.accountNumber}</span> ({activeCase.patientName})
+              <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Autonomous Chargemaster Dispute Engine</span>
               </div>
             </div>
 

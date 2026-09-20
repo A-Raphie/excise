@@ -52,28 +52,32 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
 
   return (
     <div className="bg-[#090d13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
-      {/* Top Bar: Hospital Title, Status, and Case Selector */}
-      <div className="p-4 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/[0.06] bg-[#0b1017]">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-lg font-semibold text-white tracking-tight">
-            {currentCase.hospitalName}
-          </h1>
-          {getStatusBadge()}
+      {/* Top Breadcrumb & Active Docket Tier */}
+      <div className="px-4 py-2 bg-black/40 border-b border-white/[0.05] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+        <div className="flex items-center gap-1.5 text-slate-400">
+          <span className="text-slate-500">Active Docket</span>
+          <span className="text-slate-600">/</span>
+          <span className="text-slate-300 font-medium">{currentCase.hospitalName}</span>
+          <span className="text-slate-600">/</span>
+          <span className="text-emerald-400 font-semibold">{currentCase.patientName}</span>
+          <span className="text-slate-500">({currentCase.accountNumber})</span>
+          <span className="text-slate-600">·</span>
+          <span className="text-slate-500">DOS: {currentCase.billDate}</span>
         </div>
 
         {/* Integrated Case Switcher */}
-        <div className="flex items-center gap-1.5 self-start md:self-auto">
-          <span className="text-[11px] font-mono text-slate-500 mr-1 hidden sm:inline">
-            Active Docket:
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-slate-500 mr-1 hidden sm:inline">
+            Switch Case:
           </span>
-          <div className="flex items-center p-0.5 rounded bg-black/40 border border-white/[0.06]">
+          <div className="flex items-center p-0.5 rounded bg-black/50 border border-white/[0.08]">
             {cases.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setSelectedCaseId(c.id)}
-                className={`px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
+                className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all cursor-pointer ${
                   selectedCaseId === c.id
-                    ? "bg-white/[0.1] text-white font-medium shadow-xs"
+                    ? "bg-white/[0.12] text-white font-semibold shadow-xs"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -81,6 +85,29 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
               </button>
             ))}
           </div>
+
+          <button
+            onClick={() => setShowDossier(!showDossier)}
+            className="flex items-center gap-1 ml-2 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition-colors cursor-pointer px-2 py-0.5 rounded bg-white/[0.03] border border-white/[0.06]"
+          >
+            <span>Dossier</span>
+            {showDossier ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Hospital Identity & Status Header */}
+      <div className="p-4 sm:px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] bg-[#0b1017]">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-lg font-semibold text-white tracking-tight">
+            {currentCase.hospitalName}
+          </h1>
+          {getStatusBadge()}
+        </div>
+
+        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <span className="text-slate-500">Jurisdiction:</span>
+          <span className="text-slate-300">45 CFR § 149 (CMS Independent Dispute Resolution)</span>
         </div>
       </div>
 
@@ -128,46 +155,6 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
           <div className="text-[11px] text-cyan-400/80 font-mono mt-1.5">
             Hospital published self-pay cash schedule
           </div>
-        </div>
-      </div>
-
-      {/* Metadata Ribbon & Case Inbox Bar */}
-      <div className="px-4 sm:px-5 py-2.5 bg-black/30 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-xs font-mono text-slate-400">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-          <div>
-            <span className="text-slate-500">Patient:</span>{" "}
-            <strong className="text-slate-200 font-medium">{currentCase.patientName}</strong>
-          </div>
-          <div>
-            <span className="text-slate-500">Account:</span>{" "}
-            <strong className="text-slate-200 font-medium">{currentCase.accountNumber}</strong>
-          </div>
-          <div>
-            <span className="text-slate-500">Date of Service:</span>{" "}
-            <strong className="text-slate-200 font-medium">{currentCase.billDate}</strong>
-          </div>
-        </div>
-
-        {/* Dedicated AgentMail Inbox & Dossier Toggle */}
-        <div className="flex items-center gap-3 ml-auto">
-          <button
-            onClick={handleCopyInbox}
-            className="flex items-center gap-2 px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 text-purple-200 transition-colors cursor-pointer text-[11px]"
-            title="Click to copy AgentMail dispute inbox"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-400">Inbox:</span>
-            <span className="font-semibold">{currentCase.caseInbox}</span>
-            {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-purple-400" />}
-          </button>
-
-          <button
-            onClick={() => setShowDossier(!showDossier)}
-            className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
-          >
-            <span>Legal Dossier</span>
-            {showDossier ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-          </button>
         </div>
       </div>
 

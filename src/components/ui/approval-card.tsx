@@ -92,29 +92,29 @@ export function DisputeCard({
 
       {/* Financial Delta Highlight Banner */}
       {financialDelta && (
-        <div className="mt-3 p-3 rounded-lg bg-black/40 border border-white/[0.08] space-y-2">
+        <div className="mt-3 p-3.5 rounded-lg bg-black/50 border border-white/[0.08] space-y-2.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">
               {isOutbound ? "Dispute Audit Basis" : "Hospital Concession Settlement"}
             </span>
             {financialDelta.concededAmount && (
-              <span className="text-xs font-bold text-emerald-400 font-mono">
+              <span className="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold text-xs text-emerald-400 bg-emerald-950/80 border border-emerald-500/40">
                 -${financialDelta.concededAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })} Conceded
               </span>
             )}
             {financialDelta.finalAmount && (
-              <span className="text-xs font-bold text-cyan-300 font-mono">
+              <span className="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold text-xs text-cyan-300 bg-cyan-950/60 border border-cyan-500/30">
                 Settlement Tender: ${financialDelta.finalAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
               </span>
             )}
           </div>
 
           {financialDelta.breakdown && financialDelta.breakdown.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1.5 border-t border-white/[0.06] text-[11px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/[0.06] text-[11px]">
               {financialDelta.breakdown.map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center text-slate-300">
-                  <span className="text-slate-400 truncate mr-2">{item.item}:</span>
-                  <span className="text-emerald-400 font-medium shrink-0">{item.delta}</span>
+                <div key={idx} className="flex justify-between items-center text-slate-300 bg-white/[0.02] px-2.5 py-1.5 rounded border border-white/[0.04]">
+                  <span className="text-slate-400 truncate mr-2 font-mono">{item.item}:</span>
+                  <span className="font-mono font-medium shrink-0">{item.delta}</span>
                 </div>
               ))}
             </div>
