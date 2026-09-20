@@ -194,39 +194,50 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                     <tr className="bg-[#0e1622] border-b border-slate-800/80">
                       <td colSpan={8} className="p-4 sm:px-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-                          <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-800">
-                            <div className="text-[11px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5 mb-1.5">
+                          <div className="p-3.5 rounded-lg bg-slate-900/90 border border-slate-800">
+                            <div className="text-[11px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5 mb-2">
                               <HelpCircle className="w-3.5 h-3.5" />
-                              Clinical & Statutory Finding
+                              Clinical Coding Rationale &amp; Violation Basis
                             </div>
-                            <p className="text-slate-300 font-sans leading-relaxed">
+                            <p className="text-slate-200 font-sans leading-relaxed mb-2">
                               {item.auditRationale}
                             </p>
+                            <div className="pt-2 border-t border-slate-800/80 flex items-center gap-2 text-[11px] text-slate-400">
+                              <span className="text-purple-400 font-semibold">Auditor:</span>
+                              <span>OpenAI Forensic CPT Engine (AMA Guidelines &amp; CMS NCCI Ch 1)</span>
+                            </div>
                           </div>
 
-                          <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-800">
-                            <div className="text-[11px] uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5 mb-1.5">
+                          <div className="p-3.5 rounded-lg bg-slate-900/90 border border-slate-800">
+                            <div className="text-[11px] uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5 mb-2">
                               <Globe className="w-3.5 h-3.5" />
-                              Chargemaster Transparency Benchmark
+                              Firecrawl Hospital Chargemaster Intelligence
                             </div>
-                            <div className="space-y-1 text-slate-300">
-                              <div>
-                                Scraped Source:{" "}
-                                <span className="text-slate-400">
-                                  {currentCase.hospitalName} Machine-Readable Transparency File
+                            <div className="space-y-1.5 text-slate-300">
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Hospital Standard Billed:</span>
+                                <span className="text-white font-semibold">${item.billedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Hospital MRF Cash Price:</span>
+                                <span className="text-cyan-400 font-semibold">
+                                  {item.hospitalCashRate === 0 ? "$0.00 (Bundled)" : `$${item.hospitalCashRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
                                 </span>
                               </div>
-                              <div>
-                                CMS Medicare Benchmark (Geo-Adjusted):{" "}
-                                <span className="text-emerald-400 font-bold">
-                                  ${item.cmsBenchmarkRate.toFixed(2)}
-                                </span>
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">CMS Medicare Benchmark:</span>
+                                <span className="text-emerald-400 font-semibold">${item.cmsBenchmarkRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
                               </div>
-                              <div>
-                                Unbundled Deduction:{" "}
+                              <div className="flex justify-between pt-1 border-t border-slate-800/80">
+                                <span className="text-slate-400">Price Delta Excised:</span>
                                 <span className="text-red-400 font-bold">
-                                  -${(item.billedAmount - item.proposedAmount).toFixed(2)}
+                                  -${(item.billedAmount - item.proposedAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                  {" "}
+                                  ({Math.round(((item.billedAmount - item.proposedAmount) / item.billedAmount) * 100)}% overcharge)
                                 </span>
+                              </div>
+                              <div className="text-[10px] text-slate-400 pt-1">
+                                Source: Verified in {currentCase.hospitalName} 2026 Machine-Readable Transparency File via Firecrawl crawl.
                               </div>
                             </div>
                           </div>

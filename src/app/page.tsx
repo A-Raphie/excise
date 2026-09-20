@@ -44,22 +44,19 @@ export default function Home() {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* 90-Second Judge Walkthrough Banner */}
-        <div className="p-4 rounded-xl bg-gradient-to-r from-slate-900/90 via-[#0b121b] to-slate-900/90 border border-slate-800 text-xs font-mono shadow-md">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="flex items-start sm:items-center gap-2.5">
-              <span className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                <Sparkles className="w-4 h-4" />
+        <div className="p-4 rounded-xl bg-[#0b1017] border border-slate-800 text-xs font-mono shadow-md space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <span className="p-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                <Sparkles className="w-3.5 h-3.5" />
               </span>
-              <div>
-                <strong className="text-white">90-Second Evaluator Flow:</strong>{" "}
-                <span className="text-slate-300">
-                  1. Toggle line item checkboxes below to test Convex reactive recalculation. 2. Switch to AgentMail Dispute Room to simulate inbound hospital concession. 3. Audit any new hospital bill in 1 click.
-                </span>
-              </div>
+              <span className="font-bold text-white tracking-wide uppercase text-[11px]">
+                90-Second Evaluator / Judge Demo Path
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-slate-400">Select Case:</span>
+              <span className="text-[11px] text-slate-400">Active Case:</span>
               <div className="flex items-center gap-1.5">
                 {cases.map((c) => (
                   <button
@@ -75,6 +72,44 @@ export default function Home() {
                   </button>
                 ))}
               </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-2.5 rounded-lg bg-[#0e141e] border border-slate-800/80">
+              <div className="font-semibold text-emerald-400 mb-0.5 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-emerald-950 border border-emerald-600 text-emerald-300 flex items-center justify-center text-[10px]">
+                  1
+                </span>
+                <span>Toggle Line Items</span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-sans">
+                Uncheck/check any line item in the audit table below to watch Convex reactively recalculate the settlement totals live.
+              </p>
+            </div>
+
+            <div className="p-2.5 rounded-lg bg-[#0e141e] border border-slate-800/80">
+              <div className="font-semibold text-purple-400 mb-0.5 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-purple-950 border border-purple-600 text-purple-300 flex items-center justify-center text-[10px]">
+                  2
+                </span>
+                <span>AgentMail Negotiation</span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-sans">
+                Switch to &quot;AgentMail Dispute Room&quot; and click &quot;Simulate Concession&quot; or &quot;Simulate Full Settlement&quot; to see live hospital responses.
+              </p>
+            </div>
+
+            <div className="p-2.5 rounded-lg bg-[#0e141e] border border-slate-800/80">
+              <div className="font-semibold text-cyan-400 mb-0.5 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-cyan-950 border border-cyan-600 text-cyan-300 flex items-center justify-center text-[10px]">
+                  3
+                </span>
+                <span>Audit New Bill</span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-sans">
+                Click &quot;+ Audit New Bill&quot; in the header, select an authentic test bill, and watch the 3-stage autonomous pipeline run.
+              </p>
             </div>
           </div>
         </div>

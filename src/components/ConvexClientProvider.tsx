@@ -154,17 +154,30 @@ export function ConvexClientProvider({ children }: { children: React.ReactNode }
     let body = "";
     let summary = "";
     let newStatus: "settled" | "in_negotiation" = "in_negotiation";
+    let updatedLineItems = current.lineItems;
 
     if (type === "full_acceptance") {
       newStatus = "settled";
-      counterOffer = current.finalSettlement ?? Math.round(current.totalBilled * 0.25);
-      body = `Dear Representative,\n\nWe have completed administrative review of Account #${current.accountNumber} (${current.patientName}).\nIn accordance with our self-pay hospital financial policies and pursuant to your audit citing CMS Hospital Price Transparency (45 CFR § 180), we have accepted your tendered settlement of $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })}.\n\nYour account balance has been marked as PAID IN FULL upon receipt of payment. An amended zero-balance statement will follow.\n\nSincerely,\nCentral Revenue Integrity & Patient Resolution\n${current.hospitalName}`;
-      summary = `Hospital accepted tendered settlement in full ($${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })}). Account cleared.`;
+      counterOffer = current.finalSettlement ?? 3735;
+      body = `Dear Representative,\n\nWe have completed administrative review of Account #${current.accountNumber} (${current.patientName}).\nIn accordance with our self-pay hospital financial policies and pursuant to your audit citing CMS Hospital Price Transparency (45 CFR § 180), we have accepted your tendered settlement of $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })} in full satisfaction of all claims.\n\nYour account balance has been marked as PAID IN FULL upon receipt of payment. An amended zero-balance statement will follow.\n\nSincerely,\nCentral Revenue Integrity & Patient Resolution\n${current.hospitalName}`;
+      summary = `Hospital accepted tendered settlement in full ($${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })}). Account marked PAID IN FULL.`;
     } else if (type === "unbundling_concession") {
       newStatus = "in_negotiation";
-      counterOffer = Math.round((current.totalBilled - current.totalExcised) * 1.15);
-      body = `Attention Patient Advocacy,\n\nRegarding Account #${current.accountNumber}:\nOur clinical coding committee re-evaluated the itemized charges. We concede that routine surgical tray and supply kits were incorrectly unbundled under NCCI edits and have voided those line items. Additionally, the emergency facility level has been downgraded to standard acuity.\n\nWe propose a revised mutual settlement of $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })} to close this account immediately without collection action.\n\nBest regards,\nRevenue Cycle Operations, ${current.hospitalName}`;
-      summary = `Hospital conceded unbundled surgical tray fees and reduced emergency level. Counter-offered $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })}.`;
+      counterOffer = 3735;
+      body = `Attention Patient Advocacy,\n\nRegarding Account #${current.accountNumber}:\nOur clinical coding committee re-evaluated the itemized charges. We concede that routine surgical tray and supply kits (CPT 99070) were incorrectly unbundled under CMS NCCI edits and have voided those line items (-$1,850.00). Additionally, the emergency facility level has been downgraded to standard acuity.\n\nWe propose an amended mutual settlement of $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })} to close this account immediately without collection action.\n\nBest regards,\nRevenue Cycle Operations, ${current.hospitalName}`;
+      summary = `Hospital conceded unbundled surgical tray fees (-$1,850.00) and downgraded emergency level. Revised settlement: $${counterOffer.toLocaleString("en-US", { minimumFractionDigits: 2 })}.`;
+
+      updatedLineItems = current.lineItems.map((li) => {
+        if (li.cptCode === "99070") {
+          return {
+            ...li,
+            proposedAmount: 0,
+            auditRationale:
+              "CONCEDED BY HOSPITAL: Suture tray fee ($1,850.00) voided by Revenue Cycle committee.",
+          };
+        }
+        return li;
+      });
     } else {
       newStatus = "in_negotiation";
       counterOffer = Math.round(current.totalBilled * 0.45);
@@ -191,6 +204,7 @@ export function ConvexClientProvider({ children }: { children: React.ReactNode }
         status: newStatus,
         finalSettlement: counterOffer,
         totalExcised: c.totalBilled - counterOffer,
+        lineItems: updatedLineItems,
         correspondence: [...c.correspondence, newInbound],
         updatedAt: Date.now(),
       };

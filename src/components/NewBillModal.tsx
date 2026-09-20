@@ -35,7 +35,7 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
   const [amounts, setAmounts] = useState("4850, 1850, 5400, 450, 2300");
 
   const [isAuditing, setIsAuditing] = useState(false);
-  const [auditStep, setAuditStep] = useState("");
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   if (!isOpen) return null;
 
@@ -58,14 +58,14 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
     setIsAuditing(true);
 
     try {
-      setAuditStep("Connecting to Firecrawl to crawl hospital chargemaster...");
-      await new Promise((r) => setTimeout(r, 600));
-
-      setAuditStep("Analyzing CPT codes for upcoding & unbundling with OpenAI...");
+      setCurrentStepIndex(1); // Crawling Firecrawl
       await new Promise((r) => setTimeout(r, 700));
 
-      setAuditStep("Provisioning dedicated AgentMail case inbox & drafting demand...");
-      await new Promise((r) => setTimeout(r, 600));
+      setCurrentStepIndex(2); // OpenAI CPT Audit
+      await new Promise((r) => setTimeout(r, 800));
+
+      setCurrentStepIndex(3); // Provisioning AgentMail Inbox
+      await new Promise((r) => setTimeout(r, 700));
 
       const parsedCpts = cptCodes
         .split(",")
@@ -89,7 +89,7 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
       onClose();
     } finally {
       setIsAuditing(false);
-      setAuditStep("");
+      setCurrentStepIndex(0);
     }
   };
 
@@ -250,26 +250,83 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
           </div>
 
           {/* Action Footer */}
-          <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="pt-4 border-t border-slate-800">
             {isAuditing ? (
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>{auditStep}</span>
+              <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-700 space-y-2.5 font-mono text-xs">
+                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-2">
+                  Autonomous Audit Sequence in Progress
+                </div>
+
+                {/* Step 1: Firecrawl */}
+                <div className="flex items-center gap-2.5">
+                  {currentStepIndex > 1 ? (
+                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px]">
+                      ✓
+                    </span>
+                  ) : currentStepIndex === 1 ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
+                  ) : (
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px]">
+                      1
+                    </span>
+                  )}
+                  <span className={currentStepIndex === 1 ? "text-cyan-300 font-bold" : currentStepIndex > 1 ? "text-slate-300" : "text-slate-500"}>
+                    Step 1: Crawling Firecrawl for Hospital Machine-Readable File (MRF)...
+                  </span>
+                </div>
+
+                {/* Step 2: OpenAI */}
+                <div className="flex items-center gap-2.5">
+                  {currentStepIndex > 2 ? (
+                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px]">
+                      ✓
+                    </span>
+                  ) : currentStepIndex === 2 ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-amber-400" />
+                  ) : (
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px]">
+                      2
+                    </span>
+                  )}
+                  <span className={currentStepIndex === 2 ? "text-amber-300 font-bold" : currentStepIndex > 2 ? "text-slate-300" : "text-slate-500"}>
+                    Step 2: OpenAI CPT Audit (AMA Coding &amp; NCCI Unbundling Analysis)...
+                  </span>
+                </div>
+
+                {/* Step 3: AgentMail */}
+                <div className="flex items-center gap-2.5">
+                  {currentStepIndex > 3 ? (
+                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px]">
+                      ✓
+                    </span>
+                  ) : currentStepIndex === 3 ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-purple-400" />
+                  ) : (
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px]">
+                      3
+                    </span>
+                  )}
+                  <span className={currentStepIndex === 3 ? "text-purple-300 font-bold" : currentStepIndex > 3 ? "text-slate-300" : "text-slate-500"}>
+                    Step 3: Provisioning AgentMail Dedicated Dispute Inbox &amp; Drafting Demand...
+                  </span>
+                </div>
               </div>
             ) : (
-              <div className="text-[11px] text-slate-500 font-mono">
-                Scrapes hospital chargemaster MRF and analyzes NCCI unbundling.
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="text-[11px] text-slate-500 font-mono">
+                  Scrapes hospital chargemaster MRF and analyzes NCCI unbundling.
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isAuditing}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-mono font-medium text-xs shadow-lg shadow-emerald-950 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>Run Autonomous Forensic Audit</span>
+                </button>
               </div>
             )}
-
-            <button
-              type="submit"
-              disabled={isAuditing}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-mono font-medium text-xs shadow-lg shadow-emerald-950 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
-            >
-              <Zap className="w-4 h-4" />
-              <span>Run Autonomous Forensic Audit</span>
-            </button>
           </div>
         </form>
       </div>
