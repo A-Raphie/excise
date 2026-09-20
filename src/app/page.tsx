@@ -10,6 +10,7 @@ import { DisputeLetterViewer } from "@/components/DisputeLetterViewer";
 import { ChargemasterDirectory } from "@/components/ChargemasterDirectory";
 import { NewBillModal } from "@/components/NewBillModal";
 import { FrontDoorLanding } from "@/components/FrontDoorLanding";
+import { ProofEvidenceRail } from "@/components/ProofEvidenceRail";
 import {
   FileSpreadsheet,
   Mail,
@@ -17,13 +18,14 @@ import {
   Search,
   Sparkles,
   ArrowLeft,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function Home() {
   const { activeCase, setSelectedCaseId } = useCaseEngine();
   const [viewMode, setViewMode] = useState<"landing" | "cockpit">("landing");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"audit" | "letter" | "agentmail" | "transparency">(
+  const [activeTab, setActiveTab] = useState<"audit" | "letter" | "agentmail" | "transparency" | "proof">(
     "audit"
   );
 
@@ -37,11 +39,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#06090e] text-slate-100 flex flex-col selection:bg-emerald-500/20 selection:text-emerald-300">
-      {/* Top Header Navigation */}
+      {/* Top Header Navigation (One Chrome Row) */}
       <Header
         onOpenNewBill={() => setIsModalOpen(true)}
         viewMode={viewMode}
         onToggleView={setViewMode}
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
       />
 
       {/* Main Container */}
@@ -53,6 +57,10 @@ export default function Home() {
               setViewMode("cockpit");
             }}
             onEnterCockpit={() => setViewMode("cockpit")}
+            onOpenProof={() => {
+              setViewMode("cockpit");
+              setActiveTab("proof");
+            }}
           />
         ) : (
           <>
@@ -128,12 +136,24 @@ export default function Home() {
               <Search className={`w-3.5 h-3.5 ${activeTab === "transparency" ? "text-cyan-400" : "text-slate-400"}`} />
               <span>Chargemaster Intel</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab("proof")}
+              className={`px-4 py-2 rounded-t-md font-medium border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+                activeTab === "proof"
+                  ? "border-emerald-300 text-white bg-white/[0.08] font-semibold"
+                  : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03]"
+              }`}
+            >
+              <ShieldCheck className={`w-3.5 h-3.5 ${activeTab === "proof" ? "text-emerald-400" : "text-slate-400"}`} />
+              <span>Proof &amp; Receipts (4)</span>
+            </button>
           </div>
 
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-300">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
             <strong className="text-emerald-400 font-semibold tracking-wide">LIVE DEMO:</strong>
-            <span className="text-slate-300">Toggle any charge → settlement recalculates instantly via Convex</span>
+            <span className="text-slate-300">Toggle any charge → recalculates instantly</span>
           </div>
         </div>
 
@@ -143,6 +163,7 @@ export default function Home() {
           {activeTab === "agentmail" && <AgentMailChamber currentCase={activeCase} />}
           {activeTab === "letter" && <DisputeLetterViewer currentCase={activeCase} />}
           {activeTab === "transparency" && <ChargemasterDirectory />}
+          {activeTab === "proof" && <ProofEvidenceRail currentCase={activeCase} />}
         </div>
         </>
         )}
