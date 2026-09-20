@@ -4,13 +4,8 @@ import React from "react";
 import { useCaseEngine } from "./ConvexClientProvider";
 import {
   ShieldAlert,
-  Activity,
-  Mail,
-  Cpu,
-  Database,
-  Search,
   RotateCcw,
-  PlusCircle,
+  Plus,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -26,84 +21,74 @@ export function Header({ onOpenNewBill }: HeaderProps) {
     totalBilledAll > 0 ? ((totalExcisedAll / totalBilledAll) * 100).toFixed(1) : "0";
 
   return (
-    <header className="border-b border-slate-800/80 bg-[#080d14]/90 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          {/* Logo & Brand Identity */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-sm shadow-emerald-950">
-              <ShieldAlert className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xl font-bold tracking-tight text-white">
-                  EXCISE
-                </span>
-                <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded bg-emerald-950/60 border border-emerald-700/50 text-emerald-400">
-                  v1.0 • No Surprises Act
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 font-sans">
-                Autonomous Hospital Chargemaster Audit & Medical Bill Dispute Engine
-              </p>
-            </div>
+    <header className="border-b border-white/[0.08] bg-[#070b10] sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+        {/* Left: Brand & Legal Subtitle */}
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-7 h-7 rounded bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+            <ShieldAlert className="w-4 h-4" />
+          </div>
+          <div className="flex items-baseline gap-2.5 min-w-0">
+            <span className="font-mono text-base font-bold tracking-tight text-white">
+              EXCISE
+            </span>
+            <span className="hidden md:inline-block text-[11px] font-mono text-slate-500 border-l border-white/[0.1] pl-2.5">
+              Chargemaster Inquest &amp; Dispute Terminal
+            </span>
+            <span className="hidden lg:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-slate-400">
+              45 CFR § 149 / § 180
+            </span>
+          </div>
+        </div>
+
+        {/* Center: Quiet Unified Sponsor Telemetry Strip */}
+        <div className="hidden xl:flex items-center gap-3 px-3 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-[11px] font-mono text-slate-400 whitespace-nowrap">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-slate-300">Convex</span>
+          </div>
+          <span className="text-slate-600">·</span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+            <span className="text-slate-300">Firecrawl MRF</span>
+          </div>
+          <span className="text-slate-600">·</span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+            <span className="text-slate-300">AgentMail</span>
+          </div>
+          <span className="text-slate-600">·</span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="text-slate-300">GPT-4o Audit</span>
+          </div>
+        </div>
+
+        {/* Right: Metrics & Actions */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="hidden sm:flex items-baseline gap-1.5 font-mono text-xs pr-2 border-r border-white/[0.08]">
+            <span className="text-slate-500 text-[11px] uppercase tracking-wider">Excised:</span>
+            <span className="font-semibold text-emerald-400 tabular-nums">
+              ${totalExcisedAll.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            </span>
+            <span className="text-[11px] text-slate-500">(-{percentExcised}%)</span>
           </div>
 
-          {/* Sponsor Primitives Radar Indicators */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] font-mono">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <Database className="w-3 h-3 text-emerald-400" />
-              <span>Convex Reactive</span>
-            </div>
+          <button
+            onClick={resetToSampleData}
+            title="Reset to default authentic hospital bills"
+            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-white/[0.05] rounded border border-white/[0.08] transition-colors"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
 
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-slate-300">
-              <Search className="w-3 h-3 text-cyan-400" />
-              <span>Firecrawl MRF</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-slate-300">
-              <Mail className="w-3 h-3 text-purple-400" />
-              <span>AgentMail Inboxes</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-slate-300">
-              <Cpu className="w-3 h-3 text-amber-400" />
-              <span>OpenAI CPT Audit</span>
-            </div>
-          </div>
-
-          {/* Aggregate Savings Metric & Quick Actions */}
-          <div className="flex items-center gap-3 self-stretch md:self-auto justify-between md:justify-end">
-            <div className="hidden lg:block text-right pr-2">
-              <div className="text-[10px] uppercase tracking-wider text-slate-500 font-mono">
-                Total Overcharges Excised
-              </div>
-              <div className="text-sm font-mono font-semibold text-emerald-400 tabular-nums">
-                ${totalExcisedAll.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                <span className="text-xs font-normal text-slate-400 ml-1">
-                  ({percentExcised}% cut)
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={resetToSampleData}
-              title="Reset to default authentic hospital bills"
-              className="px-2.5 py-1.5 text-xs font-mono rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span className="hidden sm:inline">Reset</span>
-            </button>
-
-            <button
-              onClick={onOpenNewBill}
-              className="px-3.5 py-1.5 text-xs font-mono font-medium rounded bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm shadow-emerald-950 transition-all flex items-center gap-1.5 active:scale-95"
-            >
-              <PlusCircle className="w-3.5 h-3.5" />
-              <span>Audit New Bill</span>
-            </button>
-          </div>
+          <button
+            onClick={onOpenNewBill}
+            className="px-3 py-1.5 text-xs font-mono font-medium rounded bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-all flex items-center gap-1.5 whitespace-nowrap active:scale-95 cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Audit New Bill</span>
+          </button>
         </div>
       </div>
     </header>
