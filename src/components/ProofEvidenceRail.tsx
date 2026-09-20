@@ -14,6 +14,9 @@ import {
   Lock,
   Mail,
   Scale,
+  Sparkles,
+  Database,
+  ArrowRight,
 } from "lucide-react";
 import { Badge } from "./ui/badge";
 
@@ -22,201 +25,303 @@ interface ProofEvidenceRailProps {
 }
 
 export function ProofEvidenceRail({ currentCase }: ProofEvidenceRailProps) {
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-
-  const handleCopy = (text: string, index: number) => {
-    navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000);
-  };
+  const [selectedProofIndex, setSelectedProofIndex] = useState(0);
+  const [copiedPayload, setCopiedPayload] = useState(false);
+  const [copiedDigest, setCopiedDigest] = useState(false);
 
   const proofs = [
     {
+      id: "convex-state",
       title: "Convex Reactive State Finality",
       authority: "Convex Real-time Backend Engine",
-      badge: "VERIFIED ON-CHAIN MUTATION",
+      badge: "VERIFIED MUTATION",
       variant: "emerald" as const,
       timestamp: "2026-09-20T10:28:38.102Z",
-      digest: "SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+      digest: "0x7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
       txId: "#tx_8f9a2d8104e",
+      summary: "Atomic mutation committing $11,115.00 in verified hospital overcharges to Convex database.",
       details: [
-        { k: "Mutation Endpoint", v: "convex/cases:adjudicateSettlement" },
-        { k: "Audit Record ID", v: currentCase.id },
-        { k: "Final Binding Tender", v: `$${(currentCase.finalSettlement ?? 3735).toLocaleString("en-US", { minimumFractionDigits: 2 })}` },
-        { k: "Excised Reduction", v: `-$${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} (-74.8%)` },
+        { k: "Backend Mutation", v: "convex/cases:adjudicateSettlement" },
+        { k: "Docket ID", v: currentCase.id },
+        { k: "Final Settlement Tender", v: `$${(currentCase.finalSettlement ?? 3735).toLocaleString("en-US", { minimumFractionDigits: 2 })}` },
+        { k: "Total Excised", v: `-$${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} (-74.8%)` },
+        { k: "State Integrity", v: "Cryptographically Sealed" },
       ],
-      payload: `{
-  "mutation": "cases:adjudicateSettlement",
-  "caseId": "${currentCase.id}",
-  "accountNumber": "${currentCase.accountNumber}",
-  "status": "settled",
-  "totalBilled": ${currentCase.totalBilled},
-  "finalSettlement": ${currentCase.finalSettlement ?? 3735},
-  "verifiedTimestamp": 1726824518102,
-  "stateHash": "0x7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
-}`,
+      payload: {
+        mutation: "cases:adjudicateSettlement",
+        caseId: currentCase.id,
+        accountNumber: currentCase.accountNumber,
+        status: currentCase.status,
+        totalBilled: currentCase.totalBilled,
+        finalSettlement: currentCase.finalSettlement ?? 3735,
+        totalExcised: currentCase.totalExcised,
+        verifiedTimestamp: 1726824518102,
+        stateHash: "0x7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+      },
     },
     {
-      title: "Firecrawl MRF Price Transparency Scrape",
+      id: "firecrawl-mrf",
+      title: "Firecrawl MRF Price Transparency",
       authority: "CMS 45 CFR § 180 Machine-Readable File Crawler",
-      badge: "SOURCE RAW AUDIT WITNESSED",
+      badge: "RAW SOURCE WITNESSED",
       variant: "cyan" as const,
       timestamp: "2026-09-20T10:14:02.441Z",
-      digest: "SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      digest: "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       txId: "firecrawl_job_9920148",
+      summary: "Ingested Memorial Regional MRF standard charges JSON to identify exact self-pay cash baseline.",
       details: [
-        { k: "Scraped Endpoint", v: "https://memorialregional.org/transparency/standard-charges.json" },
+        { k: "Source Endpoint", v: "memorialregional.org/transparency/standard-charges.json" },
         { k: "Facility EIN", v: currentCase.hospitalEin || "59-1234567" },
-        { k: "Mandatory Schedule", v: "CMS 50 Shoppable Self-Pay Cash Schedule" },
-        { k: "Discrepancy Found", v: "Billed unadjusted chargemaster rate instead of published cash tender" },
+        { k: "Mandated Schedule", v: "CMS 50 Shoppable Self-Pay Cash Schedule" },
+        { k: "CPT Discrepancies", v: "Found 3 rates exceeding published self-pay cash tender" },
+        { k: "Crawler Version", v: "Firecrawl v2.4 Automated Extract" },
       ],
-      payload: `{
-  "crawler": "Firecrawl v2.4 Engine",
-  "sourceUrl": "https://memorialregional.org/transparency/standard-charges.json",
-  "cptMatches": [
-    { "cpt": "99070", "standardRate": 1850.00, "publishedCashRate": 0.00, "status": "bundled" },
-    { "cpt": "70450", "standardRate": 5400.00, "publishedCashRate": 650.00, "status": "overcharge" },
-    { "cpt": "99285", "standardRate": 4850.00, "publishedCashRate": 520.00, "status": "upcoded" }
-  ]
-}`,
+      payload: {
+        crawler: "Firecrawl v2.4 Engine",
+        sourceUrl: "https://memorialregional.org/transparency/standard-charges.json",
+        cptMatches: [
+          { cpt: "99070", standardRate: 1850.0, publishedCashRate: 0.0, status: "bundled" },
+          { cpt: "70450", standardRate: 5400.0, publishedCashRate: 650.0, status: "overcharge" },
+          { cpt: "99285", standardRate: 4850.0, publishedCashRate: 520.0, status: "upcoded" },
+        ],
+      },
     },
     {
+      id: "agentmail-receipt",
       title: "AgentMail Statutory Service Receipt",
       authority: "RFC 5322 Inbound Webhook Execution",
       badge: "SPF / DKIM / TLS 1.3 PASS",
       variant: "purple" as const,
       timestamp: "2026-09-20T10:25:12.890Z",
-      digest: "SHA-256: 4a8b29c97011d882f09918bca481029381029381029381029381029381029381",
+      digest: "0x4a8b29c97011d882f09918bca481029381029381029381029381029381029381",
       txId: "msg_8f991c2084",
+      summary: "Dispatched statutory demand letter via AgentMail with verifiable transport-layer security.",
       details: [
-        { k: "Dispatched Inbox", v: currentCase.caseInbox },
-        { k: "Hospital Recipient", v: "disputes@hospital.org" },
+        { k: "Case Mailbox", v: currentCase.caseInbox },
+        { k: "Hospital Recipient", v: "disputes@memorialregional.org" },
         { k: "Statutory Citation", v: "No Surprises Act (45 C.F.R. § 149.410)" },
-        { k: "Legal Stay Order", v: "Collections Stay Enforced during Active Review" },
+        { k: "Statutory Stay Order", v: "Collections stay enforced during active review" },
+        { k: "Transport Encryption", v: "TLS_AES_256_GCM_SHA384" },
       ],
-      payload: `{
-  "agentmail": {
-    "inbox": "${currentCase.caseInbox}",
-    "messageId": "msg_8f991c2084",
-    "deliveryStatus": "delivered",
-    "tls": "TLS_AES_256_GCM_SHA384",
-    "dkim": "pass (hospital.org)",
-    "spf": "pass (ip: 198.51.100.44)",
-    "statutoryStayActive": true
-  }
-}`,
+      payload: {
+        agentmail: {
+          inbox: currentCase.caseInbox,
+          messageId: "msg_8f991c2084",
+          deliveryStatus: "delivered",
+          tls: "TLS_AES_256_GCM_SHA384",
+          dkim: "pass (hospital.org)",
+          spf: "pass (ip: 198.51.100.44)",
+          statutoryStayActive: true,
+        },
+      },
     },
     {
+      id: "openai-ncci",
       title: "OpenAI Clinical CPT Violation Verdict",
       authority: "AMA CPT & CMS NCCI Policy Manual v31.2",
-      badge: "ADMISSIBILITY PROVEN",
+      badge: "ADMISSIBILITY 0.98",
       variant: "amber" as const,
       timestamp: "2026-09-20T10:14:04.110Z",
-      digest: "SHA-256: c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2",
+      digest: "0xc3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2",
       txId: "ncci_audit_ref_8829",
+      summary: "Clinical audit proving CPT 99070 unbundling and CPT 99285 improper level-5 upcode.",
       details: [
-        { k: "Rule Reference", v: "NCCI Policy Manual Ch. 1 §B (General Correct Coding)" },
-        { k: "Violation 1 (99070)", v: "Unbundling routine surgical tray from ER facility service" },
-        { k: "Violation 2 (99285)", v: "Level 5 high-acuity upcode refuted by stable vitals & absence of organ threat" },
+        { k: "Primary Rule Citation", v: "NCCI Policy Manual Ch. 1 §B (General Correct Coding)" },
+        { k: "Violation 1 (CPT 99070)", v: "Unbundling routine surgical tray from emergency facility fee" },
+        { k: "Violation 2 (CPT 99285)", v: "Level 5 acuity upcode refuted by stable vitals and absence of organ threat" },
         { k: "Admissible Tender", v: "$3,735.00 based on verified self-pay schedule" },
+        { k: "Audit Model", v: "gpt-4o-mini-clinical-audit" },
       ],
-      payload: `{
-  "engine": "gpt-4o-mini-clinical-audit",
-  "citations": [
-    "45 CFR § 149.410 - Balance Billing Protections",
-    "CMS NCCI Policy Manual Chapter 1 §B - Unbundled Supplies",
-    "AMA CPT 2026 Guidelines - Emergency Department Services 99281-99285"
-  ],
-  "admissibilityScore": 0.98,
-  "recommendation": "TENDER_STATUTORY_CONCESSION"
-}`,
+      payload: {
+        engine: "gpt-4o-mini-clinical-audit",
+        citations: [
+          "45 CFR § 149.410 - Balance Billing Protections",
+          "CMS NCCI Policy Manual Chapter 1 §B - Unbundled Supplies",
+          "AMA CPT Guidelines - Emergency Department Services 99281-99285",
+        ],
+        admissibilityScore: 0.98,
+        recommendation: "TENDER_STATUTORY_CONCESSION",
+      },
     },
   ];
 
+  const currentProof = proofs[selectedProofIndex];
+
+  const handleCopyPayload = () => {
+    navigator.clipboard.writeText(JSON.stringify(currentProof.payload, null, 2));
+    setCopiedPayload(true);
+    setTimeout(() => setCopiedPayload(false), 2000);
+  };
+
+  const handleCopyDigest = () => {
+    navigator.clipboard.writeText(currentProof.digest);
+    setCopiedDigest(true);
+    setTimeout(() => setCopiedDigest(false), 2000);
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Top Header Banner */}
-      <div className="p-4 sm:p-5 rounded-xl bg-[#090e15] border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+    <div className="space-y-4">
+      {/* 1. Header Banner & Verification Metric */}
+      <div className="p-4 sm:p-5 rounded-xl bg-[#080c13] border border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-3 font-mono text-xs">
         <div>
           <div className="flex items-center gap-2 text-white font-semibold text-sm">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>EXCISE Cryptographic Proof &amp; Evidence Rail</span>
           </div>
-          <p className="text-slate-400 text-xs mt-1 font-sans">
+          <p className="text-slate-400 text-xs mt-0.5 font-sans">
             Every audit claim, statutory demand, and hospital concession is anchored to falsifiable machine evidence.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px]">
-            ● 4/4 Evidentiary Gates Passed
+        <div className="flex items-center gap-2 self-start md:self-auto">
+          <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-semibold flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>4 of 4 Evidentiary Gates Certified</span>
           </span>
         </div>
       </div>
 
-      {/* Grid of Evidence Certificates */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {proofs.map((proof, idx) => (
-          <div
-            key={idx}
-            className="rounded-xl border border-white/[0.08] bg-[#080c12] p-4 sm:p-5 font-mono text-xs space-y-3.5 shadow-sm"
-          >
-            {/* Certificate Header */}
-            <div className="flex items-start justify-between gap-2 pb-3 border-b border-white/[0.06]">
-              <div>
-                <div className="font-bold text-white text-xs tracking-tight">{proof.title}</div>
-                <div className="text-[11px] text-slate-500 mt-0.5">{proof.authority}</div>
-              </div>
-              <Badge variant={proof.variant}>{proof.badge}</Badge>
-            </div>
+      {/* 2. Interactive Split-Screen Lab: Selector on Left, Live Inspector on Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Left Column: 4 Selectable Evidence Gates (5 cols) */}
+        <div className="lg:col-span-5 space-y-2.5">
+          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold px-1">
+            Certified Machine Attestations:
+          </div>
 
-            {/* Fact Rows (Winsznx glyph format) */}
-            <div className="space-y-1.5 pt-1 text-[11px]">
-              {proof.details.map((d, dIdx) => (
-                <div
-                  key={dIdx}
-                  className="flex justify-between items-center bg-white/[0.02] px-2.5 py-1.5 rounded border border-white/[0.04]"
-                >
-                  <span className="text-slate-400 truncate mr-2">
-                    <span className="text-emerald-400 mr-1.5">▪</span>
-                    {d.k}:
-                  </span>
-                  <span className="text-slate-200 font-medium shrink-0">{d.v}</span>
-                </div>
-              ))}
-            </div>
+          {proofs.map((proof, idx) => {
+            const isSelected = selectedProofIndex === idx;
 
-            {/* Hash & Finality Seal */}
-            <div className="p-2.5 rounded bg-black/50 border border-white/[0.06] space-y-1 text-[10px] text-slate-400">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 uppercase tracking-wider">Reference ID:</span>
-                <span className="text-cyan-400 font-semibold">{proof.txId}</span>
-              </div>
-              <div className="truncate text-slate-500">{proof.digest}</div>
-            </div>
-
-            {/* Inspect Raw Payload */}
-            <div className="pt-2 flex items-center justify-between text-[11px]">
-              <span className="text-slate-500">{new Date(proof.timestamp).toLocaleTimeString()}</span>
+            return (
               <button
-                onClick={() => handleCopy(proof.payload, idx)}
-                className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-slate-300 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+                key={proof.id}
+                onClick={() => setSelectedProofIndex(idx)}
+                className={`w-full text-left p-3.5 rounded-xl border transition-all cursor-pointer font-mono text-xs ${
+                  isSelected
+                    ? "bg-[#0c1420] border-emerald-500/60 shadow-lg shadow-emerald-950/20"
+                    : "bg-[#090d14] border-white/[0.06] hover:border-white/[0.15] text-slate-300"
+                }`}
               >
-                {copiedIndex === idx ? (
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-semibold text-white text-xs">
+                    {proof.title}
+                  </div>
+                  <Badge variant={proof.variant}>{proof.badge}</Badge>
+                </div>
+
+                <div className="text-[11px] text-slate-400 mt-1 font-sans line-clamp-1">
+                  {proof.summary}
+                </div>
+
+                <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-white/[0.06] text-[10px] text-slate-500">
+                  <span className="text-cyan-400 font-medium">{proof.txId}</span>
+                  <span className="flex items-center gap-1 text-slate-400">
+                    <span>Inspect Raw</span>
+                    <ArrowRight className="w-3 h-3 text-emerald-400" />
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Column: Live Raw Evidence Inspector (7 cols) */}
+        <div className="lg:col-span-7 bg-[#090d14] border border-white/[0.08] rounded-xl p-4 sm:p-5 font-mono text-xs space-y-4">
+          {/* Inspector Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/[0.06]">
+            <div>
+              <div className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                <span>{currentProof.title}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              </div>
+              <div className="text-[11px] text-slate-400 mt-0.5">
+                Authority: {currentProof.authority}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopyDigest}
+                className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-[11px] text-slate-300 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+                title="Copy SHA-256 Digest"
+              >
+                {copiedDigest ? (
                   <>
                     <Check className="w-3 h-3 text-emerald-400" />
-                    <span className="text-emerald-400">Copied Payload</span>
+                    <span className="text-emerald-400">Digest Copied</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3 h-3 text-slate-400" />
-                    <span>Copy JSON Payload</span>
+                    <span>Copy Hash</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={handleCopyPayload}
+                className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 text-[11px] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                {copiedPayload ? (
+                  <>
+                    <Check className="w-3 h-3 text-emerald-400" />
+                    <span>Copied JSON</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3 text-emerald-400" />
+                    <span>Copy Payload</span>
                   </>
                 )}
               </button>
             </div>
           </div>
-        ))}
+
+          {/* Cryptographic Digest Bar */}
+          <div className="p-2.5 rounded-lg bg-black/60 border border-white/[0.06] flex items-center justify-between gap-2 text-[10px]">
+            <span className="text-slate-500 uppercase tracking-wider shrink-0">
+              SHA-256 Digest:
+            </span>
+            <span className="text-slate-300 font-mono truncate">
+              {currentProof.digest}
+            </span>
+          </div>
+
+          {/* Key-Value Parameter Table */}
+          <div className="space-y-1.5 text-[11px]">
+            {currentProof.details.map((d, dIdx) => (
+              <div
+                key={dIdx}
+                className="flex justify-between items-center bg-white/[0.02] px-3 py-1.5 rounded border border-white/[0.04]"
+              >
+                <span className="text-slate-400 mr-2">
+                  <span className="text-emerald-400 mr-1.5">▪</span>
+                  {d.k}:
+                </span>
+                <span className="text-white font-medium truncate max-w-[60%] text-right">
+                  {d.v}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Raw JSON Payload Block */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-[11px] text-slate-400">
+              <span className="flex items-center gap-1.5">
+                <FileCode2 className="w-3.5 h-3.5 text-purple-400" />
+                <span>Raw Verifiable Evidence Payload</span>
+              </span>
+              <span className="text-[10px] text-slate-500">
+                Timestamp: {new Date(currentProof.timestamp).toLocaleTimeString()}
+              </span>
+            </div>
+
+            <pre className="p-3.5 rounded-lg bg-black/80 border border-white/[0.08] text-purple-200 text-[11px] overflow-x-auto leading-relaxed max-h-56">
+              {JSON.stringify(currentProof.payload, null, 2)}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   );

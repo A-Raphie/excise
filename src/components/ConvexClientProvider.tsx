@@ -10,6 +10,7 @@ interface AppContextType {
   setSelectedCaseId: (id: string) => void;
   activeCase: SampleCase | null;
   toggleDispute: (caseId: string, lineItemId: string) => void;
+  setAllDisputes: (caseId: string, isDisputed: boolean) => void;
   sendDispute: (caseId: string) => Promise<void>;
   simulateResponse: (
     caseId: string,
@@ -94,6 +95,34 @@ export function ConvexClientProvider({ children }: { children: React.ReactNode }
         }
         return li;
       });
+
+      let totalExcised = 0;
+      for (const li of updatedLines) {
+        if (li.isDisputed) {
+          totalExcised += li.billedAmount - li.proposedAmount;
+        }
+      }
+
+      const finalSettlement = c.totalBilled - totalExcised;
+
+      return {
+        ...c,
+        lineItems: updatedLines,
+        totalExcised,
+        finalSettlement,
+        updatedAt: Date.now(),
+      };
+    });
+    updateCases(updated);
+  };
+
+  const setAllDisputes = (caseId: string, isDisputed: boolean) => {
+    const updated = cases.map((c) => {
+      if (c.id !== caseId) return c;
+      const updatedLines = c.lineItems.map((li) => ({
+        ...li,
+        isDisputed: li.violationType === "COMPLIANT" ? false : isDisputed,
+      }));
 
       let totalExcised = 0;
       for (const li of updatedLines) {
@@ -346,6 +375,7 @@ Excise Dispute Engine (Case #${billData.accountNumber})`;
     setSelectedCaseId,
     activeCase,
     toggleDispute,
+    setAllDisputes,
     sendDispute,
     simulateResponse,
     auditNewBill,

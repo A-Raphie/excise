@@ -13,8 +13,42 @@
 }
 
 /* Tabular numbers for clinical finance data */
-.tabular-nums {
+.tabular-nums, .num {
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+/* Tactile micro-interactions */
+button:active:not(:disabled), .btn-press:active {
+  transform: scale(0.98);
+}
+
+@keyframes numberFlashGreen {
+  0% {
+    color: #34d399;
+    text-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+  }
+  100% {
+    color: inherit;
+    text-shadow: none;
+  }
+}
+
+.animate-number-flash {
+  animation: numberFlashGreen 0.6s ease-out;
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep {
+  animation: radarSweep 4s linear infinite;
 }
 
 /* Custom scrollbar */
@@ -23,7 +57,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b1118;
+  background: #070b10;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;

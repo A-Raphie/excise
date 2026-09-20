@@ -9,6 +9,11 @@ import {
   FileSpreadsheet,
   Globe,
   HelpCircle,
+  Zap,
+  RotateCcw,
+  CheckCircle2,
+  AlertTriangle,
+  Scale,
 } from "lucide-react";
 
 interface LineItemsTableProps {
@@ -16,26 +21,40 @@ interface LineItemsTableProps {
 }
 
 export function LineItemsTable({ currentCase }: LineItemsTableProps) {
-  const { toggleDispute } = useCaseEngine();
-  const [expandedId, setExpandedId] = useState<string | null>(null); // Start collapsed for a calm, clean financial ledger view
+  const { toggleDispute, setAllDisputes } = useCaseEngine();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | "violations">("all");
+
+  const violationsCount = currentCase.lineItems.filter(
+    (item) => item.violationType !== "COMPLIANT"
+  ).length;
+
+  const displayedItems =
+    filter === "violations"
+      ? currentCase.lineItems.filter((i) => i.violationType !== "COMPLIANT")
+      : currentCase.lineItems;
+
+  const allViolationsDisputed = currentCase.lineItems
+    .filter((i) => i.violationType !== "COMPLIANT")
+    .every((i) => i.isDisputed);
 
   const getViolationBadge = (type: SampleLineItem["violationType"]) => {
     switch (type) {
       case "UPCODING":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-red-500/15 border border-red-500/35 text-red-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-red-500/15 border border-red-500/35 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.15)]">
             UPCODED · LVL 5
           </span>
         );
       case "UNBUNDLING":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-500/15 border border-amber-500/35 text-amber-300">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-500/15 border border-amber-500/35 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.15)]">
             UNBUNDLED
           </span>
         );
       case "PRICE_GOUGE_OVER_CHARGEMASTER":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-500/15 border border-rose-500/35 text-rose-300">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-500/15 border border-rose-500/35 text-rose-300 shadow-[0_0_8px_rgba(244,63,94,0.15)]">
             8.3× MARKUP
           </span>
         );
@@ -50,15 +69,15 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
   };
 
   const getRowBgClass = (item: SampleLineItem, isExcluded: boolean, isExpanded: boolean) => {
-    if (isExcluded) return "opacity-40 bg-black/25";
-    if (isExpanded) return "bg-white/[0.04]";
+    if (isExcluded) return "opacity-40 bg-black/30";
+    if (isExpanded) return "bg-white/[0.05]";
     switch (item.violationType) {
       case "UPCODING":
-        return "bg-red-500/[0.035] hover:bg-red-500/[0.07]";
+        return "bg-red-500/[0.03] hover:bg-red-500/[0.07]";
       case "UNBUNDLING":
-        return "bg-amber-500/[0.035] hover:bg-amber-500/[0.07]";
+        return "bg-amber-500/[0.03] hover:bg-amber-500/[0.07]";
       case "PRICE_GOUGE_OVER_CHARGEMASTER":
-        return "bg-rose-500/[0.035] hover:bg-rose-500/[0.07]";
+        return "bg-rose-500/[0.03] hover:bg-rose-500/[0.07]";
       case "COMPLIANT":
       default:
         return "hover:bg-white/[0.02]";
@@ -66,24 +85,58 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
   };
 
   return (
-    <div className="bg-[#090d13] border border-white/[0.08] rounded-lg overflow-hidden shadow-sm">
-      {/* Table Subheader */}
-      <div className="px-4 py-3 border-b border-white/[0.06] bg-[#0b1017] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <FileSpreadsheet className="w-4 h-4 text-emerald-400/80" />
-          <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
-            Forensic Chargemaster Audit Breakdown
-          </h2>
-          <span className="text-[11px] font-mono text-slate-400">
-            ({currentCase.lineItems.length} clinical charges)
-          </span>
+    <div className="bg-[#080c13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
+      {/* Table Toolbar Strip */}
+      <div className="px-4 py-3 border-b border-white/[0.06] bg-[#0b1018] flex flex-col md:flex-row md:items-center justify-between gap-3">
+        {/* Left: Filter Tabs */}
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center p-0.5 rounded-lg bg-black/40 border border-white/[0.08] text-xs font-mono">
+            <button
+              onClick={() => setFilter("all")}
+              className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                filter === "all"
+                  ? "bg-white/[0.12] text-white font-semibold shadow-xs"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              All Charges ({currentCase.lineItems.length})
+            </button>
+            <button
+              onClick={() => setFilter("violations")}
+              className={`px-3 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
+                filter === "violations"
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold shadow-xs"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <AlertTriangle className="w-3 h-3 text-amber-400" />
+              <span>Flagged Overcharges ({violationsCount})</span>
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] text-slate-300">
-            <Globe className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Firecrawl Scraped MRF Cash Benchmarks</span>
-          </span>
+        {/* Right: Tactile Quick Actions */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setAllDisputes(currentCase.id, true)}
+            className={`px-2.5 py-1 text-xs font-mono font-medium rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer ${
+              allViolationsDisputed
+                ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+                : "bg-emerald-600 hover:bg-emerald-500 text-white border-transparent shadow-xs"
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Dispute All Flagged (-${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 0 })})</span>
+          </button>
+
+          <button
+            onClick={() => setAllDisputes(currentCase.id, false)}
+            title="Reset to hospital rate without dispute"
+            className="px-2.5 py-1 text-xs font-mono rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset</span>
+          </button>
         </div>
       </div>
 
@@ -91,56 +144,62 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.08] bg-black/30 text-[10px] uppercase tracking-wider font-mono text-slate-400">
-              <th className="py-2.5 px-4 w-10 text-center">Dispute</th>
+            <tr className="border-b border-white/[0.08] bg-black/40 text-[10px] uppercase tracking-wider font-mono text-slate-400">
+              <th className="py-2.5 px-4 w-12 text-center">Dispute</th>
               <th className="py-2.5 px-4 w-28">CPT Code</th>
-              <th className="py-2.5 px-4 min-w-[240px]">Clinical Description</th>
+              <th className="py-2.5 px-4 min-w-[220px]">Clinical Description</th>
               <th className="py-2.5 px-4 text-right">Billed Rate</th>
               <th className="py-2.5 px-4 text-right">MRF Cash Rate</th>
               <th className="py-2.5 px-4 text-right">CMS Benchmark</th>
-              <th className="py-2.5 px-4 text-right text-emerald-400">Fair Settlement</th>
-              <th className="py-2.5 px-4 w-10 text-center">Audit</th>
+              <th className="py-2.5 px-4 text-right text-emerald-400 font-semibold">Legal Settlement</th>
+              <th className="py-2.5 px-4 w-10 text-center">Inspect</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/[0.04] text-xs font-mono">
-            {currentCase.lineItems.map((item) => {
+            {displayedItems.map((item) => {
               const isExpanded = expandedId === item.id;
               const isExcluded = !item.isDisputed;
+              const overchargeAmount = item.billedAmount - item.proposedAmount;
 
               return (
                 <React.Fragment key={item.id}>
                   <tr
-                    className={`transition-colors ${getRowBgClass(item, isExcluded, isExpanded)}`}
+                    className={`transition-colors cursor-pointer ${getRowBgClass(item, isExcluded, isExpanded)}`}
+                    onClick={() => setExpandedId(isExpanded ? null : item.id)}
                   >
                     {/* Checkbox */}
-                    <td className="py-3 px-4 text-center">
+                    <td
+                      className="py-3 px-4 text-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <input
                         type="checkbox"
                         checked={item.isDisputed}
                         onChange={() => toggleDispute(currentCase.id, item.id)}
-                        className="w-4 h-4 rounded border-white/[0.2] bg-black text-emerald-500 focus:ring-0 cursor-pointer accent-emerald-500"
+                        className="w-4 h-4 rounded border-white/[0.2] bg-black text-emerald-500 focus:ring-0 cursor-pointer accent-emerald-500 transition-transform active:scale-90"
                         title="Toggle dispute of this line item"
                       />
                     </td>
 
                     {/* CPT & Badge */}
                     <td className="py-3 px-4">
-                      <div className="font-mono font-bold text-slate-100 text-xs tracking-wide">{item.cptCode}</div>
+                      <div className="font-mono font-bold text-slate-100 text-xs tracking-wide">
+                        {item.cptCode}
+                      </div>
                       <div className="mt-1">{getViolationBadge(item.violationType)}</div>
                     </td>
 
                     {/* Description */}
                     <td className="py-3 px-4">
-                      <div className="font-medium text-slate-100 text-xs">{item.description}</div>
+                      <div className="font-medium text-slate-100 text-xs">
+                        {item.description}
+                      </div>
                       <div className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center gap-2">
-                        <span>Rev: {item.cptCode === "99285" ? "0450 (Emerg)" : item.cptCode === "74177" || item.cptCode === "70450" ? "0350 (CT)" : "0270 (Supplies)"}</span>
+                        <span>Rev: {item.cptCode === "99285" ? "0450 (ER)" : item.cptCode === "74177" || item.cptCode === "70450" ? "0350 (CT)" : "0270 (Supplies)"}</span>
                         {item.violationType !== "COMPLIANT" && (
-                          <button
-                            onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                            className="text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
-                          >
-                            · {isExpanded ? "Hide evidence" : "View evidence"}
-                          </button>
+                          <span className="text-cyan-400 hover:underline">
+                            · {isExpanded ? "Close evidence" : "Inspect statutory proof"}
+                          </span>
                         )}
                       </div>
                     </td>
@@ -150,7 +209,7 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                       ${item.billedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </td>
 
-                    {/* Hospital Cash Rate (scraped via Firecrawl) */}
+                    {/* Hospital Cash Rate */}
                     <td className="py-3 px-4 text-right text-slate-200 tabular-nums text-xs font-medium">
                       {item.hospitalCashRate === 0 ? (
                         <span className="text-amber-300 font-semibold">$0.00 (Bundled)</span>
@@ -169,9 +228,9 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                       <div className="text-emerald-400 font-bold text-xs">
                         ${item.proposedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </div>
-                      {item.isDisputed && item.billedAmount > item.proposedAmount && (
-                        <div className="text-[10px] text-emerald-500/80 font-mono font-medium">
-                          -${(item.billedAmount - item.proposedAmount).toLocaleString("en-US", { minimumFractionDigits: 0 })}
+                      {item.isDisputed && overchargeAmount > 0 && (
+                        <div className="text-[10px] text-emerald-500/90 font-mono font-medium">
+                          -${overchargeAmount.toLocaleString("en-US", { minimumFractionDigits: 0 })} excised
                         </div>
                       )}
                     </td>
@@ -179,7 +238,10 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                     {/* Expand Details button */}
                     <td className="py-3 px-4 text-center">
                       <button
-                        onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedId(isExpanded ? null : item.id);
+                        }}
                         className={`p-1.5 rounded transition-colors cursor-pointer ${
                           isExpanded
                             ? "bg-white/[0.1] text-emerald-400"
@@ -198,11 +260,38 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
 
                   {/* Expanded Detail Drawer */}
                   {isExpanded && (
-                    <tr className="bg-[#070b10] border-b border-white/[0.06]">
-                      <td colSpan={8} className="p-4 sm:px-6">
+                    <tr className="bg-[#05080d] border-b border-white/[0.06]">
+                      <td colSpan={8} className="p-4 sm:px-6 space-y-3">
+                        {/* Visual Comparative Gauge */}
+                        <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] space-y-2">
+                          <div className="flex items-center justify-between text-[11px] font-mono">
+                            <span className="text-slate-400">Rate Discrepancy Breakdown for CPT {item.cptCode}</span>
+                            <span className="text-rose-400 font-bold">
+                              ${item.billedAmount} Billed vs ${item.proposedAmount} Cash Baseline
+                            </span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden flex">
+                            <div
+                              className="h-full bg-emerald-500"
+                              style={{ width: `${Math.max(5, (item.proposedAmount / item.billedAmount) * 100)}%` }}
+                              title="Cash Settlement Baseline"
+                            />
+                            <div
+                              className="h-full bg-rose-500"
+                              style={{ width: `${Math.min(95, (overchargeAmount / item.billedAmount) * 100)}%` }}
+                              title="Unlawful Overcharge Margin"
+                            />
+                          </div>
+                          <div className="flex justify-between text-[10px] font-mono text-slate-500 pt-0.5">
+                            <span>■ Cash Baseline (${item.proposedAmount})</span>
+                            <span className="text-rose-400">■ Strike Margin: -${overchargeAmount}</span>
+                          </div>
+                        </div>
+
+                        {/* Detail Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
-                          <div className="p-3 rounded bg-white/[0.02] border border-white/[0.06]">
-                            <div className="text-[10px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5 mb-1.5">
+                          <div className="p-3.5 rounded-lg bg-white/[0.02] border border-white/[0.06] space-y-1.5">
+                            <div className="text-[10px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5">
                               <HelpCircle className="w-3.5 h-3.5" />
                               Clinical Violation Rationale (OpenAI Forensic Audit)
                             </div>
@@ -211,34 +300,50 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                             </p>
                           </div>
 
-                          <div className="p-3 rounded bg-white/[0.02] border border-white/[0.06]">
-                            <div className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5 mb-1.5">
+                          <div className="p-3.5 rounded-lg bg-white/[0.02] border border-white/[0.06] space-y-2">
+                            <div className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5">
                               <Globe className="w-3.5 h-3.5" />
-                              Hospital Transparency Evidence (Firecrawl Crawl)
+                              Hospital Transparency Evidence (Firecrawl Scraped MRF)
                             </div>
                             <div className="space-y-1 text-[11px] text-slate-300">
                               <div className="flex justify-between">
                                 <span className="text-slate-500">Hospital Standard Billed:</span>
-                                <span className="text-slate-200">${item.billedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                                <span className="text-slate-200 font-medium">${item.billedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
                               </div>
                               <div className="flex justify-between">
                                 <span className="text-slate-500">Verified Cash Schedule:</span>
-                                <span className="text-cyan-300">
-                                  {item.hospitalCashRate === 0 ? "$0.00 (Bundled into primary procedure)" : `$${item.hospitalCashRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
+                                <span className="text-cyan-300 font-medium">
+                                  {item.hospitalCashRate === 0 ? "$0.00 (Bundled into facility charge)" : `$${item.hospitalCashRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
                                 </span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-500">CMS Medicare Median Allowable:</span>
-                                <span className="text-emerald-400">${item.cmsBenchmarkRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
-                              </div>
-                              <div className="flex justify-between pt-1 border-t border-white/[0.06]">
-                                <span className="text-slate-500">Overcharge Excised:</span>
-                                <span className="text-red-400 font-semibold">
-                                  -${(item.billedAmount - item.proposedAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                                </span>
+                                <span className="text-slate-500">CMS Medicare Benchmark:</span>
+                                <span className="text-emerald-400 font-medium">${item.cmsBenchmarkRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
                               </div>
                             </div>
                           </div>
+                        </div>
+
+                        {/* Interactive In-Drawer Strike Toggle */}
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[11px] font-mono text-slate-500">
+                            Statutory Ground: 45 CFR § 149.410 &amp; NCCI Manual v31.2
+                          </span>
+                          <button
+                            onClick={() => toggleDispute(currentCase.id, item.id)}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                              item.isDisputed
+                                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/35"
+                                : "bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 border border-white/[0.1]"
+                            }`}
+                          >
+                            <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>
+                              {item.isDisputed
+                                ? `✓ Disputed (Saving -$${overchargeAmount.toLocaleString("en-US", { minimumFractionDigits: 0 })})`
+                                : `Strike Overcharge (-$${overchargeAmount.toLocaleString("en-US", { minimumFractionDigits: 0 })})`}
+                            </span>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -251,12 +356,13 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
       </div>
 
       {/* Footer explanation */}
-      <div className="px-4 py-2.5 bg-[#0b1017] border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
-        <div>
-          Interactive: Unchecking any charge recalculates settlement tender reactively via Convex.
+      <div className="px-4 py-2.5 bg-[#0b1018] border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Interactive: Toggling line items recalculates settlement offer reactively via Convex.</span>
         </div>
-        <div className="text-emerald-400 font-medium">
-          Total Disputed Savings: -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+        <div className="text-emerald-400 font-semibold">
+          Total Savings Excised: -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </div>
       </div>
     </div>

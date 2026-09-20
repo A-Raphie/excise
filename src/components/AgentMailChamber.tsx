@@ -10,12 +10,18 @@ import {
   Sparkles,
   CheckCircle2,
   AlertCircle,
-  Clock,
-  Radio,
+  Copy,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  FileText,
   ExternalLink,
+  ArrowUpRight,
+  ArrowDownLeft,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
 import { NegotiationStepper } from "./ui/negotiation-stepper";
-import { DisputeCard } from "./ui/approval-card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 
@@ -27,6 +33,14 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
   const { sendDispute, simulateResponse } = useCaseEngine();
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [showWebhookModal, setShowWebhookModal] = useState(false);
+  const [copiedInbox, setCopiedInbox] = useState(false);
+  const [expandedTransmissionId, setExpandedTransmissionId] = useState<string | null>(null);
+
+  const handleCopyInbox = () => {
+    navigator.clipboard.writeText(currentCase.caseInbox);
+    setCopiedInbox(true);
+    setTimeout(() => setCopiedInbox(false), 2000);
+  };
 
   const handleSend = async () => {
     setLoadingAction("send");
@@ -54,51 +68,64 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
   const stepIndex = isSettled ? 3 : hasInbound ? 2 : currentCase.correspondence.length > 0 ? 1 : 0;
 
   return (
-    <div className="bg-[#090d13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm flex flex-col space-y-4 p-4 sm:p-5">
-      {/* Header bar */}
+    <div className="bg-[#080c13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm flex flex-col space-y-4 p-4 sm:p-5">
+      {/* 1. Chamber Command Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/35 flex items-center justify-center text-purple-300">
+          <div className="w-9 h-9 rounded-lg bg-purple-500/15 border border-purple-500/35 flex items-center justify-center text-purple-300 shrink-0">
             <Mail className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-sm font-semibold text-white font-mono uppercase tracking-wider">
                 Autonomous Dispute Negotiation Chamber
               </h2>
-              <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+              <span className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>Live AgentMail Listener</span>
               </span>
             </div>
             <div className="flex items-center gap-2 text-xs text-slate-400 font-mono mt-0.5">
-              <span>Case Inbox:</span>
-              <span className="text-purple-300 font-medium">{currentCase.caseInbox}</span>
+              <span>Dedicated Inbox:</span>
+              <button
+                onClick={handleCopyInbox}
+                className="text-purple-300 font-medium hover:text-purple-200 transition-colors inline-flex items-center gap-1 cursor-pointer bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20"
+                title="Click to copy case inbox"
+              >
+                <span>{currentCase.caseInbox}</span>
+                {copiedInbox ? (
+                  <Check className="w-3 h-3 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3 h-3 text-slate-400" />
+                )}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Top Right Status & Webhook Spec */}
+        {/* Top Right Actions */}
         <div className="flex items-center gap-2 self-start lg:self-auto">
           <button
             onClick={() => setShowWebhookModal(true)}
             className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Terminal className="w-3 h-3 text-purple-400" />
+            <Terminal className="w-3.5 h-3.5 text-purple-400" />
             <span>Webhook Spec</span>
           </button>
         </div>
       </div>
 
-      {/* Progress Track: Negotiation Stepper */}
+      {/* 2. Visual Negotiation Stepper (At-a-Glance Lifecycle) */}
       <NegotiationStepper currentStepIndex={stepIndex} />
 
-      {/* Floating Evaluator Demo Controller */}
-      <div className="p-3 rounded-lg bg-purple-500/[0.04] border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+      {/* 3. Fast-Forward Simulator Strip */}
+      <div className="p-3 rounded-lg bg-gradient-to-r from-purple-950/30 via-[#0c101a] to-purple-950/20 border border-purple-500/30 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs font-mono">
         <div className="flex items-center gap-2 text-purple-300">
-          <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-          <span className="font-semibold">Evaluator Fast-Forward:</span>
-          <span className="text-slate-400 hidden md:inline">Trigger live hospital concessions without waiting 14-day SLA</span>
+          <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+          <span className="font-semibold">Fast-Forward Hospital Actions:</span>
+          <span className="text-slate-400 hidden lg:inline">
+            Skip 14-day SLA to test real-time concession parsing
+          </span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -111,265 +138,296 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
               className="text-xs"
             >
               <Send className="w-3 h-3" />
-              <span>{loadingAction === "send" ? "Dispatching..." : "Send Statutory Dispute"}</span>
+              <span>{loadingAction === "send" ? "Serving..." : "Serve Dispute Notice"}</span>
             </Button>
           )}
 
-          <Button
-            size="sm"
-            variant="secondary"
+          <button
             disabled={loadingAction !== null}
             onClick={() => handleSimulate("unbundling_concession")}
-            className="text-xs border-amber-500/30 text-amber-300 hover:border-amber-500/50"
+            className="px-2.5 py-1 rounded border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 disabled:opacity-50"
           >
-            <AlertCircle className="w-3 h-3 text-amber-400" />
-            <span>Simulate Concession (-$1,850)</span>
-          </Button>
+            <Zap className="w-3 h-3 text-amber-400" />
+            <span>Simulate Supply Concession (-$1,850)</span>
+          </button>
 
-          <Button
-            size="sm"
-            variant="secondary"
+          <button
             disabled={loadingAction !== null}
             onClick={() => handleSimulate("full_acceptance")}
-            className="text-xs border-emerald-500/30 text-emerald-300 hover:border-emerald-500/50"
+            className="px-2.5 py-1 rounded border border-emerald-500/40 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 font-semibold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 disabled:opacity-50"
           >
             <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-            <span>Simulate Full Settlement</span>
-          </Button>
+            <span>Simulate Full Settlement ($3,735)</span>
+          </button>
         </div>
       </div>
 
-      {/* Top Banner When Settled */}
+      {/* 4. BILATERAL SETTLEMENT ACCORD (When Case is Settled) */}
       {isSettled && (
-        <div className="p-4 rounded-xl border-2 border-emerald-500/50 bg-gradient-to-r from-emerald-950/70 via-[#07130e] to-emerald-950/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-mono text-xs shadow-lg shadow-emerald-950/30">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>✓ DISPUTE RESOLVED: HOSPITAL CONCESSION RATIFIED</span>
+        <div className="rounded-xl border-2 border-emerald-500/50 bg-gradient-to-b from-[#091712] via-[#071018] to-[#070c12] p-5 font-mono text-xs shadow-xl shadow-emerald-950/30 space-y-4">
+          {/* Accord Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-emerald-500/25">
+            <div className="flex items-center gap-2.5">
+              <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <div>
+                <span className="font-bold text-emerald-300 tracking-wider uppercase text-sm block">
+                  Bilateral Settlement Accord Executed
+                </span>
+                <span className="text-[11px] text-slate-400">
+                  Enforced under federal No Surprises Act (45 C.F.R. § 149) &amp; CMS Transparency rules
+                </span>
+              </div>
             </div>
-            <div className="text-slate-300 flex flex-wrap items-center gap-2">
-              <span>Original: <span className="line-through text-slate-400 decoration-rose-500/80 font-semibold">${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></span>
-              <span className="text-slate-500">→</span>
-              <span>Final Settlement: <strong className="text-white font-bold">${(currentCase.finalSettlement ?? 3735).toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong></span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded font-bold text-emerald-400 bg-emerald-950 border border-emerald-500/40">
-                -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} (-74.8% Excised)
+            <div className="flex items-center gap-2 text-[10px] text-slate-400">
+              <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-semibold">
+                Convex State Finality: #tx_8f9a2d
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap self-start md:self-auto">
-            <button
-              onClick={() => alert("Downloading Ratified Settlement Agreement (PDF)...")}
-              className="px-3 py-1.5 rounded bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-colors flex items-center gap-1.5 cursor-pointer text-xs"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Download Binding Settlement (PDF)</span>
-            </button>
-            <button
-              onClick={() => alert("Viewing CMS Form 149 IDR Dispute Dismissal Receipt...")}
-              className="px-3 py-1.5 rounded bg-white/[0.06] border border-white/[0.1] text-slate-200 hover:bg-white/[0.12] transition-colors flex items-center gap-1.5 cursor-pointer text-xs"
-            >
-              <span>CMS Form 149 Dismissal</span>
-            </button>
+          {/* Core Financial Adjudication (At-a-Glance Numbers) */}
+          <div className="p-4 rounded-xl bg-black/60 border border-emerald-500/30 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <span className="text-[11px] text-slate-400 uppercase tracking-wider block">
+                  Final Adjudicated Balance
+                </span>
+                <div className="flex items-baseline gap-2.5 mt-0.5">
+                  <span className="text-sm font-semibold text-slate-500 line-through decoration-rose-500/80">
+                    ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </span>
+                  <span className="text-slate-400">→</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-white">
+                    ${(currentCase.finalSettlement ?? 3735).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1.5 rounded-lg font-bold text-xs text-emerald-400 bg-emerald-950/90 border border-emerald-500/40 shadow-sm">
+                  -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} (-74.8% Excised)
+                </span>
+              </div>
+            </div>
+
+            {/* WAS vs NOW Adjudicated Items */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-white/[0.06] text-[11px]">
+              <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.04]">
+                <div className="text-slate-400">CPT 99070 (Suture Tray):</div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="line-through text-slate-500 decoration-rose-500/70">$1,850.00</span>
+                  <span className="text-slate-400">→</span>
+                  <span className="text-white font-bold">$0.00</span>
+                  <span className="text-emerald-400 font-semibold">(-100%)</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.04]">
+                <div className="text-slate-400">CPT 70450 (Head CT Scan):</div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="line-through text-slate-500 decoration-rose-500/70">$5,400.00</span>
+                  <span className="text-slate-400">→</span>
+                  <span className="text-white font-bold">$650.00</span>
+                  <span className="text-emerald-400 font-semibold">(-$4,750)</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.04]">
+                <div className="text-slate-400">CPT 99285 (ER Acuity):</div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="line-through text-slate-500 decoration-rose-500/70">$7,600.00</span>
+                  <span className="text-slate-400">→</span>
+                  <span className="text-white font-bold">$3,085.00</span>
+                  <span className="text-emerald-400 font-semibold">(Self-Pay Cap)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Legal Signatures */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+            <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] space-y-1">
+              <div className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">
+                Hospital Sign-off:
+              </div>
+              <div className="text-white font-medium">{currentCase.hospitalName}</div>
+              <div className="text-emerald-400 text-[10px]">Revenue Integrity &amp; Patient Financial Services</div>
+              <div className="text-slate-500 text-[10px]">Reference: MRMC-REV-20260920-88A</div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] space-y-1">
+              <div className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">
+                Patient Legal Representative:
+              </div>
+              <div className="text-white font-medium">EXCISE Autonomous Dispute Engine</div>
+              <div className="text-purple-300 text-[10px]">Designated Agent for Marcus Vance (45 CFR § 149)</div>
+              <div className="text-slate-500 text-[10px]">Cryptographic Seal: SHA-256 #7f83b165...</div>
+            </div>
+          </div>
+
+          {/* Action Row */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <span className="text-slate-400 text-[11px]">
+              Statutory stay on collections made permanent under federal accord.
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => alert("Downloading Ratified Bilateral Settlement Accord PDF...")}
+                className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all flex items-center gap-1.5 cursor-pointer text-xs shadow-md"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Download Ratified Accord (.PDF)</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Formatted Dispute Cards Timeline */}
-      <div className="space-y-4">
+      {/* 5. Clean Chronological Legal Correspondence Wire */}
+      <div className="space-y-3 pt-1">
+        <div className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold px-1">
+          Chronological Dispute Transmissions ({currentCase.correspondence.length})
+        </div>
+
         {currentCase.correspondence.length === 0 ? (
-          <div className="text-center py-12 rounded-xl bg-black/20 border border-white/[0.04] text-slate-400 font-mono text-xs space-y-2">
+          <div className="text-center py-10 rounded-xl bg-black/20 border border-white/[0.04] text-slate-400 font-mono text-xs space-y-2">
             <Mail className="w-8 h-8 mx-auto opacity-30 text-slate-500" />
-            <div className="text-slate-300 font-medium">No active correspondence yet</div>
+            <div className="text-slate-300 font-medium">No transmissions dispatched yet</div>
             <p className="text-slate-500 max-w-sm mx-auto">
-              Click &quot;Send Statutory Dispute&quot; above to dispatch the legal notice citing 45 CFR § 149 via AgentMail.
+              Click &quot;Serve Dispute Notice&quot; above to dispatch the statutory contest citing 45 CFR § 149 via AgentMail.
             </p>
           </div>
         ) : (
-          currentCase.correspondence.map((msg, index) => {
+          currentCase.correspondence.map((msg) => {
             const isInbound = msg.direction === "inbound";
-            const isSettlement = (msg.proposedAdjustment && msg.proposedAdjustment <= 3735) || isSettled;
-
-            // If this is the settlement agreement (message index >= 2 or settled), render the Official Bilateral Settlement Accord!
-            if (isInbound && isSettlement && index === currentCase.correspondence.length - 1 && isSettled) {
-              return (
-                <div
-                  key={msg.id}
-                  className="rounded-xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#091712] to-[#070d14] p-5 font-mono text-xs shadow-xl shadow-emerald-950/20 space-y-4"
-                >
-                  {/* Accord Top Badge & Convex Finality Stamp */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-emerald-500/20">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="font-bold text-emerald-300 tracking-wider uppercase text-xs">
-                        Bilateral Settlement Accord Executed (45 CFR § 149)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-[10px] text-slate-400">
-                      <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 font-semibold">
-                        Convex State Finality: Verified #tx_8f9a2d
-                      </span>
-                      <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-                    </div>
-                  </div>
-
-                  {/* Financial Outcome Banner */}
-                  <div className="p-3.5 rounded-lg bg-black/60 border border-emerald-500/30 space-y-2">
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                      <span className="text-slate-400 font-semibold uppercase tracking-wider">
-                        Binding Financial Adjudication
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-500 line-through decoration-rose-500/80 font-semibold">$14,850.00</span>
-                        <span className="text-slate-400">→</span>
-                        <span className="text-white font-bold text-sm">$3,735.00</span>
-                        <span className="inline-flex items-center px-2 py-0.5 rounded font-bold text-xs text-emerald-400 bg-emerald-950 border border-emerald-500/40">
-                          -$11,115.00 (-74.8% Excised)
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* WAS -> NOW Line Item Breakdown */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/[0.06] text-[11px]">
-                      <div className="flex justify-between items-center bg-white/[0.02] px-2.5 py-1.5 rounded border border-white/[0.04]">
-                        <span className="text-slate-400">CPT 99070 (Suture Tray):</span>
-                        <div className="flex items-center gap-1.5 font-mono">
-                          <span className="text-slate-500 line-through decoration-rose-500/70">$1,850.00</span>
-                          <span className="text-slate-400">→</span>
-                          <span className="text-slate-200 font-semibold">$0.00</span>
-                          <span className="text-emerald-400 font-bold">(-100%)</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center bg-white/[0.02] px-2.5 py-1.5 rounded border border-white/[0.04]">
-                        <span className="text-slate-400">CPT 70450 (CT Head):</span>
-                        <div className="flex items-center gap-1.5 font-mono">
-                          <span className="text-slate-500 line-through decoration-rose-500/70">$5,400.00</span>
-                          <span className="text-slate-400">→</span>
-                          <span className="text-slate-200 font-semibold">$650.00</span>
-                          <span className="text-emerald-400 font-bold">(-$4,750.00)</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center bg-white/[0.02] px-2.5 py-1.5 rounded border border-white/[0.04] sm:col-span-2">
-                        <span className="text-slate-400">CPT 99285 (ED High Acuity):</span>
-                        <div className="flex items-center gap-1.5 font-mono">
-                          <span className="text-slate-500 line-through decoration-rose-500/70">$7,600.00</span>
-                          <span className="text-slate-400">→</span>
-                          <span className="text-slate-200 font-semibold">$3,085.00</span>
-                          <span className="text-emerald-400 font-bold">(-$4,515.00 Self-Pay Cap)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Two Counterparty Sign-Off Blocks */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-[11px]">
-                    <div className="p-3 rounded bg-black/40 border border-white/[0.06] space-y-1">
-                      <div className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">Hospital Counterparty:</div>
-                      <div className="text-slate-200 font-medium">{currentCase.hospitalName}</div>
-                      <div className="text-emerald-400 text-[10px]">Authorized Digital Tender · Revenue Integrity Legal</div>
-                      <div className="text-slate-500 text-[10px]">Sign-off ID: MRMC-REV-20260920-88A</div>
-                    </div>
-
-                    <div className="p-3 rounded bg-black/40 border border-white/[0.06] space-y-1">
-                      <div className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">Patient Representative:</div>
-                      <div className="text-slate-200 font-medium">EXCISE Autonomous Dispute Engine</div>
-                      <div className="text-purple-300 text-[10px]">Attorney-in-Fact for Marcus Vance (45 CFR § 149)</div>
-                      <div className="text-slate-500 text-[10px]">Agent Cryptographic Seal: SHA-256 #7f83b165...</div>
-                    </div>
-                  </div>
-
-                  {/* Actions Inside Accord */}
-                  <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <span className="text-slate-500 text-[10px]">
-                      Case closed. Statutory stay on collections made permanent under federal accord.
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => alert("Downloading Ratified Bilateral Settlement Accord PDF...")}
-                        className="px-3 py-1.5 rounded bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-colors flex items-center gap-1.5 cursor-pointer text-xs"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Download Ratified Agreement (.PDF)</span>
-                      </button>
-                      <button
-                        onClick={() => alert("Exporting certified CMS Form 149 dispute dismissal filing...")}
-                        className="px-3 py-1.5 rounded bg-white/[0.06] border border-white/[0.1] text-slate-200 hover:bg-white/[0.12] transition-colors cursor-pointer text-xs"
-                      >
-                        <span>CMS Form 149 Dismissal</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            if (isInbound) {
-              const isSettlement = msg.proposedAdjustment && msg.proposedAdjustment <= 3735;
-
-              return (
-                <DisputeCard
-                  key={msg.id}
-                  type="inbound_concession"
-                  sender={`${currentCase.hospitalName} (Revenue Integrity Operations)`}
-                  recipient="Excise Legal Dispute Engine"
-                  timestamp={new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  subject={msg.subject}
-                  statusBadge="PARTIAL CONCESSION OFFERED"
-                  statusVariant="amber"
-                  financialDelta={{
-                    finalAmount: msg.proposedAdjustment,
-                    concededAmount: currentCase.totalBilled - (msg.proposedAdjustment || currentCase.totalBilled),
-                    breakdown: [
-                      { item: "CPT 99070 (Suture Tray)", delta: "Reduced to $0.00 (-$1,850.00)" },
-                      { item: "CPT 70450 (CT Head)", delta: "Recalculated to $650.00 (-$4,750.00)" },
-                      { item: "CPT 99285 (ED Visit)", delta: "Adjusted to Level 4 Facility Fee" },
-                    ],
-                  }}
-                  summaryPoints={[
-                    "Hospital Revenue Integrity conceded improper separate billing of surgical trays.",
-                    "CT Head non-contrast charges adjusted to federal price transparency self-pay schedule.",
-                    `Revised binding balance tendered: $${(msg.proposedAdjustment || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}.`,
-                  ]}
-                  fullBody={msg.body}
-                />
-              );
-            }
+            const isExpanded = expandedTransmissionId === msg.id;
 
             return (
-              <DisputeCard
+              <div
                 key={msg.id}
-                type="outbound_dispatch"
-                sender="Excise Legal Dispute Agent"
-                recipient={`${currentCase.hospitalName} <disputes@hospital.org>`}
-                timestamp={new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                subject={msg.subject}
-                statusBadge="STATUTORY DISPUTE SERVED (45 CFR § 149)"
-                statusVariant="purple"
-                financialDelta={{
-                  originalBilled: currentCase.totalBilled,
-                  excisedReduction: currentCase.totalExcised,
-                  finalAmount: currentCase.totalBilled - currentCase.totalExcised,
-                  breakdown: [
-                    { item: "Challenged Gross Charge", delta: `$${currentCase.totalBilled.toLocaleString("en-US")}` },
-                    { item: "Excised Non-Compliant Items", delta: `-$${currentCase.totalExcised.toLocaleString("en-US")}` },
-                    { item: "Tendered Settlement Offer", delta: `$${(currentCase.totalBilled - currentCase.totalExcised).toLocaleString("en-US")}` },
-                  ],
-                }}
-                summaryPoints={[
-                  "Itemized billing compared against hospital published Machine-Readable File (MRF).",
-                  "Statutory contest citing No Surprises Act (45 C.F.R. § 149) and CMS Hospital Transparency (45 CFR § 180).",
-                  "Enforces federal stay on third-party collections during active statutory dispute.",
-                ]}
-                fullBody={msg.body}
-              />
+                className={`rounded-xl border font-mono text-xs transition-all shadow-sm ${
+                  isInbound
+                    ? "bg-[#090e15] border-emerald-500/30"
+                    : "bg-[#0a0f16] border-purple-500/25"
+                }`}
+              >
+                {/* Message Header Strip */}
+                <div className="p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.06]">
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                        isInbound
+                          ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                          : "bg-purple-500/20 text-purple-300 border border-purple-500/40"
+                      }`}
+                    >
+                      {isInbound ? (
+                        <ArrowDownLeft className="w-4 h-4" />
+                      ) : (
+                        <ArrowUpRight className="w-4 h-4" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-white text-xs">
+                        {isInbound
+                          ? `${currentCase.hospitalName} (Revenue Integrity)`
+                          : "EXCISE Legal Dispute Counsel (Attorney-in-Fact)"}
+                      </div>
+                      <div className="text-[11px] text-slate-400">
+                        {isInbound
+                          ? `To: ${currentCase.caseInbox}`
+                          : `To: ${currentCase.hospitalName} Billing`}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <Badge variant={isInbound ? "emerald" : "purple"}>
+                      {isInbound ? "HOSPITAL CONCESSION" : "STATUTORY NOTICE SERVED"}
+                    </Badge>
+                    <span className="text-[10px] text-slate-500">
+                      {new Date(msg.timestamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Message Subject & Key Impact */}
+                <div className="p-3.5 sm:p-4 space-y-3">
+                  <div className="font-semibold text-slate-200 text-xs">
+                    {msg.subject}
+                  </div>
+
+                  {/* Highlighted Delta Box */}
+                  <div className="p-3 rounded-lg bg-black/50 border border-white/[0.06] flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-slate-400 text-[11px]">
+                      {isInbound ? "Hospital Concession Adjudication:" : "Statutory Contest Demand:"}
+                    </span>
+                    <div className="flex items-center gap-2 font-mono">
+                      {isInbound && msg.proposedAdjustment && (
+                        <>
+                          <span className="text-slate-500 line-through">
+                            ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-slate-400">→</span>
+                          <span className="text-emerald-400 font-bold">
+                            ${msg.proposedAdjustment.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-xs px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-bold">
+                            -${(currentCase.totalBilled - msg.proposedAdjustment).toLocaleString("en-US", { minimumFractionDigits: 2 })} Conceded
+                          </span>
+                        </>
+                      )}
+                      {!isInbound && (
+                        <>
+                          <span className="text-slate-400">Demand Settlement:</span>
+                          <span className="text-purple-300 font-bold">
+                            ${(currentCase.totalBilled - currentCase.totalExcised).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-xs px-2 py-0.5 rounded bg-purple-950/80 border border-purple-500/40 text-purple-300 font-bold">
+                            -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} Disputed
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Expandable Transmission Drawer */}
+                  <div className="pt-1">
+                    <button
+                      onClick={() =>
+                        setExpandedTransmissionId(isExpanded ? null : msg.id)
+                      }
+                      className="text-[11px] text-slate-400 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      {isExpanded ? (
+                        <ChevronUp className="w-3.5 h-3.5" />
+                      ) : (
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      )}
+                      <span>
+                        {isExpanded
+                          ? "Hide full legal transmission"
+                          : "Inspect full transmission text (RFC 5322)"}
+                      </span>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="mt-2.5 p-3 rounded-lg bg-black/80 border border-white/[0.08] text-slate-300 text-[11px] leading-relaxed whitespace-pre-wrap font-mono">
+                        {msg.body}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             );
           })
         )}
       </div>
 
-      {/* Webhook Modal */}
+      {/* 6. Webhook Specification Modal */}
       {showWebhookModal && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
           <div className="bg-[#0b1017] border border-white/[0.1] rounded-xl max-w-xl w-full p-5 space-y-4 font-mono text-xs">
@@ -400,7 +458,7 @@ Content-Type: application/json
   "inbox": "${currentCase.caseInbox}",
   "message": {
     "from": "disputes@memorialregional.org",
-    "subject": "RE: Formal Dispute #MR-9920148-B",
+    "subject": "RE: Formal Dispute #${currentCase.accountNumber}",
     "text": "Concession accepted. CPT 99070 voided ($0.00)...",
     "timestamp": 1726819200000
   }
