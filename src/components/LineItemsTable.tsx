@@ -17,7 +17,7 @@ interface LineItemsTableProps {
 
 export function LineItemsTable({ currentCase }: LineItemsTableProps) {
   const { toggleDispute } = useCaseEngine();
-  const [expandedId, setExpandedId] = useState<string | null>("item-1"); // Expand first item by default to show evidence immediately!
+  const [expandedId, setExpandedId] = useState<string | null>(null); // Start collapsed for a calm, clean financial ledger view
 
   const getViolationBadge = (type: SampleLineItem["violationType"]) => {
     switch (type) {
