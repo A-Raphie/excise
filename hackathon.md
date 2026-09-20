@@ -12,9 +12,16 @@
 - **Auth:** none
 - **AI models:** gpt-4o-mini
 - **Started:** 2026-09-20T00:45:00Z
-- **Last updated:** 2026-09-20T01:51:00Z
+- **Last updated:** 2026-09-20T10:15:00Z
 
 ## Log
+
+### 2026-09-20 - 9127869
+- Harvested component primitives into `src/components/ui/` with strict provenance headers from `beautifului.dev`, `beui.dev`, `reui.io`, `coss.com/ui`, and `shadcn` (`badge.tsx`, `button.tsx`, `dropzone-card.tsx`, `negotiation-stepper.tsx`, `approval-card.tsx`).
+- Solved Cockpit Syndrome by introducing the Front Door Bill Intake hero (`src/components/FrontDoorLanding.tsx`) with drag-and-drop bill intake and 3 one-click authentic case studies (Memorial Regional ER, Stanford Health Endoscopy, Mount Sinai Urgent Care).
+- Redesigned AgentMail Chamber with a 4-step dispute negotiation progress tracker (`1. Bill Audited → 2. Statutory Demand Sent → 3. Hospital Concession → 4. Final Settlement`), formatted legal dispute cards with financial deltas (`-$1,850.00`, `-$4,750.00`), and an Evaluator Fast-Forward bar for instant concession testing.
+- Streamlined forensic CaseOverview to 3 dominant financial KPIs (Original Billed, Overcharges Excised, Legally Tendered Settlement) with an expandable legal dossier.
+- Centered view mode switcher in Header (`[ Bill Intake ] ↔ [ Active Docket ]`) and verified static zero-daemon export via `bun run build`.
 
 ### 2026-09-20 - working tree
 - Mounted `@convex-dev/static-hosting` at root and configured app HTTP actions under `/api` in `convex/convex.config.ts`.
