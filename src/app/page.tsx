@@ -9,16 +9,19 @@ import { AgentMailChamber } from "@/components/AgentMailChamber";
 import { DisputeLetterViewer } from "@/components/DisputeLetterViewer";
 import { ChargemasterDirectory } from "@/components/ChargemasterDirectory";
 import { NewBillModal } from "@/components/NewBillModal";
+import { FrontDoorLanding } from "@/components/FrontDoorLanding";
 import {
   FileSpreadsheet,
   Mail,
   FileText,
   Search,
   Sparkles,
+  ArrowLeft,
 } from "lucide-react";
 
 export default function Home() {
-  const { activeCase } = useCaseEngine();
+  const { activeCase, setSelectedCaseId } = useCaseEngine();
+  const [viewMode, setViewMode] = useState<"landing" | "cockpit">("landing");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"audit" | "letter" | "agentmail" | "transparency">(
     "audit"
@@ -35,12 +38,41 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#06090e] text-slate-100 flex flex-col selection:bg-emerald-500/20 selection:text-emerald-300">
       {/* Top Header Navigation */}
-      <Header onOpenNewBill={() => setIsModalOpen(true)} />
+      <Header
+        onOpenNewBill={() => setIsModalOpen(true)}
+        viewMode={viewMode}
+        onToggleView={setViewMode}
+      />
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
-        {/* Active Case Hero & Unified Docket */}
-        <CaseOverview currentCase={activeCase} />
+        {viewMode === "landing" ? (
+          <FrontDoorLanding
+            onSelectCase={(caseId) => {
+              setSelectedCaseId(caseId);
+              setViewMode("cockpit");
+            }}
+            onEnterCockpit={() => setViewMode("cockpit")}
+          />
+        ) : (
+          <>
+            {/* Navigation back breadcrumb */}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setViewMode("landing")}
+                className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors py-1 px-2.5 rounded-md hover:bg-white/[0.04] cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Return to Bill Intake &amp; Case Studies</span>
+              </button>
+
+              <div className="text-[11px] font-mono text-slate-500">
+                Viewing Case: <span className="text-slate-300 font-semibold">{activeCase.accountNumber}</span> ({activeCase.patientName})
+              </div>
+            </div>
+
+            {/* Active Case Hero & Unified Docket */}
+            <CaseOverview currentCase={activeCase} />
 
         {/* Primary Functional Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/[0.08] gap-3 text-xs font-mono">
@@ -111,6 +143,8 @@ export default function Home() {
           {activeTab === "letter" && <DisputeLetterViewer currentCase={activeCase} />}
           {activeTab === "transparency" && <ChargemasterDirectory />}
         </div>
+        </>
+        )}
       </main>
 
       {/* Bill Intake Modal */}

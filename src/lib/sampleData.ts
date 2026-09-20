@@ -276,4 +276,107 @@ Excise Dispute Engine (Case #MR-9920148-B)`,
       },
     ],
   },
+  {
+    id: "case-david-ortho",
+    patientName: "David Chen",
+    hospitalName: "Mount Sinai Hospital",
+    hospitalEin: "13-1624070",
+    chargemasterUrl: "https://www.mountsinai.org/about/transparency-in-coverage",
+    accountNumber: "MSH-4819203-X",
+    billDate: "2026-09-02",
+    totalBilled: 8150,
+    totalExcised: 5750,
+    finalSettlement: 2400,
+    status: "in_negotiation",
+    caseInbox: "excise-david-chen-1049@agentmail.to",
+    legalBasis: "CMS Hospital Price Transparency (45 CFR § 180) & CMS NCCI Unbundling Edits",
+    disputeLetter: `FORMAL NOTICE OF DISPUTE & DEMAND FOR RECODING / SETTLEMENT
+Pursuant to CMS Hospital Price Transparency Requirements (45 CFR § 180) and CMS National Correct Coding Initiative (NCCI)
+
+To: Patient Financial Services & Revenue Cycle Operations
+    Mount Sinai Hospital
+    Ref: Account #MSH-4819203-X | Patient: David Chen
+    Date of Service: September 02, 2026
+
+Dear Patient Financial Services,
+
+This communication serves as a formal statutory dispute of billing statement #MSH-4819203-X on behalf of David Chen. An autonomous audit of the itemized master charges against Mount Sinai Hospital's published Machine-Readable File (MRF) chargemaster and CMS NCCI manuals reveals severe overcharging totaling $5,750.00 in non-compliant charges.
+
+Specifically:
+1. CPT 99284 (Level 4 Emergency Visit) billed at $3,200.00 is inflated beyond your standard cash rate of $750.00.
+2. CPT 70450 (CT Head Scan) billed at $4,270.00 exceeds your transparent cash rate of $1,100.00 by 288%.
+3. CPT 99214 (Office Visit) billed at $680.00 was unbundled from initial evaluation.
+
+We tender a prompt settlement offer of $2,400.00 in full satisfaction of all claims.
+
+Direct all replies to our dedicated case inbox:
+excise-david-chen-1049@agentmail.to
+
+Sincerely,
+Excise Dispute Engine (Case #MSH-4819203-X)`,
+    createdAt: Date.now() - 1000 * 60 * 60 * 36,
+    updatedAt: Date.now() - 1000 * 60 * 60 * 2,
+    lineItems: [
+      {
+        id: "item-d1",
+        cptCode: "99284",
+        description: "Emergency Dept Visit - Level 4 (High Acuity)",
+        billedAmount: 3200,
+        hospitalCashRate: 750,
+        cmsBenchmarkRate: 190,
+        proposedAmount: 750,
+        violationType: "PRICE_GOUGE_OVER_CHARGEMASTER",
+        auditRationale: "Hospital charged $3,200 vs transparent cash price of $750.",
+        isDisputed: true,
+      },
+      {
+        id: "item-d2",
+        cptCode: "70450",
+        description: "CT Head/Brain without contrast",
+        billedAmount: 4270,
+        hospitalCashRate: 1100,
+        cmsBenchmarkRate: 215,
+        proposedAmount: 1100,
+        violationType: "PRICE_GOUGE_OVER_CHARGEMASTER",
+        auditRationale: "Billed 2.88x above hospital standard cash chargemaster file.",
+        isDisputed: true,
+      },
+      {
+        id: "item-d3",
+        cptCode: "99214",
+        description: "Office/Outpatient Visit Established 30-39 min",
+        billedAmount: 680,
+        hospitalCashRate: 550,
+        cmsBenchmarkRate: 130,
+        proposedAmount: 550,
+        violationType: "UNBUNDLING",
+        auditRationale: "Unbundled routine orthopedic consult from primary emergency encounter.",
+        isDisputed: true,
+      },
+    ],
+    correspondence: [
+      {
+        id: "cor-d1",
+        direction: "outbound",
+        from: "excise-david-chen-1049@agentmail.to",
+        to: "disputes@mountsinai.org",
+        subject: "Statutory Dispute Notice & Settlement Tender: Account #MSH-4819203-X",
+        body: "Attached statutory dispute notice citing 45 CFR § 180 and NCCI unbundling rules. Proposed settlement: $2,400.00.",
+        summary: "Outbound statutory dispute delivered via AgentMail citing hospital cash chargemaster rates.",
+        proposedAdjustment: 2400,
+        timestamp: Date.now() - 1000 * 60 * 60 * 20,
+      },
+      {
+        id: "cor-d2",
+        direction: "inbound",
+        from: "disputes@mountsinai.org",
+        to: "excise-david-chen-1049@agentmail.to",
+        subject: "RE: Dispute Notice - Account #MSH-4819203-X [Chen, David]",
+        body: `Dear Representative,\n\nWe have reviewed the dispute regarding Account #MSH-4819203-X.\nWe have recalculated the CT scan to our self-pay standard price ($1,100.00) and adjusted the Level 4 ED visit down to $750.00. The revised balance is $2,400.00.\n\nPlease remit payment within 30 calendar days.\n\nRevenue Cycle Operations, Mount Sinai Hospital`,
+        summary: "Hospital conceded charges, reducing total bill to $2,400.00 (-$5,750.00 excised).",
+        proposedAdjustment: 2400,
+        timestamp: Date.now() - 1000 * 60 * 60 * 2,
+      },
+    ],
+  },
 ];

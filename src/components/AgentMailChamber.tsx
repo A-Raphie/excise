@@ -6,13 +6,18 @@ import { useCaseEngine } from "./ConvexClientProvider";
 import {
   Mail,
   Send,
-  ArrowDownLeft,
-  ArrowUpRight,
   Terminal,
-  Clock,
+  Sparkles,
   CheckCircle2,
   AlertCircle,
+  Clock,
+  Radio,
+  ExternalLink,
 } from "lucide-react";
+import { NegotiationStepper } from "./ui/negotiation-stepper";
+import { DisputeCard } from "./ui/approval-card";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 
 interface AgentMailChamberProps {
   currentCase: SampleCase;
@@ -43,198 +48,217 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
     }
   };
 
+  // Determine negotiation step index
+  const hasInbound = currentCase.correspondence.some((m) => m.direction === "inbound");
+  const isSettled = currentCase.status === "settled";
+  const stepIndex = isSettled ? 3 : hasInbound ? 2 : currentCase.correspondence.length > 0 ? 1 : 0;
+
   return (
-    <div className="bg-[#090d13] border border-white/[0.08] rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
-      {/* Header */}
-      <div className="p-4 sm:px-5 border-b border-white/[0.06] bg-[#0b1017] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="bg-[#090d13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm flex flex-col space-y-4 p-4 sm:p-5">
+      {/* Header bar */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-            <Mail className="w-3.5 h-3.5" />
+          <div className="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/35 flex items-center justify-center text-purple-300">
+            <Mail className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-white font-mono uppercase tracking-wider">
-                AgentMail Dispute Negotiation Room
+                Autonomous Dispute Negotiation Chamber
               </h2>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Live AgentMail Listener</span>
+              </span>
             </div>
-            <p className="text-xs text-slate-400 font-mono">
-              Dedicated Case Address: <span className="text-purple-300 font-medium">{currentCase.caseInbox}</span>
-            </p>
+            <div className="flex items-center gap-2 text-xs text-slate-400 font-mono mt-0.5">
+              <span>Case Inbox:</span>
+              <span className="text-purple-300 font-medium">{currentCase.caseInbox}</span>
+            </div>
           </div>
         </div>
 
-        {/* Webhook JSON inspector trigger */}
-        <button
-          onClick={() => setShowWebhookModal(true)}
-          className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer self-start sm:self-auto"
-        >
-          <Terminal className="w-3 h-3 text-purple-400" />
-          <span>Webhook Spec</span>
-        </button>
-      </div>
-
-      {/* Simulator Action Toolbar */}
-      <div className="px-4 py-2.5 bg-black/40 border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-        <span className="text-slate-500 text-[11px] uppercase tracking-wider">
-          Demo Simulation Controls:
-        </span>
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Dispatch Outbound */}
+        {/* Top Right Status & Webhook Spec */}
+        <div className="flex items-center gap-2 self-start lg:self-auto">
           <button
-            onClick={handleSend}
-            disabled={loadingAction !== null}
-            className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-mono font-medium flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
+            onClick={() => setShowWebhookModal(true)}
+            className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Send className="w-3 h-3" />
-            <span>{loadingAction === "send" ? "Dispatching..." : "Send Outbound Dispute"}</span>
-          </button>
-
-          {/* Simulate Unbundling Concession */}
-          <button
-            onClick={() => handleSimulate("unbundling_concession")}
-            disabled={loadingAction !== null}
-            className="px-3 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-amber-500/40 text-amber-300 disabled:opacity-50 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
-          >
-            <AlertCircle className="w-3 h-3 text-amber-400" />
-            <span>Simulate Concession (-$1,850)</span>
-          </button>
-
-          {/* Simulate Full Acceptance */}
-          <button
-            onClick={() => handleSimulate("full_acceptance")}
-            disabled={loadingAction !== null}
-            className="px-3 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-emerald-500/40 text-emerald-300 disabled:opacity-50 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
-          >
-            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-            <span>Simulate Full Settlement</span>
+            <Terminal className="w-3 h-3 text-purple-400" />
+            <span>Webhook Spec</span>
           </button>
         </div>
       </div>
 
-      {/* Messages Timeline */}
-      <div className="p-4 sm:p-5 space-y-3.5 overflow-y-auto max-h-[500px]">
+      {/* Progress Track: Negotiation Stepper */}
+      <NegotiationStepper currentStepIndex={stepIndex} />
+
+      {/* Floating Evaluator Demo Controller */}
+      <div className="p-3 rounded-lg bg-purple-500/[0.04] border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+        <div className="flex items-center gap-2 text-purple-300">
+          <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+          <span className="font-semibold">Evaluator Fast-Forward:</span>
+          <span className="text-slate-400 hidden md:inline">Trigger live hospital concessions without waiting 14-day SLA</span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {currentCase.correspondence.length === 0 && (
+            <Button
+              size="sm"
+              variant="primary"
+              disabled={loadingAction !== null}
+              onClick={handleSend}
+              className="text-xs"
+            >
+              <Send className="w-3 h-3" />
+              <span>{loadingAction === "send" ? "Dispatching..." : "Send Statutory Dispute"}</span>
+            </Button>
+          )}
+
+          <Button
+            size="sm"
+            variant="secondary"
+            disabled={loadingAction !== null}
+            onClick={() => handleSimulate("unbundling_concession")}
+            className="text-xs border-amber-500/30 text-amber-300 hover:border-amber-500/50"
+          >
+            <AlertCircle className="w-3 h-3 text-amber-400" />
+            <span>Simulate Concession (-$1,850)</span>
+          </Button>
+
+          <Button
+            size="sm"
+            variant="secondary"
+            disabled={loadingAction !== null}
+            onClick={() => handleSimulate("full_acceptance")}
+            className="text-xs border-emerald-500/30 text-emerald-300 hover:border-emerald-500/50"
+          >
+            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+            <span>Simulate Full Settlement</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Formatted Dispute Cards Timeline */}
+      <div className="space-y-4">
         {currentCase.correspondence.length === 0 ? (
-          <div className="text-center py-10 text-slate-500 font-mono text-xs">
-            <Mail className="w-8 h-8 mx-auto mb-2 opacity-30" />
-            No correspondence dispatched yet. Click &quot;Send Outbound Dispute&quot; to initiate formal demand.
+          <div className="text-center py-12 rounded-xl bg-black/20 border border-white/[0.04] text-slate-400 font-mono text-xs space-y-2">
+            <Mail className="w-8 h-8 mx-auto opacity-30 text-slate-500" />
+            <div className="text-slate-300 font-medium">No active correspondence yet</div>
+            <p className="text-slate-500 max-w-sm mx-auto">
+              Click &quot;Send Statutory Dispute&quot; above to dispatch the legal notice citing 45 CFR § 149 via AgentMail.
+            </p>
           </div>
         ) : (
           currentCase.correspondence.map((msg) => {
             const isInbound = msg.direction === "inbound";
+
+            if (isInbound) {
+              const isSettlement = msg.proposedAdjustment && msg.proposedAdjustment <= 3735;
+
+              return (
+                <DisputeCard
+                  key={msg.id}
+                  type={isSettlement ? "final_settlement" : "inbound_concession"}
+                  sender={`${currentCase.hospitalName} (Revenue Integrity Operations)`}
+                  recipient="Excise Legal Dispute Engine"
+                  timestamp={new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  subject={msg.subject}
+                  statusBadge={isSettlement ? "SETTLEMENT ACCEPTED IN FULL" : "PARTIAL CONCESSION OFFERED"}
+                  statusVariant={isSettlement ? "emerald" : "amber"}
+                  financialDelta={{
+                    finalAmount: msg.proposedAdjustment,
+                    concededAmount: currentCase.totalBilled - (msg.proposedAdjustment || currentCase.totalBilled),
+                    breakdown: [
+                      { item: "CPT 99070 (Suture Tray)", delta: "Reduced to $0.00 (-$1,850.00)" },
+                      { item: "CPT 70450 (CT Head)", delta: "Recalculated to $650.00 (-$4,750.00)" },
+                      { item: "CPT 99285 (ED Visit)", delta: "Adjusted to Level 4 Facility Fee" },
+                    ],
+                  }}
+                  summaryPoints={[
+                    "Hospital Revenue Integrity conceded improper separate billing of surgical trays.",
+                    "CT Head non-contrast charges adjusted to federal price transparency self-pay schedule.",
+                    `Revised binding balance tendered: $${(msg.proposedAdjustment || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}.`,
+                  ]}
+                  fullBody={msg.body}
+                />
+              );
+            }
+
             return (
-              <div
+              <DisputeCard
                 key={msg.id}
-                className={`p-4 rounded-lg border text-xs font-mono transition-all ${
-                  isInbound
-                    ? "bg-purple-500/[0.03] border-purple-500/30 text-purple-100 mr-2 sm:mr-8"
-                    : "bg-white/[0.02] border-white/[0.08] text-slate-200 ml-2 sm:ml-8"
-                }`}
-              >
-                {/* Header */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-white/[0.06] mb-2">
-                  <div className="flex items-center gap-1.5">
-                    {isInbound ? (
-                      <span className="flex items-center gap-1 text-[10px] font-semibold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded">
-                        <ArrowDownLeft className="w-3 h-3" />
-                        INBOUND FROM HOSPITAL
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded">
-                        <ArrowUpRight className="w-3 h-3" />
-                        OUTBOUND FROM EXCISE
-                      </span>
-                    )}
-                    <span className="text-slate-400 text-[11px]">
-                      {isInbound ? msg.from : `To: ${msg.to}`}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500">
-                    <Clock className="w-3 h-3" />
-                    <span>
-                      {new Date(msg.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Subject & Summary */}
-                <div className="font-semibold text-white mb-1 text-xs font-sans">
-                  {msg.subject}
-                </div>
-                <p className="text-slate-400 text-[11px] font-sans mb-2.5">
-                  {msg.summary}
-                </p>
-
-                {/* Body Content */}
-                <div className="bg-black/40 p-3 rounded border border-white/[0.04] text-slate-300 whitespace-pre-wrap font-mono text-[11px] leading-relaxed">
-                  {msg.body}
-                </div>
-
-                {/* Proposed Financial Adjustment Pill */}
-                {msg.proposedAdjustment !== undefined && (
-                  <div className="mt-2.5 flex items-center justify-end">
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                      Revised Settlement: ${msg.proposedAdjustment.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                    </span>
-                  </div>
-                )}
-              </div>
+                type="outbound_dispatch"
+                sender="Excise Legal Dispute Agent"
+                recipient={`${currentCase.hospitalName} <disputes@hospital.org>`}
+                timestamp={new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                subject={msg.subject}
+                statusBadge="STATUTORY DISPUTE SERVED (45 CFR § 149)"
+                statusVariant="purple"
+                financialDelta={{
+                  originalBilled: currentCase.totalBilled,
+                  excisedReduction: currentCase.totalExcised,
+                  finalAmount: currentCase.totalBilled - currentCase.totalExcised,
+                  breakdown: [
+                    { item: "Challenged Gross Charge", delta: `$${currentCase.totalBilled.toLocaleString("en-US")}` },
+                    { item: "Excised Non-Compliant Items", delta: `-$${currentCase.totalExcised.toLocaleString("en-US")}` },
+                    { item: "Tendered Settlement Offer", delta: `$${(currentCase.totalBilled - currentCase.totalExcised).toLocaleString("en-US")}` },
+                  ],
+                }}
+                summaryPoints={[
+                  "Itemized billing compared against hospital published Machine-Readable File (MRF).",
+                  "Statutory contest citing No Surprises Act (45 C.F.R. § 149) and CMS Hospital Transparency (45 CFR § 180).",
+                  "Enforces federal stay on third-party collections during active statutory dispute.",
+                ]}
+                fullBody={msg.body}
+              />
             );
           })
         )}
       </div>
 
-      {/* Webhook Spec Modal */}
+      {/* Webhook Modal */}
       {showWebhookModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#090d13] border border-white/[0.1] rounded-lg max-w-xl w-full p-5 shadow-2xl font-mono text-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] mb-3">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0b1017] border border-white/[0.1] rounded-xl max-w-xl w-full p-5 space-y-4 font-mono text-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-purple-400" />
-                <h3 className="text-sm font-semibold text-white">
-                  AgentMail Inbound Webhook Specification
-                </h3>
+                <span className="font-semibold text-white">AgentMail Inbound Webhook Specification</span>
               </div>
               <button
                 onClick={() => setShowWebhookModal(false)}
-                className="text-slate-400 hover:text-white cursor-pointer"
+                className="text-slate-500 hover:text-white transition-colors cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-slate-400 font-sans mb-3 text-xs">
-              Convex registers an HTTP action at{" "}
-              <code className="px-1 py-0.5 rounded bg-white/[0.06] text-purple-300">
-                POST /api/agentmail/webhook
-              </code>
-              . When hospital financial services responds to the case address, AgentMail delivers this signed payload, triggering reactive database mutation:
+            <p className="text-slate-400 font-sans text-xs">
+              Convex registers an HTTP action endpoint at <code className="text-purple-300">/api/agentmail/webhook</code> that processes incoming hospital emails in real time:
             </p>
 
-            <pre className="p-3 rounded bg-black/60 border border-white/[0.06] text-slate-300 overflow-x-auto text-[11px] leading-relaxed">
-{`{
+            <pre className="p-3.5 rounded bg-black/60 border border-white/[0.06] text-purple-200 text-[11px] overflow-x-auto leading-relaxed">
+{`POST /api/agentmail/webhook HTTP/1.1
+Host: your-convex-deployment.convex.site
+Content-Type: application/json
+
+{
   "event": "message.received",
-  "inbox_id": "${currentCase.caseInbox}",
-  "data": {
+  "inbox": "${currentCase.caseInbox}",
+  "message": {
     "from": "disputes@memorialregional.org",
-    "to": "${currentCase.caseInbox}",
-    "subject": "RE: Statutory Dispute - Account #${currentCase.accountNumber}",
-    "text": "Conceding CPT 99070 unbundled tray fee (-$1,850.00). Revised balance $3,735.00."
+    "subject": "RE: Formal Dispute #MR-9920148-B",
+    "text": "Concession accepted. CPT 99070 voided ($0.00)...",
+    "timestamp": 1726819200000
   }
 }`}
             </pre>
 
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => setShowWebhookModal(false)}
-                className="px-3 py-1.5 rounded bg-white/[0.08] hover:bg-white/[0.12] text-slate-200 text-xs cursor-pointer"
-              >
-                Close
-              </button>
+            <div className="flex justify-end pt-2">
+              <Button size="sm" variant="secondary" onClick={() => setShowWebhookModal(false)}>
+                Close Spec
+              </Button>
             </div>
           </div>
         </div>

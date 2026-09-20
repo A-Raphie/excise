@@ -10,7 +10,11 @@ import {
   Clock,
   AlertTriangle,
   Scale,
+  Mail,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 interface CaseOverviewProps {
   currentCase: SampleCase;
@@ -19,6 +23,7 @@ interface CaseOverviewProps {
 export function CaseOverview({ currentCase }: CaseOverviewProps) {
   const { cases, selectedCaseId, setSelectedCaseId } = useCaseEngine();
   const [copied, setCopied] = useState(false);
+  const [showDossier, setShowDossier] = useState(false);
 
   const handleCopyInbox = () => {
     navigator.clipboard.writeText(currentCase.caseInbox);
@@ -34,39 +39,19 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
   const getStatusBadge = () => {
     switch (currentCase.status) {
       case "settled":
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-            <CheckCircle2 className="w-3 h-3" />
-            SETTLED IN FULL
-          </span>
-        );
+        return <Badge variant="emerald"><CheckCircle2 className="w-3 h-3" /> SETTLED IN FULL</Badge>;
       case "in_negotiation":
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-purple-500/10 border border-purple-500/30 text-purple-300">
-            <Clock className="w-3 h-3 animate-spin" />
-            IN NEGOTIATION
-          </span>
-        );
+        return <Badge variant="purple"><Clock className="w-3 h-3 animate-spin" /> IN NEGOTIATION</Badge>;
       case "disputed":
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
-            <AlertTriangle className="w-3 h-3" />
-            STATUTORY DISPUTE SERVED
-          </span>
-        );
+        return <Badge variant="cyan"><AlertTriangle className="w-3 h-3" /> STATUTORY DISPUTE SERVED</Badge>;
       case "auditing":
       default:
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 border border-amber-500/30 text-amber-300">
-            <Clock className="w-3 h-3" />
-            AUDITING CHARGEMASTER
-          </span>
-        );
+        return <Badge variant="amber"><Clock className="w-3 h-3" /> AUDITING CHARGEMASTER</Badge>;
     }
   };
 
   return (
-    <div className="bg-[#090d13] border border-white/[0.08] rounded-lg overflow-hidden shadow-sm">
+    <div className="bg-[#090d13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
       {/* Top Bar: Hospital Title, Status, and Case Selector */}
       <div className="p-4 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/[0.06] bg-[#0b1017]">
         <div className="flex flex-wrap items-center gap-3">
@@ -99,105 +84,114 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
         </div>
       </div>
 
-      {/* Metadata Ribbon */}
-      <div className="px-4 sm:px-5 py-2.5 bg-black/20 border-b border-white/[0.04] flex flex-wrap items-center gap-x-6 gap-y-1 text-xs font-mono text-slate-400">
-        <div>
-          <span className="text-slate-500">Patient:</span>{" "}
-          <strong className="text-slate-200 font-medium">{currentCase.patientName}</strong>
-        </div>
-        <div>
-          <span className="text-slate-500">Account:</span>{" "}
-          <strong className="text-slate-200 font-medium">{currentCase.accountNumber}</strong>
-        </div>
-        <div>
-          <span className="text-slate-500">Date of Service:</span>{" "}
-          <strong className="text-slate-200 font-medium">{currentCase.billDate}</strong>
-        </div>
-        {currentCase.hospitalEin && (
-          <div>
-            <span className="text-slate-500">EIN:</span>{" "}
-            <strong className="text-slate-200 font-medium">{currentCase.hospitalEin}</strong>
-          </div>
-        )}
-        <div className="hidden xl:flex items-center gap-1.5 text-slate-500 ml-auto text-[11px]">
-          <Scale className="w-3 h-3 text-emerald-500/70" />
-          <span>Statutory Protection: 45 CFR § 149 (Collections Stay Enforced)</span>
-        </div>
-      </div>
-
-      {/* 4-Column Unified Ledger Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
+      {/* 3-Column Dominant Financial KPI Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.06]">
         {/* Cell 1: Original Billed */}
         <div className="p-4 sm:p-5">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500 mb-1">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
             Original Hospital Charge
           </div>
-          <div className="text-2xl font-mono font-semibold text-slate-300 tabular-nums">
+          <div className="text-2xl sm:text-3xl font-mono font-semibold text-slate-300 tabular-nums">
             ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
           <div className="text-[11px] text-slate-500 font-mono mt-1.5">
-            Gross master chargemaster rates
+            Gross unadjusted chargemaster rates
           </div>
         </div>
 
-        {/* Cell 2: Overcharges Excised (The Hero) */}
-        <div className="p-4 sm:p-5 bg-emerald-500/[0.02]">
+        {/* Cell 2: Overcharges Excised (The Primary Metric) */}
+        <div className="p-4 sm:p-5 bg-emerald-500/[0.03]">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400/90 font-medium">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-medium">
               Overcharges Excised
             </span>
-            <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-              -{percentReduction}%
+            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+              -{percentReduction}% SAVINGS
             </span>
           </div>
-          <div className="text-2xl font-mono font-bold text-emerald-400 tabular-nums">
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-400 tabular-nums">
             -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
           <div className="text-[11px] text-emerald-500/80 font-mono mt-1.5">
-            Upcoding &amp; unbundled supplies voided
+            Upcoded acuity &amp; unbundled supplies voided
           </div>
         </div>
 
         {/* Cell 3: Tendered / Settled Cash */}
         <div className="p-4 sm:p-5">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-            {currentCase.status === "settled" ? "Agreed Settlement Paid" : "Tendered Settlement Offer"}
+          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-300 mb-1">
+            {currentCase.status === "settled" ? "Agreed Settlement Paid" : "Legally Tendered Settlement Offer"}
           </div>
-          <div className="text-2xl font-mono font-semibold text-white tabular-nums">
+          <div className="text-2xl sm:text-3xl font-mono font-semibold text-white tabular-nums">
             ${(currentCase.finalSettlement ?? (currentCase.totalBilled - currentCase.totalExcised)).toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
           <div className="text-[11px] text-cyan-400/80 font-mono mt-1.5">
-            Hospital verified cash price schedule
-          </div>
-        </div>
-
-        {/* Cell 4: Dedicated Case Inbox */}
-        <div className="p-4 sm:p-5 bg-purple-500/[0.02] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-1 text-[11px] font-mono text-purple-300">
-              <span className="uppercase tracking-wider">AgentMail Dispute Inbox</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Webhook listener active" />
-            </div>
-            <button
-              onClick={handleCopyInbox}
-              className="group flex items-center justify-between w-full px-2.5 py-1.5 rounded bg-black/40 border border-white/[0.08] hover:border-purple-500/40 text-xs font-mono text-slate-200 transition-colors cursor-pointer"
-              title="Click to copy case inbox"
-            >
-              <span className="truncate text-[11px] text-purple-200 font-medium">
-                {currentCase.caseInbox}
-              </span>
-              {copied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 ml-1.5" />
-              ) : (
-                <Copy className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-300 flex-shrink-0 ml-1.5" />
-              )}
-            </button>
-          </div>
-          <div className="text-[10px] text-slate-500 font-mono mt-2">
-            Inbound hospital replies trigger real-time updates
+            Hospital published self-pay cash schedule
           </div>
         </div>
       </div>
+
+      {/* Metadata Ribbon & Case Inbox Bar */}
+      <div className="px-4 sm:px-5 py-2.5 bg-black/30 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-xs font-mono text-slate-400">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <div>
+            <span className="text-slate-500">Patient:</span>{" "}
+            <strong className="text-slate-200 font-medium">{currentCase.patientName}</strong>
+          </div>
+          <div>
+            <span className="text-slate-500">Account:</span>{" "}
+            <strong className="text-slate-200 font-medium">{currentCase.accountNumber}</strong>
+          </div>
+          <div>
+            <span className="text-slate-500">Date of Service:</span>{" "}
+            <strong className="text-slate-200 font-medium">{currentCase.billDate}</strong>
+          </div>
+        </div>
+
+        {/* Dedicated AgentMail Inbox & Dossier Toggle */}
+        <div className="flex items-center gap-3 ml-auto">
+          <button
+            onClick={handleCopyInbox}
+            className="flex items-center gap-2 px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 text-purple-200 transition-colors cursor-pointer text-[11px]"
+            title="Click to copy AgentMail dispute inbox"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-slate-400">Inbox:</span>
+            <span className="font-semibold">{currentCase.caseInbox}</span>
+            {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-purple-400" />}
+          </button>
+
+          <button
+            onClick={() => setShowDossier(!showDossier)}
+            className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+          >
+            <span>Legal Dossier</span>
+            {showDossier ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Expandable Legal Dossier Details */}
+      {showDossier && (
+        <div className="px-4 sm:px-5 py-3 bg-[#070b10] border-t border-white/[0.04] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono text-slate-400">
+          <div className="space-y-1">
+            <div className="text-slate-300 font-semibold flex items-center gap-1.5">
+              <Scale className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Statutory Legal Protection Enforced</span>
+            </div>
+            <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+              Dispute served under the No Surprises Act (45 C.F.R. § 149) and CMS Hospital Price Transparency (45 CFR § 180).
+              Federal law strictly stays third-party collections and credit reporting during active statutory disputes.
+            </p>
+          </div>
+
+          <div className="space-y-1 text-[11px]">
+            <div><span className="text-slate-500">Hospital Facility EIN:</span> <strong className="text-slate-300">{currentCase.hospitalEin || "59-1234567"}</strong></div>
+            <div><span className="text-slate-500">Verification Engine:</span> <span className="text-cyan-400">Firecrawl MRF JSON Parser v2.4</span></div>
+            <div><span className="text-slate-500">Dispute Defense SLA:</span> <span className="text-purple-300">14 Business Days Statutory Response Window</span></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
