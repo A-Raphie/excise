@@ -32,11 +32,8 @@ export function Header({ onOpenNewBill }: HeaderProps) {
             <span className="font-mono text-base font-bold tracking-tight text-white">
               EXCISE
             </span>
-            <span className="hidden md:inline-block text-[11px] font-mono text-slate-500 border-l border-white/[0.1] pl-2.5">
-              Chargemaster Inquest &amp; Dispute Terminal
-            </span>
-            <span className="hidden lg:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-slate-400">
-              45 CFR § 149 / § 180
+            <span className="hidden sm:inline-block text-xs font-mono text-slate-400 border-l border-white/[0.1] pl-2.5">
+              Hospital Bill Audit &amp; Dispute
             </span>
           </div>
         </div>
@@ -60,7 +57,7 @@ export function Header({ onOpenNewBill }: HeaderProps) {
           <span className="text-slate-600">·</span>
           <div className="flex items-center gap-1.5 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span className="text-slate-300">GPT-4o Audit</span>
+            <span className="text-slate-300">OpenAI CPT Audit</span>
           </div>
         </div>
 

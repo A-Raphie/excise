@@ -23,20 +23,20 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
     switch (type) {
       case "UPCODING":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-red-500/10 border border-red-500/25 text-red-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-red-500/15 border border-red-500/35 text-red-400">
             UPCODED · LVL 5
           </span>
         );
       case "UNBUNDLING":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/10 border border-amber-500/25 text-amber-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-500/15 border border-amber-500/35 text-amber-300">
             UNBUNDLED
           </span>
         );
       case "PRICE_GOUGE_OVER_CHARGEMASTER":
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 border border-rose-500/25 text-rose-400">
-            8.3x MARKUP
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-500/15 border border-rose-500/35 text-rose-300">
+            8.3× MARKUP
           </span>
         );
       case "COMPLIANT":
@@ -49,23 +49,39 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
     }
   };
 
+  const getRowBgClass = (item: SampleLineItem, isExcluded: boolean, isExpanded: boolean) => {
+    if (isExcluded) return "opacity-40 bg-black/25";
+    if (isExpanded) return "bg-white/[0.04]";
+    switch (item.violationType) {
+      case "UPCODING":
+        return "bg-red-500/[0.035] hover:bg-red-500/[0.07]";
+      case "UNBUNDLING":
+        return "bg-amber-500/[0.035] hover:bg-amber-500/[0.07]";
+      case "PRICE_GOUGE_OVER_CHARGEMASTER":
+        return "bg-rose-500/[0.035] hover:bg-rose-500/[0.07]";
+      case "COMPLIANT":
+      default:
+        return "hover:bg-white/[0.02]";
+    }
+  };
+
   return (
     <div className="bg-[#090d13] border border-white/[0.08] rounded-lg overflow-hidden shadow-sm">
       {/* Table Subheader */}
       <div className="px-4 py-3 border-b border-white/[0.06] bg-[#0b1017] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <FileSpreadsheet className="w-4 h-4 text-emerald-400/80" />
-          <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">
+          <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
             Forensic Chargemaster Audit Breakdown
           </h2>
-          <span className="text-[11px] font-mono text-slate-500">
+          <span className="text-[11px] font-mono text-slate-400">
             ({currentCase.lineItems.length} clinical charges)
           </span>
         </div>
 
         <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.03] border border-white/[0.06]">
-            <Globe className="w-3 h-3 text-cyan-400" />
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.08] text-slate-300">
+            <Globe className="w-3.5 h-3.5 text-cyan-400" />
             <span>Firecrawl Scraped MRF Cash Benchmarks</span>
           </span>
         </div>
@@ -75,7 +91,7 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.06] bg-black/20 text-[10px] uppercase tracking-wider font-mono text-slate-500">
+            <tr className="border-b border-white/[0.08] bg-black/30 text-[10px] uppercase tracking-wider font-mono text-slate-400">
               <th className="py-2.5 px-4 w-10 text-center">Dispute</th>
               <th className="py-2.5 px-4 w-28">CPT Code</th>
               <th className="py-2.5 px-4 min-w-[240px]">Clinical Description</th>
@@ -94,11 +110,7 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
               return (
                 <React.Fragment key={item.id}>
                   <tr
-                    className={`transition-colors ${
-                      isExcluded
-                        ? "opacity-40 bg-black/20"
-                        : "hover:bg-white/[0.02]"
-                    }`}
+                    className={`transition-colors ${getRowBgClass(item, isExcluded, isExpanded)}`}
                   >
                     {/* Checkbox */}
                     <td className="py-3 px-4 text-center">
@@ -106,49 +118,59 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                         type="checkbox"
                         checked={item.isDisputed}
                         onChange={() => toggleDispute(currentCase.id, item.id)}
-                        className="w-3.5 h-3.5 rounded border-white/[0.2] bg-black text-emerald-500 focus:ring-0 cursor-pointer accent-emerald-500"
+                        className="w-4 h-4 rounded border-white/[0.2] bg-black text-emerald-500 focus:ring-0 cursor-pointer accent-emerald-500"
                         title="Toggle dispute of this line item"
                       />
                     </td>
 
                     {/* CPT & Badge */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-slate-200">{item.cptCode}</div>
+                      <div className="font-mono font-bold text-slate-100 text-xs tracking-wide">{item.cptCode}</div>
                       <div className="mt-1">{getViolationBadge(item.violationType)}</div>
                     </td>
 
                     {/* Description */}
-                    <td className="py-3 px-4 font-sans">
-                      <div className="font-medium text-slate-200 text-xs">{item.description}</div>
-                      <div className="text-[11px] text-slate-500 line-clamp-1 mt-0.5 font-mono">
-                        {item.auditRationale}
+                    <td className="py-3 px-4">
+                      <div className="font-medium text-slate-100 text-xs">{item.description}</div>
+                      <div className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center gap-2">
+                        <span>Rev: {item.cptCode === "99285" ? "0450 (Emerg)" : item.cptCode === "74177" || item.cptCode === "70450" ? "0350 (CT)" : "0270 (Supplies)"}</span>
+                        {item.violationType !== "COMPLIANT" && (
+                          <button
+                            onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                            className="text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
+                          >
+                            · {isExpanded ? "Hide evidence" : "View evidence"}
+                          </button>
+                        )}
                       </div>
                     </td>
 
                     {/* Billed */}
-                    <td className="py-3 px-4 text-right font-medium text-slate-300 tabular-nums">
+                    <td className="py-3 px-4 text-right font-medium text-slate-200 tabular-nums text-xs">
                       ${item.billedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </td>
 
                     {/* Hospital Cash Rate (scraped via Firecrawl) */}
-                    <td className="py-3 px-4 text-right text-slate-300 tabular-nums">
+                    <td className="py-3 px-4 text-right text-slate-200 tabular-nums text-xs font-medium">
                       {item.hospitalCashRate === 0 ? (
-                        <span className="text-amber-400 font-medium">$0.00 (Bundled)</span>
+                        <span className="text-amber-300 font-semibold">$0.00 (Bundled)</span>
                       ) : (
                         `$${item.hospitalCashRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}`
                       )}
                     </td>
 
                     {/* CMS Allowable */}
-                    <td className="py-3 px-4 text-right text-slate-500 tabular-nums">
+                    <td className="py-3 px-4 text-right text-slate-400 tabular-nums text-xs">
                       ${item.cmsBenchmarkRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </td>
 
                     {/* Fair Settlement Proposed */}
-                    <td className="py-3 px-4 text-right text-emerald-400 font-semibold tabular-nums">
-                      ${item.proposedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                      {item.isDisputed && (
-                        <div className="text-[10px] text-emerald-500/70 font-normal">
+                    <td className="py-3 px-4 text-right tabular-nums">
+                      <div className="text-emerald-400 font-bold text-xs">
+                        ${item.proposedAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      </div>
+                      {item.isDisputed && item.billedAmount > item.proposedAmount && (
+                        <div className="text-[10px] text-emerald-500/80 font-mono font-medium">
                           -${(item.billedAmount - item.proposedAmount).toLocaleString("en-US", { minimumFractionDigits: 0 })}
                         </div>
                       )}
@@ -158,13 +180,17 @@ export function LineItemsTable({ currentCase }: LineItemsTableProps) {
                     <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                        className="p-1 rounded hover:bg-white/[0.08] text-slate-500 hover:text-white transition-colors cursor-pointer"
+                        className={`p-1.5 rounded transition-colors cursor-pointer ${
+                          isExpanded
+                            ? "bg-white/[0.1] text-emerald-400"
+                            : "text-slate-400 hover:text-white hover:bg-white/[0.05]"
+                        }`}
                         title="View clinical audit evidence"
                       >
                         {isExpanded ? (
-                          <ChevronUp className="w-3.5 h-3.5" />
+                          <ChevronUp className="w-4 h-4" />
                         ) : (
-                          <ChevronDown className="w-3.5 h-3.5" />
+                          <ChevronDown className="w-4 h-4" />
                         )}
                       </button>
                     </td>

@@ -23,6 +23,7 @@
 - Created `convex/audit.ts` coordinating Firecrawl machine-readable chargemaster scraping and OpenAI CPT audit generation citing the No Surprises Act (45 C.F.R. § 149) and CMS Hospital Price Transparency (45 CFR § 180).
 - Created `convex/agentmail.ts` and `convex/http.ts` for dedicated case inbox dispatch and webhook processing when hospitals return revised settlement offers.
 - Built clinical slate frontend in `src/` with Next.js 15, Tailwind v4, interactive dispute room, and verified static export via `bun run build`.
+- Completed comprehensive UI polish pass: streamlined header brand & sponsor telemetry to `OpenAI CPT Audit`, enhanced active tab visibility and container styling, elevated Convex reactive hint into prominent `LIVE DEMO` chip, optimized table readability with high-contrast CPT codes and violation badges (`UPCODED · LVL 5`, `UNBUNDLED`, `8.3× MARKUP`), added subtle row tints for violations, and calibrated legal copy to authoritative audit terminology (`non-compliant overcharges`).
 
 ### 2026-09-20 - b9a5a2c
 Initialized project repository, installed the official Convex hackathon skill, and seeded the build log for Excise.

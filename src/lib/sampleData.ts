@@ -111,7 +111,7 @@ To: Patient Financial Services & Revenue Cycle Operations
 
 Dear Patient Financial Services,
 
-This communication serves as a formal statutory dispute of billing statement #MR-9920148-B on behalf of Marcus Vance. An autonomous audit of the itemized master charges against Memorial Regional's publicly published Machine-Readable File (MRF) chargemaster and CMS National Correct Coding Initiative (NCCI) manuals reveals severe non-compliance, unbundling, and improper upcoding totaling $11,115.00 in unlawful charges.
+This communication serves as a formal statutory dispute of billing statement #MR-9920148-B on behalf of Marcus Vance. An autonomous audit of the itemized master charges against Memorial Regional's publicly published Machine-Readable File (MRF) chargemaster and CMS National Correct Coding Initiative (NCCI) manuals reveals severe non-compliance, unbundling, and improper upcoding totaling $11,115.00 in non-compliant overcharges.
 
 Specifically:
 1. CPT 99285 (Level 5 Emergency Department Visit) billed at $4,850.00 is grossly upcoded. Clinical documentation reflects a superficial forehead laceration closed with simple 4-0 sutures and basic neurological check, requiring moderate acuity under CPT 99283. Your own published cash price for Level 3 is $520.00; Medicare allowable is $135.00.

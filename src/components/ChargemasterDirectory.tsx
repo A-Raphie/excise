@@ -20,7 +20,7 @@ export function ChargemasterDirectory() {
       chargemasterCash: 0,
       medicareRate: 0,
       avgBilled: 1850,
-      markup: "100% Unbundled (Unlawful under CMS NCCI Ch 1)",
+      markup: "100% Unbundled (Disallowed under CMS NCCI Ch 1)",
       status: "Bundled routine facility expense",
     },
     {

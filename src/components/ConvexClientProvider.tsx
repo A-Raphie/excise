@@ -286,7 +286,7 @@ Dear Patient Financial Services,
 
 This communication serves as a formal statutory dispute of billing statement #${billData.accountNumber} on behalf of ${billData.patientName}. 
 
-An autonomous forensic audit conducted by Excise compares your itemized billing against your published Machine-Readable File (MRF) chargemaster schedule and CMS National Correct Coding Initiative (NCCI) policy. The audit identified $${totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} in unlawful charges, including improper unbundling of surgical supplies and egregious upcoding beyond clinical presentation.
+An autonomous forensic audit conducted by Excise compares your itemized billing against your published Machine-Readable File (MRF) chargemaster schedule and CMS National Correct Coding Initiative (NCCI) policy. The audit identified $${totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })} in non-compliant overcharges, including improper unbundling of surgical supplies and unsupported Level 5 coding.
 
 STATUTORY TENDER OF SETTLEMENT:
 We hereby tender an immediate, binding settlement payment of $${proposedSettlement.toLocaleString("en-US", { minimumFractionDigits: 2 })} in full satisfaction of all claims arising from this encounter.
