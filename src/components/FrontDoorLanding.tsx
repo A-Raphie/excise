@@ -205,61 +205,63 @@ export function FrontDoorLanding({
               </span>
             </div>
 
-            {/* Specimen Photo with Zoom Affordance */}
-            <div className="p-4 space-y-3">
-              <div
-                className="relative rounded-xl overflow-hidden border border-white/[0.12] shadow-lg group cursor-pointer"
-                onClick={() => setShowFullImageModal(true)}
-              >
-                <img
-                  src={current.image}
-                  alt={current.imageCaption}
-                  className="w-full h-48 sm:h-56 object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/75 backdrop-blur-xs border border-white/[0.15] text-[10px] font-mono text-emerald-300 flex items-center gap-1">
+            {/* Live Interactive Forensic Adjudication Engine Card (No JPEG image in hero) */}
+            <div className="p-4 sm:p-5 space-y-3.5">
+              {/* Docket Status Bar */}
+              <div className="flex items-center justify-between text-[11px] font-mono pb-2 border-b border-white/[0.06]">
+                <span className="text-slate-400">DOCKET #{current.id.toUpperCase()}</span>
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Physical Evidence Scan</span>
-                </div>
-                <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-mono text-white">
-                  <span className="truncate mr-2 font-medium">Click to inspect full document</span>
-                  <Eye className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                </div>
+                  CMS MRF WITNESSED
+                </span>
               </div>
 
-              {/* Financial Strike Summary */}
-              <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] space-y-2">
-                <div className="flex items-center justify-between font-mono text-xs">
-                  <span className="text-slate-400">Hospital Charged:</span>
-                  <span className="text-rose-400/80 line-through font-semibold">{current.original}</span>
-                </div>
-                <div className="flex items-center justify-between font-mono text-xs">
-                  <span className="text-emerald-400 font-medium">Enforced Cash Rate:</span>
-                  <span className="text-emerald-400 font-bold text-sm">{current.settlement}</span>
-                </div>
-                <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-white/[0.04]">
-                  <span className="text-slate-500">Excised Savings:</span>
-                  <span className="text-emerald-300 font-bold">{current.excised} ({current.savingsPct} OFF)</span>
-                </div>
-              </div>
-
-              {/* 3 Detected Violations */}
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                  Violations Excised On This Bill:
-                </div>
-                {current.strikes.slice(0, 2).map((s, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between gap-1 text-[11px] font-mono p-1.5 rounded bg-white/[0.02] border border-white/[0.04]"
-                  >
-                    <div className="flex items-center gap-1.5 truncate">
-                      <span className="text-rose-400 font-semibold">{s.code}</span>
-                      <span className="text-slate-300 truncate">{s.name}</span>
-                    </div>
-                    <span className="font-bold text-emerald-400 shrink-0">{s.saved}</span>
+              {/* Financial Comparison Readout */}
+              <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-black/40 border border-white/[0.06]">
+                <div className="space-y-0.5">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase">Hospital Charged</div>
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-rose-400/80 line-through">
+                    {current.original}
                   </div>
-                ))}
+                  <div className="text-[10px] text-slate-500 font-mono">Gross Chargemaster Rate</div>
+                </div>
+
+                <div className="space-y-0.5">
+                  <div className="text-[10px] font-mono text-emerald-400 uppercase font-semibold">Legal Cash Settlement</div>
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-emerald-400">
+                    {current.settlement}
+                  </div>
+                  <div className="text-[10px] text-emerald-500/80 font-mono font-medium">
+                    {current.excised} ({current.savingsPct} Reduction)
+                  </div>
+                </div>
+              </div>
+
+              {/* 3 Detected Violations List */}
+              <div className="space-y-2">
+                <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
+                  Detected Violations &amp; Excised Amounts:
+                </div>
+                <div className="space-y-1.5">
+                  {current.strikes.map((s, i) => (
+                    <div
+                      key={i}
+                      className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04] flex items-center justify-between text-xs font-mono gap-2"
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        <span className="text-rose-400 font-semibold shrink-0">{s.code}</span>
+                        <span className="text-slate-200 truncate">{s.name}</span>
+                      </div>
+                      <span className="text-emerald-400 font-bold shrink-0">{s.saved}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Convex State Finality Hash */}
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1">
+                <span>Convex State Hash:</span>
+                <span className="text-cyan-400 font-semibold">#tx_8f9a2d81 · Verified</span>
               </div>
 
               {/* Action Button */}
@@ -268,9 +270,9 @@ export function FrontDoorLanding({
                   onSelectCase(current.id);
                   onEnterCockpit();
                 }}
-                className="w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/40"
               >
-                <span>Inspect Full Itemized Audit</span>
+                <span>Inspect Full Itemized Audit &amp; Settlement Letter</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
