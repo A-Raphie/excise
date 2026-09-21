@@ -33,8 +33,8 @@ next-env.d.ts
 # Local Netlify folder
 .netlify
 
-# Video renders and raw captures
+# Video renders, raw captures, and intermediate audio
 videos/**/renders/
 videos/**/media/
-videos/**/audio/*.wav
-videos/**/audio/beats_wav/
+videos/**/audio/
+videos/**/snapshots/

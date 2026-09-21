@@ -4,6 +4,7 @@
 - **Event:** Convex All Gas Hackathon
 - **What it does:** Autonomous hospital chargemaster audit and medical bill dispute engine.
 - **Live app:** https://tryexcise.netlify.app
+- **Demo video:** https://tryexcise.netlify.app/excise-demo.mp4
 - **Repo:** https://github.com/A-Raphie/excise
 - **Frontend:** Next.js 15, Tailwind v4, Convex Client
 - **Convex deployment:** Production Convex Real-time Cloud
@@ -12,9 +13,15 @@
 - **Auth:** none (Zero-friction patient access)
 - **AI models:** gpt-4o-mini
 - **Started:** 2026-09-20T00:45:00Z
-- **Last updated:** 2026-09-21T15:30:00Z
+- **Last updated:** 2026-09-21T20:10:00Z
 
 ## Log
+
+### 2026-09-21 - fd2d99f
+- Built automated showcase demo video pipeline with Playwright and HyperFrames (`scripts/record-scenes.mjs`), producing synchronized 1080p master and mobile streaming cuts.
+- Calibrated smart zoom punch-ins with smooth viewport unzooms, zeroing speech overlap across all 10 narrative beats.
+- Added auto-routing to active docket cockpit upon audit creation in `NewBillModal.tsx` and updated CTA to "Add Audit".
+- Deployed streaming demo video directly to production Netlify CDN (`https://tryexcise.netlify.app/excise-demo.mp4`).
 
 ### 2026-09-21 - 0b84bfe
 - Solved cognitive number exhaustion across all inner cockpit surfaces by implementing the Calm Patient View (4-column progressive disclosure) vs Forensic Ledger toggle, reducing visible numbers on inner pages by 65%.

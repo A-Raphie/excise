@@ -136,19 +136,19 @@ async function runAll() {
     }
   );
 
-  // SCENE 2: Add Audit Journey & Ingestion Pipeline (22s)
+  // SCENE 2: Add Audit Journey & Ingestion Pipeline (24s)
   await recordScene(
     "scene2-add-audit",
-    22,
+    24,
     async (page) => {
       await page.goto(TARGET_URL, { waitUntil: "domcontentloaded" });
       await page.waitForTimeout(1200);
-      await page.waitForSelector("button:has-text('Audit Your Bill')", { timeout: 15000 });
+      await page.waitForSelector("button:has-text('Add Hospital Audit'), button:has-text('Audit Your Bill')", { timeout: 15000 });
       await injectCursor(page);
     },
     async (page) => {
-      // Click Audit Your Bill to open intake modal
-      const cta = page.locator("button:has-text('Audit Your Bill')").first();
+      // Click Add Hospital Audit to open intake workstation modal
+      const cta = page.locator("button:has-text('Add Hospital Audit'), button:has-text('Audit Your Bill')").first();
       await clickCursor(page, cta, { duration: 700 });
       await page.waitForSelector("text=Forensic Hospital Bill Intake Workstation", { timeout: 8000 });
       await page.waitForTimeout(800);
@@ -170,8 +170,19 @@ async function runAll() {
         await clickCursor(page, auditBtn, { duration: 700 });
       }
 
-      // Hold while the 3-stage pipeline animates and completes
-      await page.waitForTimeout(5500);
+      // Wait for 3-stage pipeline to execute and auto-route into Cockpit Docket
+      await page.waitForSelector("text=Pre-Settlement Legal Safe Harbor Active", { timeout: 12000 });
+      await page.waitForTimeout(1000);
+
+      // Smoothly hover across the newly populated Docket in Cockpit
+      await moveCursor(page, 520, 240, { duration: 800 });
+      await page.waitForTimeout(800);
+      await moveCursor(page, 800, 240, { duration: 800 });
+      await page.waitForTimeout(1200);
+
+      // Scroll down to the newly audited line items
+      await page.evaluate(() => window.scrollBy({ top: 220, behavior: "smooth" }));
+      await page.waitForTimeout(4000);
     }
   );
 
