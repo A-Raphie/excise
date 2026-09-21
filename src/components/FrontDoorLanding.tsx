@@ -19,12 +19,14 @@ interface FrontDoorLandingProps {
   onSelectCase: (caseId: string) => void;
   onEnterCockpit: () => void;
   onOpenProof?: () => void;
+  onOpenNewBill?: () => void;
 }
 
 export function FrontDoorLanding({
   onSelectCase,
   onEnterCockpit,
   onOpenProof,
+  onOpenNewBill,
 }: FrontDoorLandingProps) {
   // Active sample case
   const [activeHeroCase, setActiveHeroCase] = useState<"marcus" | "elena" | "david">("marcus");
@@ -43,19 +45,19 @@ export function FrontDoorLanding({
       settlement: "$3,735.00",
       savingsPct: "75%",
       strikes: [
-        { code: "CPT 99285", name: "Emergency Visit Level 5", action: "Downcoded to Level 3 (minor laceration)", saved: "-$4,330.00", basis: "45 CFR § 180 Acuity Rule" },
-        { code: "CPT 99070", name: "Suture & Supply Kit", action: "Voided — bundled under CMS NCCI rules", saved: "-$1,850.00", basis: "CMS NCCI Policy Manual" },
-        { code: "CPT 70450", name: "Head CT Scan", action: "Reduced to published hospital self-pay cash schedule", saved: "-$4,750.00", basis: "Mandatory MRF Cash Rate" },
+        { code: "CPT 99285", name: "Level 5 Emergency Severity Visit", action: "Downcoded to Level 3 per clinical acuity guidelines", saved: "-$4,330.00", basis: "AMA CPT Guidelines" },
+        { code: "CPT 99070", name: "Suture Tray & Materials Kit", action: "Voided — pre-bundled in emergency facility fee", saved: "-$1,850.00", basis: "CMS NCCI Policy Ch. 1 §B" },
+        { code: "CPT 70450", name: "CT Head Scan without Contrast", action: "Adjusted to published self-pay cash schedule", saved: "-$4,750.00", basis: "45 CFR § 180 MRF Rate" },
       ],
     },
     elena: {
-      id: "case-elena-endo",
+      id: "case-elena-cardio",
       facility: "Stanford Health Care",
-      department: "Outpatient Endoscopy",
+      department: "Cardiology Outpatient Lab",
       patient: "Elena Rostova",
-      original: "$9,420.00",
+      original: "$9,340.00",
       excised: "-$6,180.00",
-      settlement: "$3,240.00",
+      settlement: "$3,160.00",
       savingsPct: "66%",
       strikes: [
         { code: "REV 0490", name: "Ambulatory Facility Fee", action: "Marked down from 4.2× chargemaster gouge to cash rate", saved: "-$4,200.00", basis: "Hospital Cash Schedule" },
@@ -104,12 +106,15 @@ export function FrontDoorLanding({
           </p>
         </div>
 
-        {/* Centered Dual Actions */}
+        {/* Centered Distinct Actions: No Duplicate Callbacks */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <button
             onClick={() => {
-              onSelectCase(current.id);
-              onEnterCockpit();
+              if (onOpenNewBill) {
+                onOpenNewBill();
+              } else {
+                onEnterCockpit();
+              }
             }}
             className="px-6 py-3 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-mono font-bold text-xs transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95"
           >

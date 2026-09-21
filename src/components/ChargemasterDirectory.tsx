@@ -267,78 +267,64 @@ export function ChargemasterDirectory() {
                     <span className="truncate">{rec.facility}</span>
                   </div>
 
-                  {/* Price Comparison Grid */}
-                  <div className="space-y-1.5 pt-3 mt-3 border-t border-slate-100 text-[11px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Hospital Gross Billed:</span>
-                      <span className="text-rose-600 font-bold line-through decoration-rose-400">
+                  {/* Clean Financial Comparison: Only 2 core numbers visible */}
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 mt-3 space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-500">Hospital Demanded:</span>
+                      <span className="text-rose-600 line-through decoration-rose-400 font-medium">
                         ${rec.avgBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </span>
                     </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Mandatory Cash Rate:</span>
-                      <span className="text-sky-900 font-bold">
-                        ${rec.chargemasterCash.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-900 font-bold">Enforced Fair Cash:</span>
+                      <span className="text-emerald-700 font-bold text-sm">
+                        {rec.isBundled
+                          ? "$0.00 (Bundled)"
+                          : `$${rec.chargemasterCash.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
                       </span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Medicare Allowable:</span>
-                      <span className="text-emerald-800 font-bold">
-                        ${rec.medicareRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-
-                    {/* Proportional Markup Visual Gauge */}
-                    <div className="pt-2">
-                      <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-                        <span>Price Proportionality:</span>
-                        <span className="text-sky-800 font-bold">
-                          {rec.isBundled ? "Disallowed" : `${(rec.avgBilled / (rec.chargemasterCash || 1)).toFixed(1)}× Fair Cash`}
-                        </span>
-                      </div>
-                      <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden flex">
-                        <div
-                          className="h-full bg-sky-600"
-                          style={{
-                            width: `${Math.min(100, ((rec.chargemasterCash || 1) / rec.avgBilled) * 100)}%`,
-                          }}
-                        />
-                        <div
-                          className="h-full bg-rose-400/80"
-                          style={{
-                            width: `${100 - Math.min(100, ((rec.chargemasterCash || 1) / rec.avgBilled) * 100)}%`,
-                          }}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Footer: Witness MRF Snippet */}
+                {/* Footer: Witness MRF Snippet Toggle */}
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px]">
-                  <span className="text-slate-500 truncate max-w-[65%]">
+                  <span className="text-slate-500 truncate max-w-[60%]">
                     {rec.status}
                   </span>
                   <button
                     onClick={() => setInspectingCpt(isInspecting ? null : rec.cpt)}
-                    className="text-sky-800 hover:text-sky-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                    className="text-sky-800 hover:text-sky-950 font-bold transition-colors flex items-center gap-1 cursor-pointer bg-sky-50 px-2 py-1 rounded border border-sky-200 hover:bg-sky-100"
                   >
                     <FileCode2 className="w-3 h-3" />
-                    <span>{isInspecting ? "Close" : "Witness MRF"}</span>
+                    <span>{isInspecting ? "Hide Breakdown" : "Inspect Data ▾"}</span>
                   </button>
                 </div>
 
-                {/* Expanded Raw MRF Snippet Drawer */}
+                {/* Expanded CMS & Technical Benchmarks Drawer */}
                 {isInspecting && (
-                  <div className="mt-2 p-3 rounded-xl bg-slate-900 text-sky-200 border border-slate-800 text-[10px] overflow-x-auto space-y-1 shadow-inner">
-                    <div className="text-slate-400 uppercase tracking-wider font-semibold">
-                      Raw CMS 45 CFR § 180 Witness:
+                  <div className="mt-2 p-3 rounded-xl bg-slate-900 text-sky-200 border border-slate-800 text-[10px] space-y-2.5 shadow-inner">
+                    <div className="space-y-1 border-b border-slate-800 pb-2 text-slate-300">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Medicare Benchmark:</span>
+                        <span className="text-emerald-400 font-bold">
+                          ${rec.medicareRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Price Multiple:</span>
+                        <span className="text-amber-300 font-bold">
+                          {rec.isBundled ? "Disallowed in Facility Fee" : `${(rec.avgBilled / (rec.chargemasterCash || 1)).toFixed(1)}× Cash Baseline`}
+                        </span>
+                      </div>
                     </div>
-                    <pre className="text-[10px] leading-relaxed">
-                      {JSON.stringify(rec.mrfRawSnippet, null, 2)}
-                    </pre>
+                    <div>
+                      <div className="text-slate-400 uppercase tracking-wider font-semibold text-[9px] mb-1">
+                        CMS 45 CFR § 180 Witness Object:
+                      </div>
+                      <pre className="text-[10px] leading-relaxed text-sky-300 overflow-x-auto">
+                        {JSON.stringify(rec.mrfRawSnippet, null, 2)}
+                      </pre>
+                    </div>
                   </div>
                 )}
               </div>

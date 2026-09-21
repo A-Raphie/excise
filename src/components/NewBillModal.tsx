@@ -131,36 +131,33 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {PRESET_BILLS.map((preset) => {
               const isSelected = selectedPreset === preset.id;
-              const thumbnail =
-                preset.id === "preset-imaging"
-                  ? "/images/radiology-audit-specimen.jpg"
-                  : "/images/hospital-bill-specimen.jpg";
 
               return (
                 <button
                   key={preset.id}
                   type="button"
                   onClick={() => handleSelectPreset(preset.id)}
-                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
-                      ? "bg-emerald-50 border-2 border-emerald-600 text-slate-950 shadow-sm"
+                      ? "bg-emerald-50/80 border-2 border-emerald-600 text-slate-950 shadow-sm"
                       : "bg-slate-50 border-slate-200 hover:border-slate-300 hover:bg-white text-slate-700"
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-2">
                     <span className="font-bold text-slate-950 text-xs truncate max-w-[85%]">{preset.title}</span>
                     {isSelected && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
                   </div>
 
-                  <div className="w-full h-16 rounded-lg overflow-hidden border border-slate-200 mb-2 relative">
-                    <img
-                      src={thumbnail}
-                      alt={preset.title}
-                      className="w-full h-full object-cover object-top"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
-                    <span className="absolute bottom-1 left-2 text-[9px] font-mono text-emerald-300 font-bold">
-                      ${preset.totalBilled.toLocaleString()} Billed
+                  {/* Clean Semantic Specimen Metrics (No Photos) */}
+                  <div className="w-full p-2.5 rounded-xl bg-white border border-slate-200/80 mb-2 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] uppercase text-slate-400 font-bold block">Specimen Total</span>
+                      <span className="text-xs font-bold text-slate-950 font-mono">
+                        ${preset.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 0 })}
+                      </span>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono font-medium border border-slate-200">
+                      {preset.cptCodes.length} CPTs
                     </span>
                   </div>
 

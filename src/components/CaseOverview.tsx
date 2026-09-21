@@ -137,82 +137,62 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
       </div>
 
       {/* 2. 3-Column Forensic Financial Surface */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 bg-white">
-        {/* Cell 1: Hospital Charge */}
-        <div className="p-4 sm:p-5 space-y-1">
-          <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">
-            Hospital Billed Charge
+      {/* 2. Unified Financial Transformation Card (Tranquil, High-Clarity) */}
+      <div className="p-4 sm:p-6 bg-white flex flex-col md:flex-row md:items-center justify-between gap-5">
+        {/* Left Note: Clear human explanation */}
+        <div className="space-y-1.5 max-w-md">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <span>Forensic Settlement Adjudication</span>
           </div>
-          <div className="text-xl sm:text-3xl font-mono font-bold text-rose-600 line-through decoration-rose-400 tabular-nums">
-            ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-slate-500 font-mono truncate">
-            Unadjusted gross chargemaster list rate
-          </div>
+          <h2 className="text-base sm:text-lg font-bold text-slate-950 leading-snug font-sans">
+            {currentCase.status === "settled"
+              ? "Bilateral Settlement Accord Ratified"
+              : "Pre-Settlement Legal Safe Harbor Active"}
+          </h2>
+          <p className="text-xs text-slate-600 font-sans leading-relaxed">
+            Hospital charges have been audited against CMS Machine-Readable Price transparency rules (45 CFR § 180). All predatory upcoding and unbundled kit fees have been stricken.
+          </p>
         </div>
 
-        {/* Cell 2: Overcharges Excised */}
-        <div className="p-4 sm:p-5 space-y-1 bg-emerald-50/50">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-emerald-900 font-bold">
-              Overcharges Excised
-            </span>
-            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300 text-emerald-800">
-              -{percentReduction}% DEDUCTION
-            </span>
+        {/* Right Card: Single Before/After Financial Outcome */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
+          {/* Original Bill Struck Through */}
+          <div className="space-y-0.5">
+            <div className="text-[10px] sm:text-[11px] font-mono text-slate-500 uppercase font-semibold">
+              Original Demanded
+            </div>
+            <div className="text-lg sm:text-2xl font-mono font-semibold text-rose-500 line-through decoration-rose-300 tabular-nums">
+              ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            </div>
+            <div className="text-[10px] font-mono text-rose-600/80">Unjustified Rate</div>
           </div>
-          <div
-            className={`text-xl sm:text-3xl font-mono font-extrabold text-emerald-700 tabular-nums transition-all ${
-              flashUpdate ? "animate-number-flash" : ""
-            }`}
-          >
-            -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-emerald-800/80 font-mono truncate">
-            Upcoded acuity &amp; unbundled items stricken
-          </div>
-        </div>
 
-        {/* Cell 3: Legal Cash Settlement */}
-        <div className="p-4 sm:p-5 space-y-1 bg-slate-50/50">
-          <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-700 font-semibold">
-            {currentCase.status === "settled" ? "Final Binding Settlement" : "Legal Settlement Offer"}
-          </div>
-          <div
-            className={`text-xl sm:text-3xl font-mono font-black text-slate-950 tabular-nums transition-all ${
-              flashUpdate ? "animate-number-flash" : ""
-            }`}
-          >
-            ${finalSettlement.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-indigo-700 font-mono font-medium truncate">
-            Enforcing hospital published cash rate
-          </div>
-        </div>
-      </div>
+          <div className="hidden sm:block text-slate-300 text-2xl font-light">→</div>
 
-      {/* 3. Interactive Reduction Gauge Meter */}
-      <div className="px-4 sm:px-5 py-2.5 bg-slate-50 border-t border-slate-200 flex flex-col gap-1.5">
-        <div className="flex items-center justify-between text-[11px] font-mono">
-          <span className="text-emerald-800 font-bold flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-            Legal Settlement: ${finalSettlement.toLocaleString("en-US", { minimumFractionDigits: 0 })} ({percentSettlement}%)
-          </span>
-          <span className="text-slate-600 font-medium">
-            Excised: -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 0 })} ({percentReduction}%)
-          </span>
-        </div>
-        <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden flex">
-          <div
-            className="h-full bg-emerald-600 transition-all duration-500 ease-out"
-            style={{ width: `${Math.max(5, Math.min(95, parseFloat(percentSettlement)))}%` }}
-            title={`Legal Cash Rate: ${percentSettlement}%`}
-          />
-          <div
-            className="h-full bg-rose-400/80 transition-all duration-500 ease-out"
-            style={{ width: `${Math.max(5, Math.min(95, parseFloat(percentReduction)))}%` }}
-            title={`Excised Overcharge: ${percentReduction}%`}
-          />
+          {/* Legally Enforced Amount */}
+          <div className="space-y-0.5">
+            <div className="text-[10px] sm:text-[11px] font-mono text-emerald-800 uppercase font-bold flex items-center gap-1.5">
+              <span>Legally Enforced Amount</span>
+            </div>
+            <div
+              className={`text-2xl sm:text-4xl font-mono font-black text-slate-950 tabular-nums tracking-tight transition-all ${
+                flashUpdate ? "animate-number-flash" : ""
+              }`}
+            >
+              ${finalSettlement.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            </div>
+            <div className="text-[11px] text-slate-600 font-mono">
+              Published cash rate
+            </div>
+          </div>
+
+          {/* Savings Badge */}
+          <div className="sm:border-l sm:border-slate-200 sm:pl-5 self-start sm:self-center">
+            <div className="px-3 py-1.5 rounded-xl bg-emerald-100/80 border border-emerald-300/80 text-emerald-800 font-mono text-xs font-bold whitespace-nowrap shadow-2xs">
+              -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 0 })} ({percentReduction}% Excised)
+            </div>
+          </div>
         </div>
       </div>
 

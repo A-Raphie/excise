@@ -181,6 +181,26 @@ export function ProofEvidenceRail({ currentCase }: ProofEvidenceRailProps) {
         </div>
       </div>
 
+      {/* Human Assurance Strip: Instant Clarity for Patients */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
+        <div className="p-2.5 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span className="text-slate-800 font-medium text-[11px]">Cryptographic State Sealed</span>
+        </div>
+        <div className="p-2.5 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span className="text-slate-800 font-medium text-[11px]">Hospital MRF Verified</span>
+        </div>
+        <div className="p-2.5 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span className="text-slate-800 font-medium text-[11px]">AgentMail Served (TLS 1.3)</span>
+        </div>
+        <div className="p-2.5 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span className="text-slate-800 font-medium text-[11px]">CMS Coding Pass (0.98)</span>
+        </div>
+      </div>
+
       {/* 2. Interactive Split-Screen Lab: Selector on Left, Live Inspector on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Column: 4 Selectable Evidence Gates (5 cols) */}

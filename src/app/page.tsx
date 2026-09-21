@@ -63,25 +63,10 @@ export default function Home() {
               setViewMode("cockpit");
               setActiveTab("proof");
             }}
+            onOpenNewBill={() => setIsModalOpen(true)}
           />
         ) : (
           <>
-            {/* Navigation back breadcrumb */}
-            <div className="flex items-center justify-between pb-1">
-              <button
-                onClick={() => setViewMode("landing")}
-                className="inline-flex items-center gap-2 text-xs font-mono text-slate-600 hover:text-slate-950 transition-colors py-1 px-2.5 rounded-lg hover:bg-slate-200/60 cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>← Return to Bill Intake &amp; Case Studies</span>
-              </button>
-
-              <div className="flex items-center gap-2 text-[11px] font-mono text-slate-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                <span>Autonomous Chargemaster Dispute Engine</span>
-              </div>
-            </div>
-
             {/* Active Case Hero & Unified Docket */}
             <CaseOverview currentCase={activeCase} />
 
