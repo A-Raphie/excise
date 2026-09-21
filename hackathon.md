@@ -4,7 +4,7 @@
 - **Event:** Convex All Gas Hackathon
 - **What it does:** Autonomous hospital chargemaster audit and medical bill dispute engine.
 - **Live app:** https://tryexcise.netlify.app
-- **Demo video:** https://tryexcise.netlify.app/excise-demo.mp4
+- **Demo video:** https://vimeo.com/1228956750 (Mirror: https://tryexcise.netlify.app/excise-demo.mp4)
 - **Repo:** https://github.com/A-Raphie/excise
 - **Frontend:** Next.js 15, Tailwind v4, Convex Client
 - **Convex deployment:** Production Convex Real-time Cloud

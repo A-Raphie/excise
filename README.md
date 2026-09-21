@@ -5,14 +5,14 @@
 ![Excise Front Door Hero](docs/media/hero.png)
 
 [![Live App](https://img.shields.io/badge/Live%20App-tryexcise.netlify.app-10b981?style=flat-square)](https://tryexcise.netlify.app)
-[![Demo Video](https://img.shields.io/badge/Demo%20Video-MP4%20Stream-blue?style=flat-square)](https://tryexcise.netlify.app/excise-demo.mp4)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-Vimeo-1ab7ea?style=flat-square)](https://vimeo.com/1228956750)
 [![Convex All Gas](https://img.shields.io/badge/Convex-All%20Gas%20Hackathon%202026-ea580c?style=flat-square)](https://convex.dev/hackathons/all-gas)
 [![OpenAI](https://img.shields.io/badge/OpenAI-CPT%20Acuity%20Reasoning-10a37f?style=flat-square)](https://openai.com)
 [![Firecrawl](https://img.shields.io/badge/Firecrawl-Hospital%20MRF%20Ingestion-f97316?style=flat-square)](https://firecrawl.dev)
 [![AgentMail](https://img.shields.io/badge/AgentMail-TLS%201.3%20Settlement%20Loop-8b5cf6?style=flat-square)](https://agentmail.to)
 [![License](https://img.shields.io/badge/License-MIT-slate?style=flat-square)](LICENSE)
 
-[Live App](https://tryexcise.netlify.app) · [Demo Video](https://tryexcise.netlify.app/excise-demo.mp4) · [Repository](https://github.com/A-Raphie/excise) · [Build Log](hackathon.md) · [VibeApps Submission](https://vibeapps.dev/judging/convex-all-gas-hackathon-openai/submit)
+[Live App](https://tryexcise.netlify.app) · [Demo Video](https://vimeo.com/1228956750) · [Repository](https://github.com/A-Raphie/excise) · [Build Log](hackathon.md) · [VibeApps Submission](https://vibeapps.dev/judging/convex-all-gas-hackathon-openai/submit)
 
 ---
 
