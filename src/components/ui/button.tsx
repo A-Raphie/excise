@@ -12,12 +12,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "secondary", size = "md", disabled, ...props }, ref) => {
     const variants = {
-      primary: "bg-white text-black hover:bg-slate-200 border border-transparent font-medium shadow-sm",
-      secondary: "bg-white/[0.06] text-slate-200 hover:bg-white/[0.1] hover:text-white border border-white/[0.1]",
-      outline: "bg-transparent text-slate-300 hover:bg-white/[0.04] hover:text-white border border-white/[0.12]",
-      ghost: "bg-transparent text-slate-400 hover:text-slate-100 hover:bg-white/[0.04] border border-transparent",
-      destructive: "bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/40",
-      emerald: "bg-emerald-500 text-black hover:bg-emerald-400 font-semibold border border-transparent shadow-sm",
+      primary: "bg-slate-950 text-white hover:bg-slate-800 border border-transparent font-medium shadow-xs",
+      secondary: "bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-200 shadow-xs",
+      outline: "bg-white text-slate-700 hover:bg-slate-50 border border-slate-300 shadow-xs",
+      ghost: "bg-transparent text-slate-600 hover:text-slate-950 hover:bg-slate-100 border border-transparent",
+      destructive: "bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200",
+      emerald: "bg-emerald-600 text-white hover:bg-emerald-700 font-semibold border border-transparent shadow-xs",
     };
 
     const sizes = {

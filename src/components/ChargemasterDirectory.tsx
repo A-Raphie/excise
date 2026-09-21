@@ -159,31 +159,31 @@ export function ChargemasterDirectory() {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="bg-[#080c13] border border-white/[0.08] rounded-xl overflow-hidden shadow-sm flex flex-col space-y-4 p-4 sm:p-5">
+    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col space-y-4 p-4 sm:p-5">
       {/* 1. Directory Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-slate-200">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/35 flex items-center justify-center text-cyan-400 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-800 shrink-0">
             <Search className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-white font-mono uppercase tracking-wider">
+              <h3 className="text-sm font-bold text-slate-950 font-mono uppercase tracking-wider">
                 Firecrawl Hospital Chargemaster Intelligence
               </h3>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 rounded-full">
+              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-sky-800 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full font-semibold">
                 <Database className="w-3 h-3" />
                 <span>CMS 45 CFR § 180 Feed</span>
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-sans mt-0.5">
+            <p className="text-xs text-slate-600 font-sans mt-0.5">
               Live crawler verifying hospital standard charges against mandatory Machine-Readable Files (MRFs).
             </p>
           </div>
         </div>
 
-        <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-black/40 border border-white/[0.08] text-slate-300 self-start md:self-auto flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+        <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 self-start md:self-auto flex items-center gap-1.5 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-600 animate-pulse" />
           <span>{filteredRecords.length} Audited Procedures</span>
         </span>
       </div>
@@ -198,7 +198,7 @@ export function ChargemasterDirectory() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by CPT code, procedure name, or facility..."
-            className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-black/40 border border-white/[0.08] text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 text-xs transition-colors"
+            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-950 focus:bg-white text-xs transition-colors shadow-2xs"
           />
         </div>
 
@@ -214,10 +214,10 @@ export function ChargemasterDirectory() {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1 rounded-lg text-[11px] transition-all cursor-pointer whitespace-nowrap ${
                 selectedCategory === cat.id
-                  ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/35 font-semibold"
-                  : "bg-white/[0.02] border border-white/[0.05] text-slate-400 hover:text-slate-200"
+                  ? "bg-slate-950 text-white font-bold shadow-xs"
+                  : "bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-950"
               }`}
             >
               {cat.label}
@@ -239,19 +239,19 @@ export function ChargemasterDirectory() {
             return (
               <div
                 key={rec.cpt}
-                className="p-4 rounded-xl bg-[#090d14] border border-white/[0.08] hover:border-white/[0.15] transition-all text-xs font-mono space-y-3 shadow-sm flex flex-col justify-between"
+                className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition-all text-xs font-mono space-y-3 shadow-xs flex flex-col justify-between"
               >
                 <div>
                   {/* Top Bar: Code & Markup Badge */}
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-white text-xs px-2 py-0.5 rounded bg-white/[0.06] border border-white/[0.08]">
+                    <span className="font-bold text-slate-950 text-xs px-2 py-0.5 rounded bg-slate-100 border border-slate-200">
                       CPT {rec.cpt}
                     </span>
                     <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
                         rec.isBundled
-                          ? "bg-amber-500/15 border-amber-500/35 text-amber-300"
-                          : "bg-rose-500/15 border-rose-500/35 text-rose-300"
+                          ? "bg-amber-50 border-amber-200 text-amber-800"
+                          : "bg-rose-50 border-rose-200 text-rose-700"
                       }`}
                     >
                       {rec.isBundled ? "UNBUNDLED" : `${rec.markupPct}% MARKUP`}
@@ -259,54 +259,54 @@ export function ChargemasterDirectory() {
                   </div>
 
                   {/* Procedure Name */}
-                  <div className="text-slate-200 font-sans text-xs font-medium leading-snug">
+                  <div className="text-slate-950 font-sans text-xs font-bold leading-snug">
                     {rec.name}
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 font-sans">
-                    <Building2 className="w-3 h-3 text-slate-500 shrink-0" />
+                  <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1 font-sans">
+                    <Building2 className="w-3 h-3 text-slate-400 shrink-0" />
                     <span className="truncate">{rec.facility}</span>
                   </div>
 
                   {/* Price Comparison Grid */}
-                  <div className="space-y-1.5 pt-3 mt-3 border-t border-white/[0.06] text-[11px]">
+                  <div className="space-y-1.5 pt-3 mt-3 border-t border-slate-100 text-[11px]">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Hospital Gross Billed:</span>
-                      <span className="text-rose-400 font-bold line-through decoration-rose-500/60">
+                      <span className="text-slate-500">Hospital Gross Billed:</span>
+                      <span className="text-rose-600 font-bold line-through decoration-rose-400">
                         ${rec.avgBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Mandatory Cash Rate:</span>
-                      <span className="text-cyan-400 font-bold">
+                      <span className="text-slate-500">Mandatory Cash Rate:</span>
+                      <span className="text-sky-900 font-bold">
                         ${rec.chargemasterCash.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Medicare Allowable:</span>
-                      <span className="text-emerald-400 font-medium">
+                      <span className="text-slate-500">Medicare Allowable:</span>
+                      <span className="text-emerald-800 font-bold">
                         ${rec.medicareRate.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </span>
                     </div>
 
                     {/* Proportional Markup Visual Gauge */}
                     <div className="pt-2">
-                      <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+                      <div className="flex justify-between text-[10px] text-slate-500 mb-1">
                         <span>Price Proportionality:</span>
-                        <span className="text-cyan-300">
+                        <span className="text-sky-800 font-bold">
                           {rec.isBundled ? "Disallowed" : `${(rec.avgBilled / (rec.chargemasterCash || 1)).toFixed(1)}× Fair Cash`}
                         </span>
                       </div>
-                      <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden flex">
+                      <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden flex">
                         <div
-                          className="h-full bg-cyan-400"
+                          className="h-full bg-sky-600"
                           style={{
                             width: `${Math.min(100, ((rec.chargemasterCash || 1) / rec.avgBilled) * 100)}%`,
                           }}
                         />
                         <div
-                          className="h-full bg-rose-500/80"
+                          className="h-full bg-rose-400/80"
                           style={{
                             width: `${100 - Math.min(100, ((rec.chargemasterCash || 1) / rec.avgBilled) * 100)}%`,
                           }}
@@ -317,13 +317,13 @@ export function ChargemasterDirectory() {
                 </div>
 
                 {/* Footer: Witness MRF Snippet */}
-                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-[10px]">
-                  <span className="text-slate-400 truncate max-w-[65%]">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                  <span className="text-slate-500 truncate max-w-[65%]">
                     {rec.status}
                   </span>
                   <button
                     onClick={() => setInspectingCpt(isInspecting ? null : rec.cpt)}
-                    className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                    className="text-sky-800 hover:text-sky-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
                   >
                     <FileCode2 className="w-3 h-3" />
                     <span>{isInspecting ? "Close" : "Witness MRF"}</span>
@@ -332,7 +332,7 @@ export function ChargemasterDirectory() {
 
                 {/* Expanded Raw MRF Snippet Drawer */}
                 {isInspecting && (
-                  <div className="mt-2 p-2.5 rounded bg-black/80 border border-cyan-500/30 text-[10px] text-cyan-200 overflow-x-auto space-y-1">
+                  <div className="mt-2 p-3 rounded-xl bg-slate-900 text-sky-200 border border-slate-800 text-[10px] overflow-x-auto space-y-1 shadow-inner">
                     <div className="text-slate-400 uppercase tracking-wider font-semibold">
                       Raw CMS 45 CFR § 180 Witness:
                     </div>

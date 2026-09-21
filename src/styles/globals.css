@@ -2,29 +2,20 @@
 
 @layer base {
   * {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(15, 23, 42, 0.08);
   }
 
   body {
     margin: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: #f8fafc;
+    color: #0f172a;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-html[data-theme="obstat"], html.theme-obstat, html[data-theme="obstat"] body, .theme-obstat {
+html, body {
   background-color: #f8fafc !important;
   color: #0f172a !important;
-}
-
-html[data-theme="routedock"], html.theme-routedock, html[data-theme="routedock"] body, .theme-routedock {
-  background-color: #080b14 !important;
-  color: #f8fafc !important;
-}
-
-html[data-theme="mandate"], html.theme-mandate, html[data-theme="mandate"] body, .theme-mandate {
-  background-color: #fbfbfa !important;
-  color: #1c1917 !important;
 }
 
 /* Tabular numbers for clinical finance data */
@@ -72,12 +63,12 @@ button:active:not(:disabled), .btn-press:active {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #070b10;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }

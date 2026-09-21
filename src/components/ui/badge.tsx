@@ -14,14 +14,14 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variants = {
-    default: "bg-white/[0.08] text-white border-white/[0.15]",
-    secondary: "bg-white/[0.04] text-slate-300 border-white/[0.08]",
-    destructive: "bg-rose-500/15 text-rose-300 border-rose-500/35",
-    outline: "border-white/[0.12] text-slate-300 bg-transparent",
-    emerald: "bg-emerald-500/15 text-emerald-300 border-emerald-500/35",
-    amber: "bg-amber-500/15 text-amber-300 border-amber-500/35",
-    purple: "bg-purple-500/15 text-purple-300 border-purple-500/35",
-    cyan: "bg-cyan-500/15 text-cyan-300 border-cyan-500/35",
+    default: "bg-slate-100 text-slate-800 border-slate-200",
+    secondary: "bg-slate-50 text-slate-600 border-slate-200",
+    destructive: "bg-rose-50 text-rose-700 border-rose-200",
+    outline: "border-slate-300 text-slate-700 bg-transparent",
+    emerald: "bg-emerald-50 text-emerald-800 border-emerald-200",
+    amber: "bg-amber-50 text-amber-800 border-amber-200",
+    purple: "bg-purple-50 text-purple-800 border-purple-200",
+    cyan: "bg-sky-50 text-sky-800 border-sky-200",
   };
 
   return (

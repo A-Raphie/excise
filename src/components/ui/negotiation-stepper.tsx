@@ -46,7 +46,7 @@ export function NegotiationStepper({ currentStepIndex, className }: NegotiationS
   ];
 
   return (
-    <div className={cn("p-3 rounded-lg bg-black/40 border border-white/[0.06] font-mono text-xs", className)}>
+    <div className={cn("p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs", className)}>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {steps.map((step, idx) => {
           const isCompleted = step.status === "completed";
@@ -56,22 +56,22 @@ export function NegotiationStepper({ currentStepIndex, className }: NegotiationS
             <div
               key={step.id}
               className={cn(
-                "flex items-center gap-2.5 p-2 rounded transition-all",
+                "flex items-center gap-2.5 p-2 rounded-lg transition-all",
                 isCurrent
-                  ? "bg-white/[0.06] border border-emerald-500/40 shadow-xs"
+                  ? "bg-white border border-emerald-500/40 shadow-xs"
                   : isCompleted
-                  ? "bg-white/[0.02] border border-white/[0.04]"
-                  : "opacity-40 border border-transparent"
+                  ? "bg-emerald-50/60 border border-emerald-200/70"
+                  : "opacity-50 border border-transparent"
               )}
             >
               <div
                 className={cn(
                   "w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0",
                   isCompleted
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                    ? "bg-emerald-100 text-emerald-700 border border-emerald-300"
                     : isCurrent
-                    ? "bg-emerald-400 text-black animate-pulse"
-                    : "bg-white/[0.05] text-slate-500 border border-white/[0.1]"
+                    ? "bg-emerald-600 text-white font-bold animate-pulse shadow-xs"
+                    : "bg-slate-200 text-slate-500 border border-slate-300"
                 )}
               >
                 {isCompleted ? <Check className="w-3.5 h-3.5" /> : idx + 1}
@@ -81,7 +81,7 @@ export function NegotiationStepper({ currentStepIndex, className }: NegotiationS
                 <div
                   className={cn(
                     "font-medium truncate text-xs",
-                    isCurrent ? "text-emerald-300 font-semibold" : isCompleted ? "text-slate-200" : "text-slate-500"
+                    isCurrent ? "text-emerald-900 font-bold" : isCompleted ? "text-slate-800" : "text-slate-500"
                   )}
                 >
                   {step.label}

@@ -97,27 +97,27 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#0b1017] border border-white/[0.12] rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative my-8 font-mono text-xs">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white border border-slate-200 rounded-3xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl relative my-8 font-mono text-xs text-slate-900">
         {/* Close button */}
         <button
           onClick={onClose}
           disabled={isAuditing}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/[0.08] transition-colors cursor-pointer"
+          className="absolute top-5 right-5 text-slate-400 hover:text-slate-950 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Title */}
-        <div className="flex items-center gap-3 pb-4 border-b border-white/[0.08] mb-5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-400 shrink-0">
+        <div className="flex items-center gap-3 pb-4 border-b border-slate-200 mb-5">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 shrink-0">
             <FilePlus className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-slate-950 tracking-tight">
               Forensic Hospital Bill Intake Workstation
             </h2>
-            <p className="text-xs text-slate-400 font-sans mt-0.5">
+            <p className="text-xs text-slate-600 font-sans mt-0.5">
               Select an authentic hospital test specimen or input an itemized statement to execute real-time statutory audit.
             </p>
           </div>
@@ -125,10 +125,10 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
 
         {/* Preset Selector Cards */}
         <div className="mb-5 space-y-2">
-          <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+          <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-bold">
             Select Authentic Hospital Case Study:
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {PRESET_BILLS.map((preset) => {
               const isSelected = selectedPreset === preset.id;
               const thumbnail =
@@ -141,30 +141,30 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                   key={preset.id}
                   type="button"
                   onClick={() => handleSelectPreset(preset.id)}
-                  className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
-                      ? "bg-emerald-950/40 border-emerald-500/60 text-white shadow-md shadow-emerald-950/40"
-                      : "bg-[#080c13] border-white/[0.06] hover:border-white/[0.15] text-slate-300"
+                      ? "bg-emerald-50 border-2 border-emerald-600 text-slate-950 shadow-sm"
+                      : "bg-slate-50 border-slate-200 hover:border-slate-300 hover:bg-white text-slate-700"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-semibold text-white text-xs truncate max-w-[85%]">{preset.title}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
+                    <span className="font-bold text-slate-950 text-xs truncate max-w-[85%]">{preset.title}</span>
+                    {isSelected && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
                   </div>
 
-                  <div className="w-full h-16 rounded-md overflow-hidden border border-white/[0.08] mb-2 relative">
+                  <div className="w-full h-16 rounded-lg overflow-hidden border border-slate-200 mb-2 relative">
                     <img
                       src={thumbnail}
                       alt={preset.title}
                       className="w-full h-full object-cover object-top"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-emerald-300 font-semibold">
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
+                    <span className="absolute bottom-1 left-2 text-[9px] font-mono text-emerald-300 font-bold">
                       ${preset.totalBilled.toLocaleString()} Billed
                     </span>
                   </div>
 
-                  <div className="text-[10px] text-slate-400 truncate">
+                  <div className="text-[10px] text-slate-500 truncate font-medium">
                     {preset.hospitalName.split(" ")[0]} · Authentic Specimen
                   </div>
                 </button>
@@ -174,9 +174,9 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
         </div>
 
         {/* Dropzone Quick Touch */}
-        <div className="mb-4 p-3 rounded-xl border border-dashed border-white/[0.12] bg-white/[0.01] hover:bg-white/[0.03] transition-colors flex items-center justify-center gap-2.5 text-slate-400 cursor-pointer">
-          <UploadCloud className="w-4 h-4 text-emerald-400" />
-          <span className="text-[11px]">
+        <div className="mb-5 p-3.5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100/80 transition-colors flex items-center justify-center gap-2.5 text-slate-600 cursor-pointer">
+          <UploadCloud className="w-4 h-4 text-emerald-600" />
+          <span className="text-[11px] font-medium">
             Or drag &amp; drop an itemized PDF / UB-04 clinical statement to auto-extract CPT codes
           </span>
         </div>
@@ -185,8 +185,8 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
         <form onSubmit={handleRunAudit} className="space-y-3.5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <Building2 className="w-3.5 h-3.5 text-slate-400" />
                 <span>Hospital Facility Name</span>
               </label>
               <input
@@ -194,13 +194,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 value={hospitalName}
                 onChange={(e) => setHospitalName(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <User className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <User className="w-3.5 h-3.5 text-slate-400" />
                 <span>Patient Full Name</span>
               </label>
               <input
@@ -208,13 +208,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <Hash className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <Hash className="w-3.5 h-3.5 text-slate-400" />
                 <span>Hospital Account / Docket #</span>
               </label>
               <input
@@ -222,13 +222,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <Calendar className="w-3.5 h-3.5 text-slate-400" />
                 <span>Date of Medical Service</span>
               </label>
               <input
@@ -236,13 +236,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 value={billDate}
                 onChange={(e) => setBillDate(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <DollarSign className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <DollarSign className="w-3.5 h-3.5 text-slate-400" />
                 <span>Total Gross Billed ($)</span>
               </label>
               <input
@@ -250,13 +250,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 value={totalBilled}
                 onChange={(e) => setTotalBilled(parseFloat(e.target.value) || 0)}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 mb-1 flex items-center gap-1.5 text-[11px]">
-                <Search className="w-3.5 h-3.5 text-slate-500" />
+              <label className="block text-slate-600 mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+                <Search className="w-3.5 h-3.5 text-slate-400" />
                 <span>CPT Codes (comma-separated)</span>
               </label>
               <input
@@ -265,13 +265,13 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 onChange={(e) => setCptCodes(e.target.value)}
                 placeholder="99285, 99070, 70450"
                 required
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+                className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-slate-400 mb-1 text-[11px]">
+            <label className="block text-slate-600 mb-1 text-[11px] font-medium">
               Line Item Billed Amounts ($, matching CPT codes)
             </label>
             <input
@@ -280,39 +280,39 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
               onChange={(e) => setAmounts(e.target.value)}
               placeholder="4850, 1850, 5400, 450, 2300"
               required
-              className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/[0.08] text-white focus:outline-none focus:border-emerald-500 text-xs"
+              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-950 focus:bg-white text-xs shadow-2xs"
             />
           </div>
 
           {/* Action Footer & Autonomous Scanning Animation */}
-          <div className="pt-4 border-t border-white/[0.08]">
+          <div className="pt-4 border-t border-slate-200">
             {isAuditing ? (
-              <div className="p-4 rounded-xl bg-black/80 border border-emerald-500/40 space-y-3 font-mono text-xs shadow-lg shadow-emerald-950/20">
-                <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-emerald-300 space-y-3 font-mono text-xs shadow-xs">
+                <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-slate-600 font-bold">
                   <span>Executing Autonomous Audit Pipeline</span>
-                  <span className="text-emerald-400 font-mono">Stage {currentStepIndex}/3</span>
+                  <span className="text-emerald-800 font-mono">Stage {currentStepIndex}/3</span>
                 </div>
 
                 {/* Step 1: Firecrawl */}
                 <div className="flex items-center gap-2.5">
                   {currentStepIndex > 1 ? (
-                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       ✓
                     </span>
                   ) : currentStepIndex === 1 ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-cyan-400 shrink-0" />
+                    <Loader2 className="w-5 h-5 animate-spin text-sky-600 shrink-0" />
                   ) : (
-                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       1
                     </span>
                   )}
                   <span
                     className={
                       currentStepIndex === 1
-                        ? "text-cyan-300 font-bold"
+                        ? "text-sky-800 font-bold"
                         : currentStepIndex > 1
-                        ? "text-slate-300"
-                        : "text-slate-500"
+                        ? "text-slate-800"
+                        : "text-slate-400"
                     }
                   >
                     Crawling Firecrawl for Hospital Machine-Readable File (MRF)...
@@ -322,23 +322,23 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 {/* Step 2: OpenAI */}
                 <div className="flex items-center gap-2.5">
                   {currentStepIndex > 2 ? (
-                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       ✓
                     </span>
                   ) : currentStepIndex === 2 ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-amber-400 shrink-0" />
+                    <Loader2 className="w-5 h-5 animate-spin text-amber-600 shrink-0" />
                   ) : (
-                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       2
                     </span>
                   )}
                   <span
                     className={
                       currentStepIndex === 2
-                        ? "text-amber-300 font-bold"
+                        ? "text-amber-800 font-bold"
                         : currentStepIndex > 2
-                        ? "text-slate-300"
-                        : "text-slate-500"
+                        ? "text-slate-800"
+                        : "text-slate-400"
                     }
                   >
                     OpenAI CPT Audit: Checking AMA Guidelines &amp; NCCI Unbundling...
@@ -348,23 +348,23 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 {/* Step 3: AgentMail */}
                 <div className="flex items-center gap-2.5">
                   {currentStepIndex > 3 ? (
-                    <span className="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       ✓
                     </span>
                   ) : currentStepIndex === 3 ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-purple-400 shrink-0" />
+                    <Loader2 className="w-5 h-5 animate-spin text-purple-600 shrink-0" />
                   ) : (
-                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       3
                     </span>
                   )}
                   <span
                     className={
                       currentStepIndex === 3
-                        ? "text-purple-300 font-bold"
+                        ? "text-purple-800 font-bold"
                         : currentStepIndex > 3
-                        ? "text-slate-300"
-                        : "text-slate-500"
+                        ? "text-slate-800"
+                        : "text-slate-400"
                     }
                   >
                     Provisioning AgentMail Dispute Inbox &amp; Serving Statutory Demand...
@@ -380,7 +380,7 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
                 <button
                   type="submit"
                   disabled={isAuditing}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-semibold text-xs shadow-lg shadow-emerald-950 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-mono font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
                 >
                   <Zap className="w-4 h-4" />
                   <span>Run Autonomous Forensic Audit</span>
