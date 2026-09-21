@@ -31,7 +31,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var params = new URLSearchParams(window.location.search);
+                  var t = params.get('theme') || localStorage.getItem('excise_theme') || 'obstat';
+                  if (t === 'routedock' || t === 'mandate' || t === 'obstat') {
+                    document.documentElement.setAttribute('data-theme', t);
+                    document.documentElement.className = 'theme-' + t;
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
         <ConvexClientProvider>
           <ThemeProvider>{children}</ThemeProvider>

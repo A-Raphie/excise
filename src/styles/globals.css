@@ -6,10 +6,25 @@
   }
 
   body {
-    background-color: #06090e;
-    color: #f1f5f9;
+    margin: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+}
+
+html[data-theme="obstat"], html.theme-obstat, html[data-theme="obstat"] body, .theme-obstat {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html[data-theme="routedock"], html.theme-routedock, html[data-theme="routedock"] body, .theme-routedock {
+  background-color: #080b14 !important;
+  color: #f8fafc !important;
+}
+
+html[data-theme="mandate"], html.theme-mandate, html[data-theme="mandate"] body, .theme-mandate {
+  background-color: #fbfbfa !important;
+  color: #1c1917 !important;
 }
 
 /* Tabular numbers for clinical finance data */

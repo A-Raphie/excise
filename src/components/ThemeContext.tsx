@@ -23,18 +23,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const themeParam = params.get("theme") as WinsznxTheme | null;
       if (themeParam && (themeParam === "obstat" || themeParam === "routedock" || themeParam === "mandate")) {
         setThemeState(themeParam);
+        document.documentElement.setAttribute("data-theme", themeParam);
+        document.documentElement.className = "theme-" + themeParam;
         return;
       }
-    }
-    const saved = localStorage.getItem("excise_theme") as WinsznxTheme | null;
-    if (saved && (saved === "obstat" || saved === "routedock" || saved === "mandate")) {
-      setThemeState(saved);
+      const saved = localStorage.getItem("excise_theme") as WinsznxTheme | null;
+      if (saved && (saved === "obstat" || saved === "routedock" || saved === "mandate")) {
+        setThemeState(saved);
+        document.documentElement.setAttribute("data-theme", saved);
+        document.documentElement.className = "theme-" + saved;
+      }
     }
   }, []);
 
   const setTheme = (newTheme: WinsznxTheme) => {
     setThemeState(newTheme);
-    localStorage.setItem("excise_theme", newTheme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("excise_theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      document.documentElement.className = "theme-" + newTheme;
+    }
   };
 
   return (
