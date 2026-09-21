@@ -20,6 +20,7 @@ import {
   ArrowDownLeft,
   ShieldCheck,
   Zap,
+  Eye,
 } from "lucide-react";
 import { NegotiationStepper } from "./ui/negotiation-stepper";
 import { Badge } from "./ui/badge";
@@ -33,6 +34,7 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
   const { sendDispute, simulateResponse } = useCaseEngine();
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [showWebhookModal, setShowWebhookModal] = useState(false);
+  const [showAccordImageModal, setShowAccordImageModal] = useState(false);
   const [copiedInbox, setCopiedInbox] = useState(false);
   const [expandedTransmissionId, setExpandedTransmissionId] = useState<string | null>(null);
 
@@ -240,6 +242,47 @@ export function AgentMailChamber({ currentCase }: AgentMailChamberProps) {
                   <span className="text-white font-bold">$3,085.00</span>
                   <span className="text-emerald-400 font-semibold">(Self-Pay Cap)</span>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Physical Accord Instrument Preview */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center p-3 rounded-xl bg-black/40 border border-emerald-500/25">
+            <div
+              className="sm:col-span-4 relative rounded-lg overflow-hidden border border-white/[0.1] group cursor-pointer"
+              onClick={() => setShowAccordImageModal(true)}
+            >
+              <img
+                src="/images/settlement-accord-document.jpg"
+                alt="Ratified Bilateral Settlement Accord Physical Instrument"
+                className="w-full h-32 object-cover object-top group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-50 transition-opacity" />
+              <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/70 border border-emerald-500/40 text-[9px] font-mono text-emerald-300 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Physical Instrument with Wax Seal</span>
+              </div>
+              <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[10px] font-mono text-white">
+                <span>Click to inspect full document</span>
+                <Eye className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              </div>
+            </div>
+
+            <div className="sm:col-span-8 space-y-1.5 text-[11px] text-slate-300">
+              <div className="font-semibold text-white flex items-center gap-2">
+                <span>Executed Settlement Instrument · 45 CFR § 149</span>
+                <span className="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/30 text-[10px]">
+                  RATIFIED
+                </span>
+              </div>
+              <p className="text-slate-400 text-xs font-sans leading-relaxed">
+                Hospital legal affairs and EXCISE digital tenders executed this binding bilateral compromise.
+                The permanent collections stay is registered with the Centers for Medicare &amp; Medicaid Services (CMS).
+              </p>
+              <div className="text-[10px] font-mono text-emerald-400 flex items-center gap-2 pt-0.5">
+                <span>Cryptographic Digest: 0x7f83b165...</span>
+                <span>·</span>
+                <span>Tender: $3,735.00</span>
               </div>
             </div>
           </div>
@@ -469,6 +512,38 @@ Content-Type: application/json
               <Button size="sm" variant="secondary" onClick={() => setShowWebhookModal(false)}>
                 Close Spec
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Accord Document Preview Modal */}
+      {showAccordImageModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowAccordImageModal(false)}
+        >
+          <div
+            className="max-w-3xl w-full bg-[#0b1017] border border-white/[0.15] rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-3.5 border-b border-white/[0.08] flex items-center justify-between font-mono text-xs">
+              <span className="font-semibold text-white">
+                Ratified Bilateral Settlement Accord · Official Legal Instrument
+              </span>
+              <button
+                onClick={() => setShowAccordImageModal(false)}
+                className="text-slate-400 hover:text-white px-2 py-1 rounded cursor-pointer"
+              >
+                ✕ Close
+              </button>
+            </div>
+            <div className="p-3 bg-black flex items-center justify-center max-h-[80vh] overflow-auto">
+              <img
+                src="/images/settlement-accord-document.jpg"
+                alt="Ratified Bilateral Settlement Accord Physical Instrument"
+                className="max-h-[75vh] w-auto object-contain rounded-lg shadow-lg"
+              />
             </div>
           </div>
         </div>

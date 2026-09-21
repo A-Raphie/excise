@@ -131,26 +131,41 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {PRESET_BILLS.map((preset) => {
               const isSelected = selectedPreset === preset.id;
+              const thumbnail =
+                preset.id === "preset-imaging"
+                  ? "/images/radiology-audit-specimen.jpg"
+                  : "/images/hospital-bill-specimen.jpg";
+
               return (
                 <button
                   key={preset.id}
                   type="button"
                   onClick={() => handleSelectPreset(preset.id)}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                  className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
                       ? "bg-emerald-950/40 border-emerald-500/60 text-white shadow-md shadow-emerald-950/40"
                       : "bg-[#080c13] border-white/[0.06] hover:border-white/[0.15] text-slate-300"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white text-xs">{preset.title}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-semibold text-white text-xs truncate max-w-[85%]">{preset.title}</span>
+                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1 truncate">
-                    {preset.hospitalName.split(" ")[0]}
+
+                  <div className="w-full h-16 rounded-md overflow-hidden border border-white/[0.08] mb-2 relative">
+                    <img
+                      src={thumbnail}
+                      alt={preset.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-emerald-300 font-semibold">
+                      ${preset.totalBilled.toLocaleString()} Billed
+                    </span>
                   </div>
-                  <div className="text-[11px] font-bold text-emerald-400 mt-0.5">
-                    ${preset.totalBilled.toLocaleString()} Billed
+
+                  <div className="text-[10px] text-slate-400 truncate">
+                    {preset.hospitalName.split(" ")[0]} · Authentic Specimen
                   </div>
                 </button>
               );
