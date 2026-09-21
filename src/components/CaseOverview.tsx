@@ -137,24 +137,24 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
       </div>
 
       {/* 2. 3-Column Forensic Financial Surface */}
-      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.06] bg-[#070b11]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06] bg-[#070b11]">
         {/* Cell 1: Hospital Charge */}
-        <div className="p-4 sm:p-5 space-y-1">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+        <div className="p-3.5 sm:p-5 space-y-0.5 sm:space-y-1">
+          <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-400">
             Hospital Billed Charge
           </div>
-          <div className="text-2xl sm:text-3xl font-mono font-semibold text-rose-400/80 line-through decoration-rose-500/60 tabular-nums">
+          <div className="text-xl sm:text-3xl font-mono font-semibold text-rose-400/80 line-through decoration-rose-500/60 tabular-nums">
             ${currentCase.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
-          <div className="text-[11px] text-slate-500 font-mono">
+          <div className="text-[10px] sm:text-[11px] text-slate-500 font-mono truncate">
             Unadjusted gross chargemaster list rate
           </div>
         </div>
 
         {/* Cell 2: Overcharges Excised */}
-        <div className="p-4 sm:p-5 space-y-1 bg-emerald-500/[0.02]">
+        <div className="p-3.5 sm:p-5 space-y-0.5 sm:space-y-1 bg-emerald-500/[0.02]">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-medium">
+            <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-medium">
               Overcharges Excised
             </span>
             <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
@@ -162,30 +162,30 @@ export function CaseOverview({ currentCase }: CaseOverviewProps) {
             </span>
           </div>
           <div
-            className={`text-2xl sm:text-3xl font-mono font-bold text-emerald-400 tabular-nums transition-all ${
+            className={`text-xl sm:text-3xl font-mono font-bold text-emerald-400 tabular-nums transition-all ${
               flashUpdate ? "animate-number-flash" : ""
             }`}
           >
             -${currentCase.totalExcised.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
-          <div className="text-[11px] text-emerald-500/80 font-mono">
+          <div className="text-[10px] sm:text-[11px] text-emerald-500/80 font-mono truncate">
             Upcoded acuity &amp; unbundled items stricken
           </div>
         </div>
 
         {/* Cell 3: Legal Cash Settlement */}
-        <div className="p-4 sm:p-5 space-y-1 bg-white/[0.01]">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-300">
+        <div className="p-3.5 sm:p-5 space-y-0.5 sm:space-y-1 bg-white/[0.01]">
+          <div className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-300">
             {currentCase.status === "settled" ? "Final Binding Settlement" : "Legal Settlement Offer"}
           </div>
           <div
-            className={`text-2xl sm:text-3xl font-mono font-bold text-white tabular-nums transition-all ${
+            className={`text-xl sm:text-3xl font-mono font-bold text-white tabular-nums transition-all ${
               flashUpdate ? "animate-number-flash" : ""
             }`}
           >
             ${finalSettlement.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
-          <div className="text-[11px] text-cyan-400 font-mono">
+          <div className="text-[10px] sm:text-[11px] text-cyan-400 font-mono truncate">
             Enforcing hospital published cash rate
           </div>
         </div>

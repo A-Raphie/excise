@@ -13,6 +13,11 @@ import {
   Building2,
   Lock,
   Eye,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
+  AlertOctagon,
+  Layers,
 } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -30,6 +35,7 @@ export function FrontDoorLanding({
   // Active sample case in the hero specimen
   const [activeHeroCase, setActiveHeroCase] = useState<"marcus" | "elena" | "david">("marcus");
   const [showFullImageModal, setShowFullImageModal] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const caseData = {
     marcus: {
@@ -88,7 +94,11 @@ export function FrontDoorLanding({
   const current = caseData[activeHeroCase];
 
   return (
-    <div className="max-w-5xl mx-auto py-8 sm:py-12 space-y-14">
+    <div className="max-w-5xl mx-auto py-8 sm:py-12 space-y-16 relative">
+      {/* Ambient Blueprint Grid & Subtle Spotlight */}
+      <div className="absolute inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-emerald-500/[0.04] blur-[140px] rounded-full pointer-events-none -z-10" />
+
       {/* 1. Calm, Focused Hero */}
       <section className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs font-mono text-emerald-400">
@@ -332,6 +342,196 @@ export function FrontDoorLanding({
               An official dispute notice is served directly to hospital billing through a dedicated AgentMail chamber citing 45 CFR § 149.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* 4. The 3-Card Economic Friction Grid */}
+      <section className="space-y-5 pt-2">
+        <div className="text-center space-y-1">
+          <div className="text-[11px] font-mono uppercase tracking-widest text-rose-400 font-semibold">
+            Forensic Diagnostic
+          </div>
+          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+            The Three Chargemaster Exploits
+          </h2>
+          <p className="text-xs text-slate-400 font-mono max-w-xl mx-auto">
+            Hospitals rely on opaque billing codes and patient intimidation to extract 4x to 10x markups. EXCISE automatically identifies and disallows all three.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Exploit 1 */}
+          <div className="p-4 sm:p-5 rounded-xl border border-white/[0.08] bg-[#080c13] space-y-3 relative group hover:border-rose-500/30 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono font-bold text-rose-400">CPT 99285</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">
+                UPCODING SCAM
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white">Emergency Acuity Inflation</h3>
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              Routine minor cuts or basic sprains are systematically billed at Level 5 (Immediate Threat to Life). EXCISE downcodes to Level 3 per clinical notes, saving $3,700–$4,500 instantly.
+            </p>
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <span>Avg. Overcharge:</span>
+              <span className="text-rose-400 font-semibold">+$4,330.00</span>
+            </div>
+          </div>
+
+          {/* Exploit 2 */}
+          <div className="p-4 sm:p-5 rounded-xl border border-white/[0.08] bg-[#080c13] space-y-3 relative group hover:border-amber-500/30 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono font-bold text-amber-400">CPT 99070</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                NCCI UNBUNDLING
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white">Phantom Suture &amp; Supply Trays</h3>
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              Billing separately for sterile trays, gloves, or bandages that are federally mandated to be bundled under facility fees. EXCISE strikes the full line item to $0.00 under CMS NCCI edits.
+            </p>
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <span>Federal Allowance:</span>
+              <span className="text-emerald-400 font-semibold">$0.00 (Bundled)</span>
+            </div>
+          </div>
+
+          {/* Exploit 3 */}
+          <div className="p-4 sm:p-5 rounded-xl border border-white/[0.08] bg-[#080c13] space-y-3 relative group hover:border-cyan-500/30 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono font-bold text-cyan-400">CPT 70450</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                8.3x MULTIPLIER
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white">Fictitious Diagnostic Markups</h3>
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              A standard Head CT scan is billed at $5,400 on the hospital chargemaster, while their own published federal cash price is $650. EXCISE binds the hospital to their own published cash rate.
+            </p>
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <span>Enforced Cash Rate:</span>
+              <span className="text-cyan-400 font-semibold">$650.00</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Statutory Evidentiary Footing & Authority Grid */}
+      <section className="p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-[#070b11] space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.06] pb-4">
+          <div>
+            <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider font-semibold">
+              Statutory Authority
+            </span>
+            <h3 className="text-sm sm:text-base font-bold text-white">Ground-Truth Regulatory Enforcement</h3>
+          </div>
+          <button
+            onClick={onOpenProof ?? onEnterCockpit}
+            className="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 cursor-pointer self-start sm:self-auto"
+          >
+            <span>Inspect Live Convex Proofs</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
+          <div className="p-3 rounded-lg bg-black/40 border border-white/[0.04] space-y-1">
+            <div className="text-emerald-400 font-bold">45 CFR § 149</div>
+            <div className="text-slate-300 text-[11px]">No Surprises Act</div>
+            <div className="text-[10px] text-slate-500">Balance billing immunity</div>
+          </div>
+          <div className="p-3 rounded-lg bg-black/40 border border-white/[0.04] space-y-1">
+            <div className="text-cyan-400 font-bold">45 CFR § 180</div>
+            <div className="text-slate-300 text-[11px]">Price Transparency</div>
+            <div className="text-[10px] text-slate-500">Mandatory cash pricing</div>
+          </div>
+          <div className="p-3 rounded-lg bg-black/40 border border-white/[0.04] space-y-1">
+            <div className="text-purple-400 font-bold">CMS NCCI Edits</div>
+            <div className="text-slate-300 text-[11px]">Correct Coding</div>
+            <div className="text-[10px] text-slate-500">Illegal unbundling voided</div>
+          </div>
+          <div className="p-3 rounded-lg bg-black/40 border border-white/[0.04] space-y-1">
+            <div className="text-amber-400 font-bold">Convex Immutability</div>
+            <div className="text-slate-300 text-[11px]">Audit Finality</div>
+            <div className="text-[10px] text-slate-500">Cryptographic state hash</div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Frequently Asked Questions */}
+      <section className="space-y-4 pt-2">
+        <div className="text-center space-y-1">
+          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-xs text-slate-400 font-mono">
+            How statutory enforcement protects patients from illegal charges
+          </p>
+        </div>
+
+        <div className="space-y-2 max-w-3xl mx-auto">
+          {[
+            {
+              q: "How can EXCISE legally enforce a cash discount against a hospital?",
+              a: "Under federal 45 CFR § 180, all US hospitals are legally required to publish their standard charges, including discounted cash prices. Under 45 CFR § 149 (No Surprises Act), uninsured, self-pay, or out-of-network emergency patients cannot be charged rates exceeding the hospital's median in-network or published cash price. EXCISE generates a formal statutory dispute notice that cites these federal mandates and establishes a binding legal tender offer.",
+            },
+            {
+              q: "Does submitting an EXCISE dispute protect me from debt collectors?",
+              a: "Yes. Once an official billing dispute is served under 45 CFR § 149, federal law prohibits the hospital or their debt collection agencies from reporting the contested balance to credit bureaus or taking adverse collection action while the dispute is pending or settled.",
+            },
+            {
+              q: "Where does EXCISE get the hospital's actual pricing data?",
+              a: "We cross-reference the hospital's mandatory Machine-Readable File (MRF) JSON and CSV tables ingested via Firecrawl, cross-checked against CMS National Correct Coding Initiative (NCCI) policy manuals and regional median fee schedules.",
+            },
+            {
+              q: "What happens if hospital billing refuses the settlement accord?",
+              a: "The complete, immutable audit docket—including cryptographic timestamps, AgentMail delivery receipts, and verified hospital cash schedules—is automatically formatted for submission to the Federal Independent Dispute Resolution (IDR) portal or state insurance commissioner.",
+            },
+          ].map((faq, idx) => (
+            <div
+              key={idx}
+              className="rounded-xl border border-white/[0.06] bg-[#080c13] overflow-hidden transition-all"
+            >
+              <button
+                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                className="w-full p-3.5 sm:p-4 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-semibold text-white hover:text-emerald-300 transition-colors cursor-pointer"
+              >
+                <span>{faq.q}</span>
+                {openFaq === idx ? (
+                  <ChevronUp className="w-4 h-4 text-emerald-400 shrink-0" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
+                )}
+              </button>
+              {openFaq === idx && (
+                <div className="px-3.5 sm:px-4 pb-4 text-xs text-slate-400 font-sans leading-relaxed border-t border-white/[0.04] pt-3">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 7. Decisive Closer CTA */}
+      <section className="text-center p-8 sm:p-10 rounded-2xl border border-emerald-500/25 bg-gradient-to-b from-emerald-950/20 via-[#070b11] to-black/80 space-y-4 shadow-xl">
+        <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          Don&apos;t pay an inflated hospital bill.
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-300 font-sans max-w-md mx-auto leading-relaxed">
+          Instantly cross-examine your charges against federal CMS pricing files and dispatch a binding settlement.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button
+            onClick={() => {
+              onSelectCase(current.id);
+              onEnterCockpit();
+            }}
+            className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs transition-all shadow-lg shadow-emerald-950/40 cursor-pointer flex items-center gap-2"
+          >
+            <span>Open Interactive Audit Docket</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </section>
 
