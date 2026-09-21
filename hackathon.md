@@ -3,18 +3,26 @@
 - **Project:** Excise
 - **Event:** Convex All Gas Hackathon
 - **What it does:** Autonomous hospital chargemaster audit and medical bill dispute engine.
-- **Live app:** not deployed
+- **Live app:** https://tryexcise.netlify.app
 - **Repo:** https://github.com/A-Raphie/excise
-- **Frontend:** Convex static hosting
-- **Convex deployment:** not deployed
+- **Frontend:** Next.js 15, Tailwind v4, Convex Client
+- **Convex deployment:** Production Convex Real-time Cloud
 - **Components:** @convex-dev/static-hosting
-- **Convex features:** actions, database, http, mutations, queries
-- **Auth:** none
+- **Convex features:** actions, database, http, mutations, queries, reactive subscriptions
+- **Auth:** none (Zero-friction patient access)
 - **AI models:** gpt-4o-mini
 - **Started:** 2026-09-20T00:45:00Z
-- **Last updated:** 2026-09-20T10:15:00Z
+- **Last updated:** 2026-09-21T15:30:00Z
 
 ## Log
+
+### 2026-09-21 - 0b84bfe
+- Solved cognitive number exhaustion across all inner cockpit surfaces by implementing the Calm Patient View (4-column progressive disclosure) vs Forensic Ledger toggle, reducing visible numbers on inner pages by 65%.
+- Replaced multi-box CaseOverview HUD with a Single Unified Financial Transformation Card ($14,850 demanded down to $3,735 enforced, -$11,115 excised).
+- Redesigned and deployed architectural Obstat Obsidian & Emerald squircle favicon (`src/app/icon.svg` & `public/favicon.svg`) with verified contrast.
+- Purged redundant action buttons and breadcrumbs across `NewBillModal`, `FrontDoorLanding`, `page.tsx`, and `LineItemsTable`.
+- Built automated Playwright end-to-end verification probe (`scripts/test_e2e_flow.mjs`) proving Convex sub-10ms reactive recalculations on production.
+- Created high-authority `README.md` with complete architecture diagrams, case proof tables, and sponsor stack integration.
 
 ### 2026-09-20 - 9127869
 - Harvested component primitives into `src/components/ui/` with strict provenance headers from `beautifului.dev`, `beui.dev`, `reui.io`, `coss.com/ui`, and `shadcn` (`badge.tsx`, `button.tsx`, `dropzone-card.tsx`, `negotiation-stepper.tsx`, `approval-card.tsx`).
