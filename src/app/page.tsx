@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useCaseEngine } from "@/components/ConvexClientProvider";
+import { useWinsznxTheme } from "@/components/ThemeContext";
 import { Header } from "@/components/Header";
 import { CaseOverview } from "@/components/CaseOverview";
 import { LineItemsTable } from "@/components/LineItemsTable";
@@ -23,6 +24,7 @@ import {
 
 export default function Home() {
   const { activeCase, setSelectedCaseId } = useCaseEngine();
+  const { theme } = useWinsznxTheme();
   const [viewMode, setViewMode] = useState<"landing" | "cockpit">("landing");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"audit" | "letter" | "agentmail" | "transparency" | "proof">(
@@ -38,7 +40,15 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#06090e] text-slate-100 flex flex-col selection:bg-emerald-500/20 selection:text-emerald-300">
+    <div
+      className={`min-h-screen flex flex-col transition-colors duration-200 ${
+        theme === "obstat"
+          ? "bg-[#f8fafc] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900"
+          : theme === "mandate"
+          ? "bg-[#fbfbfa] text-stone-900 selection:bg-amber-100 selection:text-stone-900"
+          : "bg-[#080b14] text-slate-100 selection:bg-emerald-500/20 selection:text-emerald-300"
+      }`}
+    >
       {/* Top Header Navigation (One Chrome Row) */}
       <Header
         onOpenNewBill={() => setIsModalOpen(true)}
