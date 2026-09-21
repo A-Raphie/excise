@@ -18,6 +18,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<WinsznxTheme>("obstat");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const themeParam = params.get("theme") as WinsznxTheme | null;
+      if (themeParam && (themeParam === "obstat" || themeParam === "routedock" || themeParam === "mandate")) {
+        setThemeState(themeParam);
+        return;
+      }
+    }
     const saved = localStorage.getItem("excise_theme") as WinsznxTheme | null;
     if (saved && (saved === "obstat" || saved === "routedock" || saved === "mandate")) {
       setThemeState(saved);
