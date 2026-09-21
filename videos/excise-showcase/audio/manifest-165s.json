@@ -1,0 +1,72 @@
+[
+  {
+    "id": "beat-1-hook",
+    "name": "Scene 1: The Predatory Hook & Front Door",
+    "text": "Every year, millions of emergency room patients receive bills inflated by five hundred percent over actual hospital cash rates. Under federal law forty-five CFR part one eighty, hospitals are mandated to publish their real machine-readable prices. But finding and enforcing those numbers has been impossible for ordinary patients. Excise changes that.",
+    "targetStartMs": 500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-1-hook.mp3"
+  },
+  {
+    "id": "beat-2-add-audit",
+    "name": "Scene 2: The Add Audit Journey & Ingestion",
+    "text": "Adding an audit takes seconds. Patients can drag and drop any medical bill scan or select from authentic hospital chargemaster specimens. When you trigger the audit, Excise initiates an autonomous three-stage pipeline: Firecrawl indexes the provider's federal machine-readable file, OpenAI audits clinical acuity and CPT unbundling, and AgentMail provisions a verified settlement inbox. In milliseconds, the new case is committed to the Convex database and loaded into the audit cockpit.",
+    "targetStartMs": 16500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-2-add-audit.mp3"
+  },
+  {
+    "id": "beat-3-calm-hud",
+    "name": "Scene 3: Cockpit HUD & Calm Patient Mode",
+    "text": "Instead of overwhelming patients with dense walls of spreadsheet data, our calm patient view distills complex hospital charges into four clear columns: the procedure, the statutory violation, the legal safe harbor, and the exact dollar reduction. Here, Marcus Vance's fourteen thousand dollar emergency visit is immediately reduced to thirty-seven hundred dollars, excising over eleven thousand dollars in overcharges.",
+    "targetStartMs": 38500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-3-calm-hud.mp3"
+  },
+  {
+    "id": "beat-4-coding-forensics",
+    "name": "Scene 4: Medical Coding Forensic Inspection",
+    "text": "Clicking inspect reveals the forensic breakdown. OpenAI analyzes clinical documentation against AMA and CMS guidelines, exposing when hospitals upcode standard emergency visits to Level 5 trauma fees without resuscitation criteria, or unbundle routine CT scans into redundant facility charges.",
+    "targetStartMs": 54500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-4-coding-forensics.mp3"
+  },
+  {
+    "id": "beat-5-reactive-recalc",
+    "name": "Scene 5: Instant Reactive Settlement Recalculation",
+    "text": "Backed by Convex real-time reactive subscriptions, every dispute strike synchronizes across clients instantly. Toggling a line item recalculates statutory settlements across the entire case docket in under ten milliseconds, with zero page reloads, zero network delay, and zero stale state.",
+    "targetStartMs": 72500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-5-reactive-recalc.mp3"
+  },
+  {
+    "id": "beat-6-chargemaster-intel",
+    "name": "Scene 6: Chargemaster Intel Directory",
+    "text": "In the Chargemaster Intel directory, patients and healthcare attorneys can search across hospital facilities nationwide. Excise cross-references real hospital chargemasters against official CMS median cash benchmarks, proving that hospital markups frequently exceed eight times the legal allowable rate.",
+    "targetStartMs": 92500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-6-chargemaster-intel.mp3"
+  },
+  {
+    "id": "beat-7-statutory-letter",
+    "name": "Scene 7: Statutory Safe Harbor Dispute Letter",
+    "text": "Excise immediately generates a formal statutory dispute notice. It cites federal price transparency mandates, No Surprises Act safe harbors, and official CMS cash benchmarks, turning legal theory into an actionable settlement package addressed directly to hospital billing directors.",
+    "targetStartMs": 108500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-7-statutory-letter.mp3"
+  },
+  {
+    "id": "beat-8-agentmail-negotiation",
+    "name": "Scene 8: AgentMail 2-Way Negotiation Loop",
+    "text": "Patients never have to spend hours arguing with hospital billing departments on the phone. Our autonomous AgentMail loop provisions a dedicated case inbox and dispatches cryptographically verified settlement offers. When the hospital responds with an unbundling concession, the four-step negotiation stepper automatically updates to settled, securing the savings with complete cryptographic receipts.",
+    "targetStartMs": 122500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-8-agentmail-negotiation.mp3"
+  },
+  {
+    "id": "beat-9-proof-terminal",
+    "name": "Scene 9: Cryptographic Proof Rail & Terminal Backend",
+    "text": "Every settlement is sealed with SHA-256 cryptographic provenance. On the backend, Convex handles relational case indexing, automated mutations, and live client synchronization with strict end-to-end type safety across every query and mutation.",
+    "targetStartMs": 144500,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-9-proof-terminal.mp3"
+  },
+  {
+    "id": "beat-10-outro",
+    "name": "Scene 10: Master Outro & Submission Checklist",
+    "text": "Excise is live in production right now. Test the interactive docket, read our build log, and inspect the codebase at the links below.",
+    "targetStartMs": 160000,
+    "audioPath": "/Users/raphie/Documents/Hackathons/excise/videos/excise-showcase/audio/beat-10-outro.mp3"
+  }
+]
