@@ -94,212 +94,185 @@ export function FrontDoorLanding({
   const current = caseData[activeHeroCase];
 
   return (
-    <div className="max-w-5xl mx-auto py-8 sm:py-12 space-y-16 relative">
+    <div className="max-w-6xl mx-auto py-6 sm:py-10 space-y-16 relative">
       {/* Ambient Blueprint Grid & Subtle Spotlight */}
       <div className="absolute inset-0 pointer-events-none -z-10 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-emerald-500/[0.04] blur-[140px] rounded-full pointer-events-none -z-10" />
 
-      {/* 1. Calm, Focused Hero */}
-      <section className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs font-mono text-emerald-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>FORENSIC MEDICAL BILL AUDIT ENGINE</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
-          Hospitals overcharge by up to 800%. <br />
-          <span className="text-emerald-400">
-            We cut your bill to the legal cash rate.
-          </span>
-        </h1>
-
-        <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 font-sans leading-relaxed">
-          Upload any hospital bill. EXCISE cross-references mandatory federal price transparency files,
-          strikes illegal upcoding, and dispatches a binding statutory settlement demand.
-        </p>
-
-        {/* Primary Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Button
-            size="lg"
-            variant="emerald"
-            onClick={() => {
-              onSelectCase(current.id);
-              onEnterCockpit();
-            }}
-            className="text-xs font-mono font-semibold cursor-pointer shadow-lg shadow-emerald-950/40"
-          >
-            <span>Open Interactive Audit Docket</span>
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => {
-              onSelectCase(current.id);
-              onEnterCockpit();
-            }}
-            className="text-xs font-mono cursor-pointer border-white/[0.15] hover:border-emerald-500/40 text-slate-200"
-          >
-            <UploadCloud className="w-4 h-4 mr-1.5 text-emerald-400" />
-            <span>Audit Your Bill (PDF / Photo)</span>
-          </Button>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px] sm:text-xs font-mono text-slate-400 pt-1">
-          <span className="inline-flex items-center gap-1 whitespace-nowrap">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>Zero Sign-In</span>
-          </span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <span className="whitespace-nowrap">Federal 45 CFR § 149 Compliance</span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <button
-            onClick={onOpenProof ?? onEnterCockpit}
-            className="text-slate-300 hover:text-emerald-400 underline underline-offset-2 transition-colors cursor-pointer whitespace-nowrap"
-          >
-            View Cryptographic Proof
-          </button>
-        </div>
-      </section>
-
-      {/* 2. THE HERO SPECIMEN: Real Physical Document Photo + Side-by-Side Forensic Data */}
-      <section className="space-y-3">
-        {/* Case Switcher Tabs Above Card */}
-        <div className="flex items-center justify-between px-1 text-xs font-mono">
-          <div className="text-slate-400 uppercase tracking-wider text-[11px] font-semibold">
-            Authentic Audited Case Studies:
+      {/* 1. Unified Split-Screen Hero: Copy on Left, Authentic Document Specimen on Right */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
+        {/* Left Column (7 cols): Direct Thesis, CTAs, and Authority */}
+        <div className="lg:col-span-7 space-y-5 text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs font-mono text-emerald-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>45 CFR § 149 &amp; § 180 FORENSIC ENFORCEMENT</span>
           </div>
-          <div className="flex items-center gap-1.5 bg-black/40 border border-white/[0.08] p-1 rounded-lg">
-            {(["marcus", "elena", "david"] as const).map((key) => (
-              <button
-                key={key}
-                onClick={() => setActiveHeroCase(key)}
-                className={`px-2.5 py-1 rounded-md text-xs transition-all cursor-pointer ${
-                  activeHeroCase === key
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
+
+          <h1 className="text-3xl sm:text-5xl lg:text-[3.25rem] font-extrabold text-white tracking-tight leading-[1.1]">
+            Hospitals overcharge by up to 800%.{" "}
+            <span className="text-emerald-400 block mt-1.5">
+              We cut your bill to the legal cash rate.
+            </span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-slate-300 font-sans leading-relaxed max-w-xl">
+            Upload any hospital bill. EXCISE cross-references mandatory federal price transparency files,
+            strikes illegal emergency upcoding, and dispatches a binding statutory settlement demand.
+          </p>
+
+          {/* Primary Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <Button
+              size="lg"
+              variant="emerald"
+              onClick={() => {
+                onSelectCase(current.id);
+                onEnterCockpit();
+              }}
+              className="text-xs font-mono font-bold cursor-pointer shadow-lg shadow-emerald-950/40"
+            >
+              <span>Open Interactive Audit Docket</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => {
+                onSelectCase(current.id);
+                onEnterCockpit();
+              }}
+              className="text-xs font-mono cursor-pointer border-white/[0.15] hover:border-emerald-500/40 text-slate-200"
+            >
+              <UploadCloud className="w-4 h-4 mr-1.5 text-emerald-400" />
+              <span>Audit Your Bill (PDF / Photo)</span>
+            </Button>
+          </div>
+
+          {/* Quiet Proof Line */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-400 pt-1">
+            <span className="inline-flex items-center gap-1 whitespace-nowrap">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>Zero Sign-In</span>
+            </span>
+            <span className="text-slate-600 hidden sm:inline">·</span>
+            <span className="whitespace-nowrap">Federal 45 CFR § 149 Compliance</span>
+            <span className="text-slate-600 hidden sm:inline">·</span>
+            <button
+              onClick={onOpenProof ?? onEnterCockpit}
+              className="text-slate-300 hover:text-emerald-400 underline underline-offset-2 transition-colors cursor-pointer whitespace-nowrap"
+            >
+              View Cryptographic Proof
+            </button>
+          </div>
+
+          {/* Case Study Switcher Pills Directly Below Lede */}
+          <div className="pt-3 space-y-2 border-t border-white/[0.06]">
+            <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
+              Live Audited Patient Case Studies:
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {(["marcus", "elena", "david"] as const).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveHeroCase(key)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeHeroCase === key
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold shadow-sm"
+                      : "bg-[#090d14] border border-white/[0.06] text-slate-400 hover:text-slate-200 hover:border-white/[0.12]"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${activeHeroCase === key ? "bg-emerald-400" : "bg-slate-600"}`} />
+                  <span>{caseData[key].facility.split(" ")[0]}</span>
+                  <span className="text-emerald-400 font-bold">(-{caseData[key].savingsPct})</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (5 cols): The Physical Specimen Card */}
+        <div className="lg:col-span-5">
+          <div className="rounded-2xl border border-white/[0.1] bg-[#090d14] overflow-hidden shadow-2xl">
+            {/* Header */}
+            <div className="px-4 py-3 border-b border-white/[0.06] bg-black/40 flex items-center justify-between font-mono text-xs">
+              <div className="flex items-center gap-2 truncate">
+                <Building2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="font-semibold text-white truncate">{current.facility}</span>
+              </div>
+              <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0">
+                {current.patient}
+              </span>
+            </div>
+
+            {/* Specimen Photo with Zoom Affordance */}
+            <div className="p-4 space-y-3">
+              <div
+                className="relative rounded-xl overflow-hidden border border-white/[0.12] shadow-lg group cursor-pointer"
+                onClick={() => setShowFullImageModal(true)}
               >
-                {caseData[key].facility.split(" ")[0]} (-{caseData[key].savingsPct})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* The Card */}
-        <div className="rounded-2xl border border-white/[0.1] bg-[#090d14] overflow-hidden shadow-2xl">
-          {/* Card Top: Facility and Status */}
-          <div className="px-5 py-3.5 border-b border-white/[0.06] bg-black/40 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
-            <div className="flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-emerald-400" />
-              <span className="font-semibold text-white">{current.facility}</span>
-              <span className="text-slate-400">· {current.department}</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>Patient: {current.patient}</span>
-            </div>
-          </div>
-
-          {/* Card Center: Real Document Photograph (Left) & Forensic Adjudication (Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.08] bg-gradient-to-b from-[#090d14] to-[#070a0f]">
-            {/* Left Column (5 cols): Authentic Physical Bill Photo */}
-            <div className="lg:col-span-5 p-4 sm:p-5 flex flex-col justify-between space-y-3">
-              <div className="relative rounded-xl overflow-hidden border border-white/[0.1] shadow-lg group cursor-pointer" onClick={() => setShowFullImageModal(true)}>
                 <img
                   src={current.image}
                   alt={current.imageCaption}
-                  className="w-full h-56 sm:h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-48 sm:h-56 object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs border border-white/[0.15] text-[10px] font-mono text-emerald-300 flex items-center gap-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/75 backdrop-blur-xs border border-white/[0.15] text-[10px] font-mono text-emerald-300 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>Physical Evidence Scan</span>
                 </div>
-                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-mono text-white">
+                <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-mono text-white">
                   <span className="truncate mr-2 font-medium">Click to inspect full document</span>
-                  <Eye className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <Eye className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 </div>
               </div>
-              <div className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
-                <span className="text-emerald-400">✓</span>
-                <span>{current.imageCaption}</span>
-              </div>
-            </div>
 
-            {/* Right Column (7 cols): Before vs After & Violations */}
-            <div className="lg:col-span-7 p-5 sm:p-6 space-y-4 flex flex-col justify-between">
-              {/* Before vs After Side-by-Side */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-white/[0.06]">
-                {/* Left: What Hospital Charged */}
-                <div className="space-y-1">
-                  <div className="text-xs font-mono text-slate-400 uppercase">Hospital Charged</div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono line-through opacity-70">
-                    {current.original}
-                  </div>
-                  <p className="text-xs text-rose-400 font-mono pt-0.5">
-                    Unadjusted chargemaster rate
-                  </p>
+              {/* Financial Strike Summary */}
+              <div className="p-3 rounded-lg bg-black/40 border border-white/[0.06] space-y-2">
+                <div className="flex items-center justify-between font-mono text-xs">
+                  <span className="text-slate-400">Hospital Charged:</span>
+                  <span className="text-rose-400/80 line-through font-semibold">{current.original}</span>
                 </div>
-
-                {/* Right: What You Actually Owe */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs font-mono text-emerald-400 uppercase font-semibold">
-                      Legal Settlement Offer
-                    </div>
-                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                      {current.excised} ({current.savingsPct} OFF)
-                    </span>
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">
-                    {current.settlement}
-                  </div>
-                  <p className="text-xs text-slate-300 font-mono pt-0.5">
-                    Enforced CMS published cash rate
-                  </p>
+                <div className="flex items-center justify-between font-mono text-xs">
+                  <span className="text-emerald-400 font-medium">Enforced Cash Rate:</span>
+                  <span className="text-emerald-400 font-bold text-sm">{current.settlement}</span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-white/[0.04]">
+                  <span className="text-slate-500">Excised Savings:</span>
+                  <span className="text-emerald-300 font-bold">{current.excised} ({current.savingsPct} OFF)</span>
                 </div>
               </div>
 
               {/* 3 Detected Violations */}
-              <div className="space-y-2">
-                <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
-                  Violations Detected &amp; Excised On This Bill:
+              <div className="space-y-1.5">
+                <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
+                  Violations Excised On This Bill:
                 </div>
-                <div className="space-y-1.5">
-                  {current.strikes.map((s, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-mono p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-rose-400 font-semibold">{s.code}</span>
-                        <span className="text-white font-medium">{s.name}</span>
-                        <span className="text-slate-400 hidden sm:inline">— {s.action}</span>
-                      </div>
-                      <div className="font-bold text-emerald-400 self-end sm:self-auto shrink-0">
-                        {s.saved}
-                      </div>
+                {current.strikes.slice(0, 2).map((s, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between gap-1 text-[11px] font-mono p-1.5 rounded bg-white/[0.02] border border-white/[0.04]"
+                  >
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-rose-400 font-semibold">{s.code}</span>
+                      <span className="text-slate-300 truncate">{s.name}</span>
                     </div>
-                  ))}
-                </div>
+                    <span className="font-bold text-emerald-400 shrink-0">{s.saved}</span>
+                  </div>
+                ))}
               </div>
 
-              {/* Direct Action Link */}
-              <div className="pt-2">
-                <button
-                  onClick={() => {
-                    onSelectCase(current.id);
-                    onEnterCockpit();
-                  }}
-                  className="w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
-                >
-                  <span>Inspect Full Itemized Audit &amp; Settlement Letter</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+              {/* Action Button */}
+              <button
+                onClick={() => {
+                  onSelectCase(current.id);
+                  onEnterCockpit();
+                }}
+                className="w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              >
+                <span>Inspect Full Itemized Audit</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         </div>
