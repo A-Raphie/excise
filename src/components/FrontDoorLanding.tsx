@@ -13,6 +13,7 @@ import {
   FileText,
   Lock,
   ExternalLink,
+  Plus,
 } from "lucide-react";
 
 interface FrontDoorLandingProps {
@@ -118,8 +119,9 @@ export function FrontDoorLanding({
             }}
             className="px-6 py-3 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-mono font-bold text-xs transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95"
           >
-            <span>Audit Your Bill</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <Plus className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Add Hospital Audit</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
           </button>
 
           <button

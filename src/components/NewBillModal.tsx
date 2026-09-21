@@ -23,9 +23,10 @@ import {
 interface NewBillModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAuditComplete?: (newCaseId: string) => void;
 }
 
-export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
+export function NewBillModal({ isOpen, onClose, onAuditComplete }: NewBillModalProps) {
   const { auditNewBill } = useCaseEngine();
 
   const [selectedPreset, setSelectedPreset] = useState<string>("preset-er");
@@ -79,7 +80,7 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
         .map((s) => parseFloat(s.trim()))
         .filter((n) => !isNaN(n));
 
-      await auditNewBill({
+      const newCaseId = await auditNewBill({
         hospitalName,
         patientName,
         accountNumber,
@@ -89,7 +90,11 @@ export function NewBillModal({ isOpen, onClose }: NewBillModalProps) {
         amounts: parsedAmounts,
       });
 
-      onClose();
+      if (onAuditComplete) {
+        onAuditComplete(newCaseId);
+      } else {
+        onClose();
+      }
     } finally {
       setIsAuditing(false);
       setCurrentStepIndex(0);

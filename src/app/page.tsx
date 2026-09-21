@@ -157,7 +157,19 @@ export default function Home() {
       </main>
 
       {/* Bill Intake Modal */}
-      <NewBillModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <NewBillModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAuditComplete={(newCaseId) => {
+          setSelectedCaseId(newCaseId);
+          setViewMode("cockpit");
+          setActiveTab("audit");
+          setIsModalOpen(false);
+          if (typeof window !== "undefined") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }}
+      />
 
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-white py-6 mt-auto text-xs font-mono text-slate-500">

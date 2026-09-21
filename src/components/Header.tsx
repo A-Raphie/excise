@@ -118,8 +118,8 @@ export function Header({
             onClick={onOpenNewBill}
             className="px-4 py-1.5 text-xs font-mono font-bold rounded-full bg-slate-950 hover:bg-slate-800 text-white shadow-xs transition-all flex items-center gap-1.5 whitespace-nowrap active:scale-95 cursor-pointer"
           >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Audit Bill</span>
+            <Plus className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Add Audit</span>
           </button>
         </div>
       </div>
